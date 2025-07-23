@@ -1,0 +1,30 @@
+services:
+  # Dev DB
+  pg-dev:
+    image: postgres
+    environment:
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=abcd#1234"
+      - "POSTGRES_DB=dev"
+    ports:
+      - "${DB_DEV_PORT}:5432"
+    restart: always
+    healthcheck:
+      # Password not required to test healthcheck https://www.postgresql.org/docs/current/app-pg-isready.html
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+
+  # Test DBs
+  pg-test:
+    image: postgres
+    user: postgres
+    environment:
+      - "POSTGRES_USER=admin"
+      - "POSTGRES_PASSWORD=abcd#1234"
+      - "POSTGRES_DB=${DB_TEST_DATABASE}1"
+      - "TOTAL_TEST_DB=${TOTAL_TEST_DB}"
+    ports:
+      - "${DB_TEST_PORT}:5432"
+    restart: always
+    healthcheck:
+      # Password not required to test healthcheck https://www.postgresql.org/docs/current/app-pg-isready.html
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]

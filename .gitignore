@@ -1,0 +1,13 @@
+node_modules/
+npm-debug.log*
+npminstall-debug.log
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+.idea
+.vscode
+
+# build
+build/
+dist/
+.parcel-cache/
