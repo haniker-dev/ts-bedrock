@@ -15,6 +15,8 @@ import {
 import db from "../Database"
 import * as Logger from "../Logger"
 import { createUUID } from "../../../Core/Data/UUID"
+import { Maybe } from "../../../Core/Data/Maybe"
+import { Nat, Nat0, natDecoder } from "../../../Core/Data/Number/Nat"
 
 const tableName = "post"
 
@@ -49,6 +51,49 @@ export async function create(params: CreateParams): Promise<PostRow> {
     .then(postRowDecoder.verify)
     .catch((e) => {
       Logger.error(`#${tableName}.create error ${e}`)
+      throw e
+    })
+}
+
+export async function listPosts(
+  page: Nat,
+  pageSize: Nat,
+  title: Maybe<Text256>,
+): Promise<PostRow[]> {
+  let query = db.selectFrom(tableName).selectAll()
+
+  if (title != null) {
+    query = query.where("title", "like", `%${title.unwrap()}%`)
+  }
+
+  const offset = (page.unwrap() - 1) * pageSize.unwrap()
+
+  return query
+    .orderBy("createdAt", "desc")
+    .offset(offset)
+    .limit(pageSize.unwrap())
+    .execute()
+    .then(JD.array(postRowDecoder).verify)
+    .catch((e) => {
+      Logger.error(`#${tableName}.listPosts error ${e}`)
+      throw e
+    })
+}
+
+export async function countPosts(title: Maybe<Text256>): Promise<Nat> {
+  let query = db
+    .selectFrom(tableName)
+    .select((eb) => eb.fn.count("id").as("total"))
+
+  if (title != null) {
+    query = query.where("title", "like", `%${title.unwrap()}%`)
+  }
+
+  return query
+    .executeTakeFirst()
+    .then((row) => (row?.total ? natDecoder.verify(row.total) : Nat0))
+    .catch((e) => {
+      Logger.error(`#${tableName}.countPosts error ${e}`)
       throw e
     })
 }
