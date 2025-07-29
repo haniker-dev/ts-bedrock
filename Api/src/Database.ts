@@ -1,10 +1,42 @@
 import { Pool } from "pg"
-import { Kysely, PostgresDialect } from "kysely"
+import { Generated, Kysely, PostgresDialect } from "kysely"
 import ENV from "./Env"
 
 export type Schema = {
   user: UserTable
   refresh_token: RefreshTokenTable
+  post: PostTable
+  tag: TagTable
+  post_tag: PostTagTable
+  comment: CommentTable
+}
+
+type PostTable = {
+  id: string
+  title: string
+  content: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+type TagTable = {
+  name: string
+  description: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+type PostTagTable = {
+  postID: string
+  tagName: string
+}
+
+type CommentTable = {
+  id: Generated<number>
+  postID: string
+  userID: string
+  content: string
+  createdAt: Date
 }
 
 type UserTable = {
