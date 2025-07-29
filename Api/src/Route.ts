@@ -1,6 +1,7 @@
 import { Express } from "express"
 import { authApi } from "./Api/AuthApi"
 import { userRoutes } from "./Route/User"
+import { postRoutes } from "./Route/Post"
 import * as Home from "./Api/Auth/Home"
 import * as HealthCheck from "./Api/Public/HealthCheck"
 
@@ -24,6 +25,7 @@ export function routes(app: Express): void {
   })
 
   userRoutes(app)
+  postRoutes(app)
 
   authApi(app, Home.contract, Home.handler)
 }
