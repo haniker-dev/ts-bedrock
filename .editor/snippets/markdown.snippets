@@ -1,0 +1,94 @@
+snippet qtf
+  Give this T1 type:
+
+  export type Product = {
+    id: ProductID
+    name: Text256
+    stock: Nat
+    description: Maybe<Text1024>
+    createdAt: Timestamp
+    updatedAt: Timestamp
+  }
+
+  Show a list of products in the web repo at the route \`/products\`.
+  Ensure all needed files in the core and api are created to support this.
+
+snippet qt1
+  - Create the files for T1 types below with their decoders
+  - Separate ProductID and CategoryID in separate files using UUID as its internal
+  - Separate ProductReviewID in separate file using number as its internal
+
+  // Product and Category is many-to-many
+  export type Product = {
+    id: ProductID
+    name: Text256
+    stock: Nat
+    description: Maybe<Text1024>
+    reviews: Array<ProductReview>
+    categories: Array<Category>
+    createdAt: Timestamp
+    updatedAt: Timestamp
+  }
+
+  export type Category = {
+    id: CategoryID
+    name: Text256
+    createdAt: Timestamp
+    updatedAt: Timestamp
+  }
+
+  export type ProductReview = {
+    id: ProductReviewID
+    productId: ProductID
+    userId: UserID
+    rating: Rating
+    comment: Maybe<Text1024>
+    createdAt: Timestamp
+  }
+
+  export type Rating = Opaque<1 | 2 | 3 | 4 | 5>
+
+snippet qt2
+  - Create the files for the T2 types below with migration
+  - Read the T1 type of Product, Category and ProductReview in core/App
+  - Add a create function for each type
+
+  export type ProductRow = {
+    id: ProductID
+    name: Text256
+    stock: Nat
+    description: Maybe<Text1024>
+    createdAt: Timestamp
+    updatedAt: Timestamp
+  }
+
+  export type CategoryRow = {
+    id: CategoryID
+    name: Text256
+    createdAt: Timestamp
+    updatedAt: Timestamp
+  }
+
+  // This is the table that holds the 
+  // many-to-many relationship between products and categories
+  // Primary key is a composite of productId and categoryId
+  export type ProductCategoryRow = {
+    productId: ProductID
+    categoryId: CategoryID
+  }
+
+  // Add unique constraint for [userId, productId]
+  export type ProductReviewRow = {
+    id: ProductReviewID
+    productId: ProductID
+    userId: UserID
+    rating: Rating
+    comment: Maybe<Text1024>
+    createdAt: Timestamp
+  }
+
+snippet qt3
+  Based on core T1 Product and T2 ProductRow, 
+  create a T3 product list api with pagination and sorting.
+
+  Create the handler for the product list api.

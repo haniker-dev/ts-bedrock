@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "declaration": false,
+    "module": "esnext",
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "sourceMap": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "types": ["vitest/globals"]
+  },
+  "include": [
+    "Core/Api/**/*",
+    "Core/App/**/*",
+    "Core/Data/**/*",
+    "spec/**/*",
+    "Api/src/**/*",
+    "Api/database/**/*",
+    "Web/src/**/*"
+  ],
+  "exclude": ["node_modules"]
+}

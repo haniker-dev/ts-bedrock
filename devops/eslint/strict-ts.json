@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "TSNonNullExpression",
+        "message": "Non-null assertions (`!`) are not allowed. Please use optional chaining or proper type checks."
+      },
+      {
+        "selector": "TSAsExpression",
+        "message": "Type assertions (`as`) are not allowed. Use explicit type annotations instead."
+      },
+      {
+        "selector": "TSTypePredicate",
+        "message": "Type predicates (`is`) are not allowed. Use boolean return types instead."
+      }
+    ]
+  }
+}

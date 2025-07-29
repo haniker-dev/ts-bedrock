@@ -1,0 +1,34 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "react": { "version": "detect" },
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "extends": [
+    "./devops/eslint/boundaries.json",
+    "./devops/eslint/strict-ts.json",
+    "./devops/eslint/strict-react.json",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "jam3"],
+  "ignorePatterns": ["node_modules/*"],
+  "rules": {
+    "import/no-cycle": "error",
+    "import/no-unresolved": ["error", { "ignore": [".svg", ".png", "gif"] }],
+    "no-console": ["warn", { "allow": ["info", "warn", "error"] }],
+    "@typescript-eslint/prefer-as-const": 0,
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

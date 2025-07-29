@@ -1,0 +1,7 @@
+{
+  "Test Prompt 1": {
+    "prefix": ["?1"],
+    "description": "Test prompt",
+    "body": ["This is a test prompt for the code snippet."]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "extends": ["plugin:react/recommended", "plugin:react/jsx-runtime"],
+  "rules": {
+    "react/display-name": 0,
+    "react/prop-types": [0],
+    "react/no-danger": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["react"],
+            "importNamePattern": "use*",
+            "message": "React hooks are forbidden in TypeFirst. Use Action to perform effects."
+          }
+        ]
+      }
+    ]
+  }
+}

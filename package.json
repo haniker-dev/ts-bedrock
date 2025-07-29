@@ -1,0 +1,57 @@
+{
+  "name": "ts-bedrock",
+  "author": "Haniker",
+  "version": "1.0.0",
+  "license": "ISC",
+  "description": "Monorepo for TypeFirst Bedrock Typescript project",
+  "scripts": {
+    "start": "bash ./devops/dev/start.sh",
+    "tsc": "tsc --noEmit",
+    "lint": "esw ./ --ext .ts --ext .tsx --max-warnings=0",
+    "external:start": "bash ./devops/external/start.sh",
+    "db:migrate": "bash ./devops/external/db-migrate.sh",
+    "db:seed": "bash ./devops/external/db-seed.sh",
+    "db:rollback": "bash ./devops/external/db-rollback.sh",
+    "db:migrate:create": "bash ./devops/external/db-migrate-create.sh",
+    "test": "bash ./devops/test/run-test.sh",
+    "test:watch": "bash ./devops/test/run-test.sh --watch",
+    "staging:deploy:api": "TODO",
+    "staging:deploy:web": "TODO: vite build",
+    "production:deploy:api": "TODO",
+    "production:deploy:web": "TODO"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "decoders": "^2.7.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.1.0",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.38.0",
+    "@typescript-eslint/parser": "^8.38.0",
+    "concurrently": "^9.2.0",
+    "eslint": "^8.57.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-boundaries": "^5.0.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jam3": "^0.2.3",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-watch": "^8.0.0",
+    "kysely": "^0.28.3",
+    "prettier": "^3.6.2",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "markdown"
+        ],
+        "path": "./.ai/snippets/prompts.json"
+      }
+    ]
+  }
+}

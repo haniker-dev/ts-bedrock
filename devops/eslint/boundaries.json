@@ -1,0 +1,57 @@
+{
+  "plugins": ["boundaries"],
+  "settings": {
+    "boundaries/elements": [
+      {
+        "type": "Core",
+        "mode": "full",
+        "pattern": "Core/**/*"
+      },
+      {
+        "type": "Api",
+        "mode": "full",
+        "pattern": "Api/**/*"
+      },
+      {
+        "type": "Web",
+        "mode": "full",
+        "pattern": "Web/**/*"
+      },
+      {
+        "type": "devops",
+        "mode": "full",
+        "pattern": "devops/**/*"
+      },
+      {
+        "type": "spec",
+        "mode": "full",
+        "pattern": "spec/**/*"
+      }
+    ]
+  },
+  "rules": {
+    "boundaries/element-types": [
+      2,
+      {
+        "default": "allow",
+        "rules": [
+          {
+            "from": "Core",
+            "disallow": ["Api", "Web", "devops", "spec"],
+            "message": "Core cannot import outside of core."
+          },
+          {
+            "from": "Api",
+            "disallow": ["Web", "devops", "spec"],
+            "message": "Api cannot import outside of itself."
+          },
+          {
+            "from": "Web",
+            "disallow": ["Api", "devops", "spec"],
+            "message": "Web cannot import outside of itself."
+          }
+        ]
+      }
+    ]
+  }
+}
