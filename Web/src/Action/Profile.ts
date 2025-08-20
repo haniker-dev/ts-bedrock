@@ -8,10 +8,9 @@ export function onEnterRoute(authState: AuthState): [State, Cmd] {
 }
 
 function profileResponse(response: ProfileApi.Response): Action {
-  return (state) =>
-    _AuthState((authState: AuthState) => {
-      return response._t === "Left"
-        ? [authState, cmd()]
-        : [{ ...authState, profile: response.value.user }, cmd()]
-    }, state)
+  return _AuthState((authState: AuthState) => {
+    return response._t === "Left"
+      ? [authState, cmd()]
+      : [{ ...authState, profile: response.value.user }, cmd()]
+  })
 }

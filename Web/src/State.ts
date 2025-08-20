@@ -1,7 +1,7 @@
 import { User } from "../../Core/App/User"
 import { LoginState } from "./State/Login"
 import { Route } from "./Route"
-import { Cmd } from "./Action"
+import { Action, Cmd } from "./Action"
 import { UpdateProfileState } from "./State/UpdateProfile"
 
 export type State = PublicState | AuthState
@@ -26,9 +26,6 @@ export function _PublicState(
   return { ...state, ...publicState }
 }
 
-export function _AuthState(
-  fn: (authState: AuthState) => [State, Cmd],
-  state: State,
-): [State, Cmd] {
-  return state._t === "Auth" ? fn(state) : [state, []]
+export function _AuthState(fn: (authState: AuthState) => [State, Cmd]): Action {
+  return (state: State) => (state._t === "Auth" ? fn(state) : [state, []])
 }

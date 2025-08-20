@@ -13,6 +13,6 @@ export function onUrlChange(s: State): [State, Cmd] {
     case "NotFound":
       return [state, cmd()]
     case "Profile":
-      return _AuthState(ProfileAction.onEnterRoute, state)
+      return _AuthState(ProfileAction.onEnterRoute)(state)
   }
 }
