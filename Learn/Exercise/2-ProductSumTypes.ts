@@ -31,8 +31,8 @@ export type RemoteDataStr =
   | { _t: "Success"; data: string }
 
 // Exercise 4
-// Create a function `validateEmailEither` that takes an email string
-// and returns an Either with the error message or the email
+// Create a function `validateEmailResult` that takes an email string
+// and returns an Result with the error message or the email
 
 // Exercise 5
 // Create a function `validateEmailMaybe` that takes an email string

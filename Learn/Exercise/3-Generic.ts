@@ -1,4 +1,4 @@
-type Either<E, T> = { _t: "Left"; error: E } | { _t: "Right"; value: T }
+type Result<E, T> = { _t: "Err"; error: E } | { _t: "Ok"; value: T }
 
 export type FormData = {
   name: string
@@ -8,7 +8,7 @@ export type FormData = {
 
 type ValidateError = "INVALID_EMAIL" | "INVALID_PASSWORD" | "INVALID_USERNAME"
 
-type FormValidateResult = Either<ValidateError, FormData>
+type FormValidateResult = Result<ValidateError, FormData>
 
 // Exercise 1: Complete this function
 export function validateFormData(_form: FormData): FormValidateResult {
