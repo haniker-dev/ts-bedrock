@@ -17,26 +17,26 @@ type User = {
 
 
 ```typescript
-type EitherStr = 
+type ResultStr = 
   | { _t: "Left", error: string } 
   | { _t: "Right", value: string }
-type EitherNum = 
+type ResultNum = 
   | { _t: "Left", error: string } 
   | { _t: "Right", value: number }
 type UserForm = {
-  nameField: EitherStr
-  ageField: EitherNum
+  nameField: ResultStr
+  ageField: ResultNum
 }
 
-type Either<E, T> = 
+type Result<E, T> = 
   | { _t: "Left", error: E } 
   | { _t: "Right", value: T }
 type UserForm = {
-  nameField: Either<string, string>
-  ageField: Either<string, number>
+  nameField: Result<string, string>
+  ageField: Result<string, number>
 }
 ```
-[DEMO] `function showEitherResult(m: EitherStr): string`
+[DEMO] `function showResult(m: ResultStr): string`
 
 
 ### Exercise
@@ -50,7 +50,7 @@ type ValidateError =
   | "INVALID_EMAIL" 
   | "INVALID_PASSWORD" 
   | "INVALID_USERNAME"
-type FormValidateResult = Either<ValidateError, FormData>
+type FormValidateResult = Result<ValidateError, FormData>
 ```
 Implement `function validateFormData(form: FormData): FormValidateResult`
 
@@ -82,4 +82,4 @@ Bonus: What if we want to allow custom conversion of E and T to string in `showR
 Design a Generic Sum Type for `ApiResponse`
 
 [New Course Rule]: Always use `Maybe` for nullable data
-[New Course Rule]: Always use `Either` if there is a possibility of error
+[New Course Rule]: Always use `Result` if there is a possibility of error

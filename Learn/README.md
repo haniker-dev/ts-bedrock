@@ -2,6 +2,7 @@
 
 ## Pre-requisites
 - Setup IDE with Typescript LSP
+- Clone main [repo](https://github.com/haniker-dev/ts-bedrock/tree/Learn/Learn)
 - Read Typescript Handbook:
   - [Basic Types](https://www.typescriptlang.org/docs/handbook/2/basic-types.html)
   - [Everyday Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html)
@@ -26,7 +27,7 @@
 - Product type + Sum type (Lecture/ProductSumTypes.md)
   - Impossible cases
   - Switch case for sum type
-  - Either vs Maybe
+  - Result vs Maybe
 
 - Generic type (Lecture/Generic.md)
 

@@ -47,9 +47,9 @@ type User = {
   age: MaybeNum
 }
 
-type EitherStr = 
-  | { _t: "Left", error: string } 
-  | { _t: "Right", value: string }
+type ResultStr = 
+  | { _t: "Err", error: string } 
+  | { _t: "Ok", value: string }
 
 type RemoteDataStr = 
   | { _t: "NotAsked" }
@@ -58,15 +58,15 @@ type RemoteDataStr =
   | { _t: "Success", data: string }
 ```
 [DEMO] `function showMaybeResult(m: MaybeStr): string`
-[DEMO] `function showEitherResult(m: EitherStr): string`
+[DEMO] `function showResultResult(m: ResultStr): string`
 [KEY] Switch cases for sum type
 [KEY] Type checking for `_t` and `data`
 
 ### Exercise
 Create a function `showApiStatus` that takes a `RemoteData` and returns the status message
 
-Create a function `validateEmailEither` that takes an email string
-and returns an Either with the error message or the email
+Create a function `validateEmailResult` that takes an email string
+and returns an Result with the error message or the email
 
 Create a function `validateEmailMaybe` that takes an email string
 and returns a Maybe with the email
@@ -77,13 +77,13 @@ Design a sum type `FormStatus` that captures all possible states of a form
 Can a submit button use this `FormStatus` type to determine if it is disabled?
 Try writing `function isDisabled(status: FormStatus): boolean`
 
-## Either vs Maybe
+## Result vs Maybe
 - Error handling
-  - Use `Either` type if we want to handle the error (most common)
+  - Use `Result` type if we want to handle the error (most common)
   - Use `Maybe` type if we don't want to handle the error (most common)
   - Only use `throw new Error()` if we don't want to handle the exception (rare)
     - Never use in frontend
     - Only used in backend where the error is not recoverable
     - Exception Example: Database connection failure is an exception which no one can handle
     - Error Example: Validating an email may fail which can be handled
-      so we should return `EitherStr` or `string | null`
+      so we should return `ResultStr` or `string | null`
