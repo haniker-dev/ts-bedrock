@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { fromDecodeResult, stringNumberDecoder } from "../../Core/Data/Decoder"
+import { fromDecodeResult, numberStringDecoder } from "../../Core/Data/Decoder"
 
 export type Env = {
   NODE_ENV: "test" | "development" | "production"
@@ -17,13 +17,13 @@ export type Env = {
 const decoder: JD.Decoder<Env> = JD.object({
   NODE_ENV: JD.oneOf(["test", "development", "production"]),
   APP_ENV: JD.oneOf(["test", "development", "staging", "production"]),
-  APP_PORT: stringNumberDecoder,
+  APP_PORT: numberStringDecoder,
   DB_HOST: JD.string,
-  DB_PORT: stringNumberDecoder,
+  DB_PORT: numberStringDecoder,
   DB_USER: JD.string,
   DB_PASSWORD: JD.string,
   DB_DATABASE: JD.string,
-  DB_MAX_POOL: stringNumberDecoder,
+  DB_MAX_POOL: numberStringDecoder,
   JWT_SECRET: JD.string,
 })
 

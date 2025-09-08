@@ -12,21 +12,16 @@ export function fromDecodeResult<T>(
   return result.ok ? right(result.value) : left(result.error)
 }
 
-export const numberFromStringDecoder: JD.Decoder<number> = JD.string
+export const numberStringDecoder: JD.Decoder<number> = JD.string
   .transform(Number)
   .transform(JD.number.verify)
 
-export const stringNumberDecoder: JD.Decoder<number> = JD.either(
-  JD.number,
-  numberFromStringDecoder,
-)
-
-export const dateFromUTCStringDecoder: JD.Decoder<Date> = JD.string
+export const dateUTCStringDecoder: JD.Decoder<Date> = JD.string
   .transform(Date.parse)
   .transform((d) => new Date(d))
 
-export const booleanFromStringDecoder: JD.Decoder<boolean> =
-  JD.string.transform((s) => {
+export const booleanStringDecoder: JD.Decoder<boolean> = JD.string.transform(
+  (s) => {
     switch (s) {
       case "true":
         return true
@@ -35,7 +30,8 @@ export const booleanFromStringDecoder: JD.Decoder<boolean> =
       default:
         throw new Error(`Invalid boolean string: ${s}`)
     }
-  })
+  },
+)
 
 /** Decode a base64 string **/
 export function decodeBase64(s: string): Maybe<string> {

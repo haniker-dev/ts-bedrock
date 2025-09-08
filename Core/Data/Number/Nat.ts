@@ -11,6 +11,10 @@ export type ErrorNat = "NOT_AN_INT" | "NOT_A_NAT"
 
 export const Nat0: Nat = jsonValueCreate<number, typeof key>(key)(0)
 export const Nat1: Nat = jsonValueCreate<number, typeof key>(key)(1)
+export const Nat2: Nat = jsonValueCreate<number, typeof key>(key)(2)
+export const Nat3: Nat = jsonValueCreate<number, typeof key>(key)(3)
+export const Nat5: Nat = jsonValueCreate<number, typeof key>(key)(5)
+export const Nat10: Nat = jsonValueCreate<number, typeof key>(key)(10)
 export const Nat30: Nat = jsonValueCreate<number, typeof key>(key)(30)
 export const Nat100: Nat = jsonValueCreate<number, typeof key>(key)(100)
 export const Nat300: Nat = jsonValueCreate<number, typeof key>(key)(300)
@@ -33,6 +37,11 @@ export function createNatE(n: number): Either<ErrorNat, Nat> {
 
 export const natDecoder: JD.Decoder<Nat> = JD.number.transform((n) => {
   return throwIfNull(createNat(n), `Invalid nat: ${n}`)
+})
+
+/** Commonly used for URL param parsing */
+export const natStringDecoder: JD.Decoder<Nat> = JD.string.transform((n) => {
+  return throwIfNull(createNat(Number(n)), `Invalid nat string: ${n}`)
 })
 
 export function fromPositiveInt(i: PositiveInt): Nat {

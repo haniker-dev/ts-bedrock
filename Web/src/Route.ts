@@ -1,7 +1,7 @@
 import * as JD from "decoders"
 import * as Teki from "teki"
 import { UrlRecord } from "../../Core/Data/UrlToken"
-import { Maybe, maybeDecoder } from "../../Core/Data/Maybe"
+import { Maybe, maybeOptionalDecoder } from "../../Core/Data/Maybe"
 import type { Action } from "./Action"
 import type { State } from "./State"
 
@@ -15,12 +15,12 @@ import type { State } from "./State"
  * WARN Defining a Route:
  * - *Ensure* your route params can be serialized into JSON string
  *   otherwise we can't use it in the url
+ *   We don't allow object and function to be serialized
+ *   Read _serializeParams function to understand more
  * - URL params are always a string in the url
  *   so start decoding with a string first then transform
- * - We have a special hack for Maybe type
- *   where we handle string 'null' properly (Ref `#parseRoute`)
- *   This is to allow a better developer experience to only define
- *   decoders based on the params
+ *   Eg. numberStringDecoder, booleanStringDecoder, natStringDecoder, etc
+ * - For Maybe type, use `maybeOptionalDecoder` as we cannot pass null in URL
  * - URL Params syntax reference:
  *   https://github.com/philipnilsson/teki
  */
@@ -70,7 +70,7 @@ const router: RouteTable = {
       _t: JD.always("Login"),
       path: JD.always("/login?redirect=:redirect"),
       params: JD.object({
-        redirect: maybeDecoder(JD.string),
+        redirect: maybeOptionalDecoder(JD.string),
       }),
     }),
   },
@@ -136,11 +136,11 @@ export function toRoute<K extends keyof RouteTable>(
   const routeDef = router[routeT]
   // We can guarantee this won't throw
   // based on our type definitions
-  // TODO _serializeParams can return a number value
-  // which make route decoder throw and dev need to decode for both
   return routeDef.decoder.verify({
     _t: routeT,
     path: routeDef.path,
+    // We need to _serializeParams
+    // because the route decoder is targetting string params
     params: _serializeParams(params),
   })
 }
@@ -169,11 +169,10 @@ export function parseRoute(fullUrl: string): Route {
       continue
     }
 
-    const routeParams = _changeNullStringToNull(parseResult)
     const route = decoder.value({
       _t: routeT,
       path,
-      params: routeParams,
+      params: parseResult,
     })
 
     if (route != null) {
@@ -210,30 +209,40 @@ type RouteDef<R extends Route> = {
   >
 }
 
-/**
- * A hack to convert string 'null' to null
- * so that developers can simply write decoders for the actual route params
- * instead of writing decoders to decode from url string params
+/** We need to carefully convert params into URL context
+ * where number is a string, undefined to be "", etc
  */
-function _changeNullStringToNull(urlParams: RouteParams): RouteParams {
-  return Object.fromEntries(
-    Object.entries(urlParams).map(([key, value]) => {
-      return [key, value === "null" ? null : value]
+function _serializeParams(params: Route["params"]): RouteParams {
+  return JSON.parse(
+    JSON.stringify(params, (_key, value) => {
+      switch (typeof value) {
+        case "string":
+          return value
+        case "number":
+        case "bigint":
+        case "boolean":
+          // We need to set all these as string in URL
+          return String(value)
+        case "undefined":
+        case "function":
+        case "symbol":
+          return ""
+        case "object":
+          if (value == null) {
+            return ""
+          } else {
+            // value could be array or object
+            return value
+          }
+      }
     }),
   )
 }
 
-function _serializeParams(params: Route["params"]): RouteParams {
-  return JSON.parse(JSON.stringify(params))
-}
-
-// Simple test: `ts-node src/Route.ts`
+// Simple test: `tsx src/Route.ts`
 // console.log(
 //   parseRoute(
 //     "http://localhost" +
 //       toPath(toRoute("Login", { redirect: toPath(toRoute("Home", {})) })),
 //   ),
 // )
-
-// export function onUrlChange(state: State): [State, Cmd]
-// export async function navigateTo(route: Route): Promise<void>
