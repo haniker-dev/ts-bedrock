@@ -25,5 +25,5 @@ export function routes(app: Express): void {
 
   userRoutes(app)
 
-  authApi(app, Home.contract, Home.handler)
+  authApi(app, Home)
 }
