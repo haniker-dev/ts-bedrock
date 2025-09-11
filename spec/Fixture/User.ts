@@ -3,7 +3,7 @@ import * as Hash from "../../Api/src/Data/Hash"
 import { _notNull } from "./Maybe"
 import { createEmail } from "../../Core/Data/User/Email"
 import { createName } from "../../Core/App/User/Name"
-import { createNow } from "../../Core/Data/Timestamp"
+import { createNow } from "../../Core/Data/Time/Timestamp"
 import { createUserID } from "../../Core/App/User/UserID"
 import { passwordDecoder } from "../../Core/App/User/Password"
 

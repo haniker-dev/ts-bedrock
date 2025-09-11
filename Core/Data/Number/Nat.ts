@@ -35,15 +35,6 @@ export function createNatE(n: number): Result<ErrorNat, Nat> {
   return mapOk(_validate(n), jsonValueCreate(key))
 }
 
-export const natDecoder: JD.Decoder<Nat> = JD.number.transform((n) => {
-  return throwIfNull(createNat(n), `Invalid nat: ${n}`)
-})
-
-/** Commonly used for URL param parsing */
-export const natStringDecoder: JD.Decoder<Nat> = JD.string.transform((n) => {
-  return throwIfNull(createNat(Number(n)), `Invalid nat string: ${n}`)
-})
-
 export function fromPositiveInt(i: PositiveInt): Nat {
   return jsonValueCreate<number, typeof key>(key)(i.unwrap())
 }
@@ -73,3 +64,12 @@ function _validate(n: number): Result<ErrorNat, number> {
       ? err("NOT_A_NAT")
       : ok(n)
 }
+
+export const natDecoder: JD.Decoder<Nat> = JD.number.transform((n) => {
+  return throwIfNull(createNat(n), `Invalid nat: ${n}`)
+})
+
+/** Commonly used for URL param parsing */
+export const natStringDecoder: JD.Decoder<Nat> = JD.string.transform((n) => {
+  return throwIfNull(createNat(Number(n)), `Invalid nat string: ${n}`)
+})

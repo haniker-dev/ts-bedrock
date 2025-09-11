@@ -4,14 +4,14 @@ import { Result, err, ok, toMaybe } from "../Result"
 import { Maybe, throwIfNull } from "../Maybe"
 import { parse } from "date-fns"
 import { Nat, natDecoder } from "../Number/Nat"
-import { fromDate, Timestamp } from "../Timestamp"
+import { fromDate, Timestamp } from "./Timestamp"
 
 const key: unique symbol = Symbol()
 /** Represents a date of birth
  * Internally it cannot be a JS Date
  * as JS Date include timezone which causes issue with different timezone
  **/
-export type DateOfBirth = Opaque<Internal, typeof key>
+export type SDate = Opaque<Internal, typeof key>
 type Internal = {
   year: Nat
   month: Month
@@ -56,22 +56,22 @@ export type ErrorCode = "INVALID_DATE_OF_BIRTH"
  * and it is different in different environments such as API or web or mobile
  * In this function, we will take the year/month/day according to *local time*
  */
-export function fromJsDateLocal(d: Date): Maybe<DateOfBirth> {
+export function fromJsDateLocal(d: Date): Maybe<SDate> {
   const year = d.getFullYear()
   const month = d.getMonth() + 1 // January is 0
   const day = d.getDate()
 
-  return dateOfBirthDecoder.value(_toString(year, month, day)) || null
+  return sdateStringDecoder.value(_toString(year, month, day)) || null
 }
 
-export function toJsDateLocal(dob: DateOfBirth): Date {
+export function toJsDateLocal(dob: SDate): Date {
   const { year, month, day } = dob.unwrap()
   const date = new Date()
   date.setFullYear(year.unwrap(), month - 1, day)
   return date
 }
 
-export function toTimestamp(dob: DateOfBirth): Timestamp {
+export function toTimestamp(dob: SDate): Timestamp {
   return fromDate(toJsDateLocal(dob))
 }
 
@@ -79,7 +79,7 @@ export function createDateOfBirth(
   year: Nat,
   month: Month,
   day: Day,
-): Maybe<DateOfBirth> {
+): Maybe<SDate> {
   return toMaybe(createDateOfBirthE(year, month, day))
 }
 
@@ -87,7 +87,7 @@ export function createDateOfBirthE(
   year: Nat,
   month: Month,
   day: Day,
-): Result<ErrorCode, DateOfBirth> {
+): Result<ErrorCode, SDate> {
   const internal = { year, month, day }
   const jsDateE = _validate(internal)
   if (jsDateE._t === "Err") {
@@ -107,7 +107,7 @@ export function createDateOfBirthE(
 }
 
 /** NOTE this is the string the decoder is expecting eg. 1981-01-27 */
-export function toString(d: DateOfBirth): string {
+export function toString(d: SDate): string {
   const { year, month, day } = d.unwrap()
   return _toString(year.unwrap(), month, day)
 }
@@ -139,7 +139,7 @@ function _validate(internal: Internal): Result<ErrorCode, Internal> {
   }
 }
 
-export const dateOfBirthDecoder: JD.Decoder<DateOfBirth> = JD.string.transform(
+export const sdateStringDecoder: JD.Decoder<SDate> = JD.string.transform(
   (s) => {
     const [yyyymmdd] = s.split("T") // to allow ISO string eg. 1981-01-27T23:59:59Z
     const [yearM, monthM, dayM] = yyyymmdd.split("-")

@@ -1,6 +1,6 @@
 import * as JD from "decoders"
 import { Opaque } from "../Opaque"
-import { diffFromNow, Timestamp, timestampDecoder } from "../Timestamp"
+import { diffFromNow, Timestamp, timestampDecoder } from "../Time/Timestamp"
 import { Result, err, ok } from "../Result"
 import { parseJSON } from "../JSON"
 import { decodeBase64 } from "../Decoder"

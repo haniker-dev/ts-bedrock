@@ -7,7 +7,7 @@ import {
   payloadNonce,
   verifyNonce,
 } from "../../../../Core/Data/Security/Nonce"
-import { createNow } from "../../../../Core/Data/Timestamp"
+import { createNow } from "../../../../Core/Data/Time/Timestamp"
 import {
   PositiveInt100,
   positiveIntDecoder,

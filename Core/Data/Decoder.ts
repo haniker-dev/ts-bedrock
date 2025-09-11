@@ -12,14 +12,6 @@ export function fromDecodeResult<T>(
   return result.ok ? ok(result.value) : err(result.error)
 }
 
-export const numberStringDecoder: JD.Decoder<number> = JD.string
-  .transform(Number)
-  .transform(JD.number.verify)
-
-export const dateUTCStringDecoder: JD.Decoder<Date> = JD.string
-  .transform(Date.parse)
-  .transform((d) => new Date(d))
-
 export const booleanStringDecoder: JD.Decoder<boolean> = JD.string.transform(
   (s) => {
     switch (s) {
