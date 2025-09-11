@@ -38,16 +38,19 @@ export function authApi<
   Payload,
 >(
   app: Express.Express,
-  contract: AuthApi<
-    ApiMethod,
-    Route,
-    UrlParams,
-    RequestBody,
-    ErrorCode,
-    Payload
-  >,
-  handler: AuthHandler<UrlParams & RequestBody, ErrorCode, Payload>,
+  api: {
+    contract: AuthApi<
+      ApiMethod,
+      Route,
+      UrlParams,
+      RequestBody,
+      ErrorCode,
+      Payload
+    >
+    handler: AuthHandler<UrlParams & RequestBody, ErrorCode, Payload>
+  },
 ): void {
+  const { contract, handler } = api
   const { method, route, urlDecoder, bodyDecoder } = contract
   const expressRoute = removeQuery(route)
   const handlerRunner = catchCallback((req, res) => {

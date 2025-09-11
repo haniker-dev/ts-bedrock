@@ -30,9 +30,12 @@ export function publicApi<
   Payload,
 >(
   app: Express.Express,
-  contract: Api<ApiMethod, Route, UrlParams, RequestBody, ErrorCode, Payload>,
-  handler: PublicHandler<UrlParams & RequestBody, ErrorCode, Payload>,
+  api: {
+    contract: Api<ApiMethod, Route, UrlParams, RequestBody, ErrorCode, Payload>
+    handler: PublicHandler<UrlParams & RequestBody, ErrorCode, Payload>
+  },
 ): void {
+  const { contract, handler } = api
   const { method, route, urlDecoder, bodyDecoder } = contract
   const expressRoute = removeQuery(route)
   const handlerRunner = catchCallback((req, res) => {

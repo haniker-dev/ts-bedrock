@@ -8,9 +8,9 @@ import * as RefreshToken from "../Api/Public/RefreshToken"
 import { authApi } from "../Api/AuthApi"
 
 export function userRoutes(app: Express): void {
-  publicApi(app, Login.contract, Login.handler)
-  publicApi(app, RefreshToken.contract, RefreshToken.handler)
-  authApi(app, Logout.contract, Logout.handler)
-  authApi(app, Profile.contract, Profile.handler)
-  authApi(app, UpdateProfile.contract, UpdateProfile.handler)
+  publicApi(app, Login)
+  publicApi(app, RefreshToken)
+  authApi(app, Logout)
+  authApi(app, Profile)
+  authApi(app, UpdateProfile)
 }
