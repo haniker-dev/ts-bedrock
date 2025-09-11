@@ -42,19 +42,6 @@ export function createPositiveIntE(
   return mapEither(_validate(n), jsonValueCreate(key))
 }
 
-export const positiveIntDecoder: JD.Decoder<PositiveInt> = JD.number.transform(
-  (n) => {
-    return throwIfNull(createPositiveInt(n), `Invalid positive int: ${n}`)
-  },
-)
-export const stringPositiveIntDecoder: JD.Decoder<PositiveInt> =
-  JD.string.transform((n) => {
-    return throwIfNull(
-      createPositiveInt(Number(n)),
-      `Invalid string positive int: ${n}`,
-    )
-  })
-
 export function increment(n: PositiveInt): PositiveInt {
   return add(n, PositiveInt1)
 }
@@ -70,3 +57,18 @@ function _validate(n: number): Either<ErrorPositiveInt, number> {
       ? left("NOT_A_POSITIVE_INT")
       : right(n)
 }
+
+export const positiveIntDecoder: JD.Decoder<PositiveInt> = JD.number.transform(
+  (n) => {
+    return throwIfNull(createPositiveInt(n), `Invalid positive int: ${n}`)
+  },
+)
+
+/** Commonly used for URL param parsing */
+export const positiveIntStringDecoder: JD.Decoder<PositiveInt> =
+  JD.string.transform((n) => {
+    return throwIfNull(
+      createPositiveInt(Number(n)),
+      `Invalid string positive int: ${n}`,
+    )
+  })

@@ -1,9 +1,9 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "./Opaque"
-import { Either, fromRight, left, mapEither, right } from "./Either"
-import { Maybe, throwIfNull } from "./Maybe"
-import { Nat } from "./Number/Nat"
-import { PositiveInt } from "./Number/PositiveInt"
+import { Opaque, jsonValueCreate } from "../Opaque"
+import { Either, fromRight, left, mapEither, right } from "../Either"
+import { Maybe, throwIfNull } from "../Maybe"
+import { Nat } from "../Number/Nat"
+import { PositiveInt } from "../Number/PositiveInt"
 
 const key: unique symbol = Symbol()
 /** Timestamp is epoch milliseconds */
@@ -84,14 +84,14 @@ export function toDate(timestamp: Timestamp): Date {
   return new Date(timestamp.unwrap())
 }
 
-export const timestampDecoder: JD.Decoder<Timestamp> = JD.number.transform(
-  (n) => {
+export const timestampDecoder: JD.Decoder<Timestamp> =
+  JD.number.transform((n) => {
     return throwIfNull(createTimestamp(n), `Invalid timestamp: ${n}`)
-  },
-)
+  })
 
-export const timestampDecoderFromDate: JD.Decoder<Timestamp> =
-  JD.date.transform((v) => fromDate(v))
+export const timestampJSDateDecoder: JD.Decoder<Timestamp> = JD.date.transform(
+  (v) => fromDate(v),
+)
 
 function _validate(n: number): Either<ErrorTimestamp, number> {
   return Number.isInteger(n) === false

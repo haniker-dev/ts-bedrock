@@ -15,7 +15,7 @@ import {
   jsonHeaders,
   makePath,
 } from "../Api"
-import { sleep } from "../../../Core/Data/Timer"
+import { sleep } from "../../../Core/Data/Time/Timer"
 
 // Convenience
 export type { ApiResponse, ApiError } from "../Api"

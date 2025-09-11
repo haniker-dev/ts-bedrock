@@ -1,5 +1,5 @@
 import type { Response } from "express"
-import { createNow } from "../../../../Core/Data/Timestamp"
+import { createNow } from "../../../../Core/Data/Time/Timestamp"
 import db from "../../Database"
 import { sql } from "kysely"
 import * as Logger from "../../Logger"

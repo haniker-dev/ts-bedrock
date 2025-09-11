@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Timestamp, timestampDecoder } from "../Timestamp"
+import { Timestamp, timestampDecoder } from "../Time/Timestamp"
 import { Opaque } from "../Opaque"
 import { Text256, text256Decoder } from "../Text"
 

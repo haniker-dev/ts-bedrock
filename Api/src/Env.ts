@@ -1,5 +1,6 @@
 import * as JD from "decoders"
-import { fromDecodeResult, numberStringDecoder } from "../../Core/Data/Decoder"
+import { fromDecodeResult } from "../../Core/Data/Decoder"
+import { numberStringDecoder } from "../../Core/Data/Number"
 
 export type Env = {
   NODE_ENV: "test" | "development" | "production"

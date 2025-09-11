@@ -1,20 +1,20 @@
 import {
-  dateOfBirthDecoder,
+  sdateStringDecoder,
   fromJsDateLocal,
   toJsDateLocal,
-} from "../../../../Core/Data/User/DateOfBirth"
+} from "../../../../Core/Data/Time/SDate"
 
-describe("Data/User/DateOfBirth", () => {
-  it("decode DateOfBirth", () => {
-    const dob = dateOfBirthDecoder.verify("1981-01-27")
+describe("Data/Time/SDate", () => {
+  it("decode SDate", () => {
+    const dob = sdateStringDecoder.verify("1981-01-27")
     assert.strictEqual(dob.toJSON(), "1981-01-27T00:00:00Z")
   })
 
-  it("checks invalid DateOfBirth", () => {
-    const invalidDate = dateOfBirthDecoder.decode("1981-02-31")
+  it("checks invalid SDate", () => {
+    const invalidDate = sdateStringDecoder.decode("1981-02-31")
     assert.strictEqual(invalidDate.ok, false)
 
-    const futureDate = dateOfBirthDecoder.decode("3000-01-01")
+    const futureDate = sdateStringDecoder.decode("3000-01-01")
     assert.strictEqual(futureDate.ok, false)
   })
 

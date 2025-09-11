@@ -10,9 +10,9 @@ import {
 import {
   createNow,
   Timestamp,
-  timestampDecoderFromDate,
+  timestampJSDateDecoder,
   toDate,
-} from "../../../Core/Data/Timestamp"
+} from "../../../Core/Data/Time/Timestamp"
 import db from "../Database"
 import * as Logger from "../Logger"
 import { Nat, natDecoder } from "../../../Core/Data/Number/Nat"
@@ -162,6 +162,6 @@ export const userRowDecoder: JD.Decoder<UserRow> = JD.object({
   name: nameDecoder,
   password: JD.string,
   isDeleted: JD.boolean,
-  updatedAt: timestampDecoderFromDate,
-  createdAt: timestampDecoderFromDate,
+  updatedAt: timestampJSDateDecoder,
+  createdAt: timestampJSDateDecoder,
 })

@@ -8,7 +8,7 @@ import {
   fromDate,
   Timestamp,
   toDate,
-} from "../../../Core/Data/Timestamp"
+} from "../../../Core/Data/Time/Timestamp"
 import {
   createRefreshToken,
   RefreshToken,

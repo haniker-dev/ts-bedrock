@@ -29,6 +29,7 @@ export type Opaque<T, K extends symbol, Unwrapped = T> = {
   readonly toJSON: () => JSONValue
 }
 
+/** Convenience function to create an opaque type from a JSONValue */
 export function jsonValueCreate<T extends JSONValue, K extends symbol>(
   key: K,
 ): (v: T) => Opaque<T, K> {

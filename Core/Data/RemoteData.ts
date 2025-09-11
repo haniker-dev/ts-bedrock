@@ -5,15 +5,6 @@ export type Loading = { _t: "Loading" }
 export type Failure<E> = { _t: "Failure"; error: E }
 export type Success<T> = { _t: "Success"; data: T }
 
-export type A<T> = Array<T>
-
-export type GetRemoteDataType<T> = T extends {
-  _t: "Success"
-  data: infer DataType
-}
-  ? DataType
-  : never
-
 export function notAsked<E, T>(): RemoteData<E, T> {
   return { _t: "NotAsked" }
 }

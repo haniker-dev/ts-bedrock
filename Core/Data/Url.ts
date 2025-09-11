@@ -4,6 +4,9 @@ import { Either, left, right, fromRight, mapEither } from "./Either"
 import { Maybe, throwIfNull } from "./Maybe"
 
 const key: unique symbol = Symbol()
+/** Ensure a string conforms to a full URL
+ * as per https://developer.mozilla.org/en-US/docs/Web/API/URL_API
+ */
 export type Url = Opaque<string, typeof key>
 export type ErrorWebLink = "INVALID_URL"
 
