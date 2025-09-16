@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Either, fromRight, left, mapEither, right } from "../Either"
+import { Result, toMaybe, err, mapOk, ok } from "../Result"
 import { Maybe, throwIfNull } from "../Maybe"
 import { Opaque, jsonValueCreate } from "../Opaque"
 
@@ -33,13 +33,13 @@ export const PositiveInt100: PositiveInt = jsonValueCreate<number, typeof key>(
 )(100)
 
 export function createPositiveInt(n: number): Maybe<PositiveInt> {
-  return fromRight(createPositiveIntE(n))
+  return toMaybe(createPositiveIntE(n))
 }
 
 export function createPositiveIntE(
   n: number,
-): Either<ErrorPositiveInt, PositiveInt> {
-  return mapEither(_validate(n), jsonValueCreate(key))
+): Result<ErrorPositiveInt, PositiveInt> {
+  return mapOk(_validate(n), jsonValueCreate(key))
 }
 
 export const positiveIntDecoder: JD.Decoder<PositiveInt> = JD.number.transform(
@@ -63,10 +63,10 @@ export function add(n: PositiveInt, i: PositiveInt): PositiveInt {
   return jsonValueCreate<number, typeof key>(key)(n.unwrap() + i.unwrap())
 }
 
-function _validate(n: number): Either<ErrorPositiveInt, number> {
+function _validate(n: number): Result<ErrorPositiveInt, number> {
   return Number.isInteger(n) === false
-    ? left("NOT_AN_INT")
+    ? err("NOT_AN_INT")
     : n <= 0
-      ? left("NOT_A_POSITIVE_INT")
-      : right(n)
+      ? err("NOT_A_POSITIVE_INT")
+      : ok(n)
 }

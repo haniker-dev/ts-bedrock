@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import type { Either } from "./Either"
+import type { Result } from "./Result"
 
 /** This is just a sugar syntax for T | null
  * but the decoder is better
@@ -14,8 +14,8 @@ export function fromMaybe<T>(m: Maybe<T>): T | null {
   return m == null ? null : m
 }
 
-export function fromEither<E, T>(m: Either<E, T>): T | null {
-  return m._t === "Right" ? m.value : null
+export function fromResult<E, T>(m: Result<E, T>): T | null {
+  return m._t === "Ok" ? m.value : null
 }
 
 export function mapMaybe<A, B>(m: Maybe<A>, fn: (a: A) => B): Maybe<B> {

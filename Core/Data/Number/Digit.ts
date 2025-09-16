@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Either, left, right, fromRight, mapEither } from "../Either"
+import { Result, toMaybe, err, mapOk, ok } from "../Result"
 import { Maybe, throwIfNull } from "../Maybe"
 import { Opaque, jsonValueCreate } from "../Opaque"
 
@@ -18,7 +18,7 @@ export const {
 
 type CreateFactorOutput<T extends symbol> = {
   create: (v: string) => Maybe<FixedDigit<T>>
-  createE: (v: string) => Either<FixedDigitError, FixedDigit<T>>
+  createE: (v: string) => Result<FixedDigitError, FixedDigit<T>>
   decoder: JD.Decoder<FixedDigit<T>>
 }
 function _createFactory<T extends symbol>(
@@ -37,21 +37,21 @@ function _create<T extends symbol>(
   length: number,
   s: string,
 ): Maybe<FixedDigit<T>> {
-  return fromRight(_createE(key, length, s))
+  return toMaybe(_createE(key, length, s))
 }
 
 function _createE<T extends symbol>(
   key: T,
   length: number,
   s: string,
-): Either<FixedDigitError, FixedDigit<T>> {
+): Result<FixedDigitError, FixedDigit<T>> {
   const validated = _validate(length, s)
-  return mapEither(validated, jsonValueCreate(key))
+  return mapOk(validated, jsonValueCreate(key))
 }
 
-function _validate(length: number, s: string): Either<FixedDigitError, string> {
+function _validate(length: number, s: string): Result<FixedDigitError, string> {
   const regex = new RegExp(`^\\d{${length}}$`)
-  return regex.test(s) === false ? left("INVALID_FIXED_DIGIT") : right(s)
+  return regex.test(s) === false ? err("INVALID_FIXED_DIGIT") : ok(s)
 }
 
 function _decoder<T extends symbol>(

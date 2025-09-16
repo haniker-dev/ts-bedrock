@@ -53,7 +53,7 @@ export function onSubmit(params: LoginApi.BodyParams): Action {
 
 function onSubmitResponse(response: LoginApi.Response): Action {
   return (state) => {
-    if (response._t === "Left") {
+    if (response._t === "Err") {
       return [
         _LoginState(state, {
           loginResponse: RD.failure(response.error),

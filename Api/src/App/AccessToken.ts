@@ -1,7 +1,7 @@
 import * as jose from "jose"
 import { jwtVerify } from "jose"
 import ENV from "../Env"
-import { Either, left, right } from "../../../Core/Data/Either"
+import { Result, ok, err } from "../../../Core/Data/Result"
 import * as Logger from "../Logger"
 import { UserID } from "../../../Core/App/User/UserID"
 import {
@@ -39,8 +39,8 @@ export async function issue(userID: UserID): Promise<AccessToken> {
 
 export async function verify(
   token: string,
-): Promise<Either<string, AccessToken>> {
+): Promise<Result<string, AccessToken>> {
   return jwtVerify(token, jwt_config.secret)
-    .then(() => right(accessTokenDecoder.verify(token)))
-    .catch((error) => left(String(error)))
+    .then(() => ok(accessTokenDecoder.verify(token)))
+    .catch((error) => err(String(error)))
 }

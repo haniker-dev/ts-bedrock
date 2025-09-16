@@ -1,6 +1,6 @@
 import * as JD from "decoders"
 import { Opaque, jsonValueCreate } from "./Opaque"
-import { Either, fromRight, left, mapEither, right } from "./Either"
+import { Result, toMaybe, err, mapOk, ok } from "./Result"
 import { Maybe, throwIfNull } from "./Maybe"
 import { Nat } from "./Number/Nat"
 import { PositiveInt } from "./Number/PositiveInt"
@@ -27,11 +27,11 @@ export function toMillisecond(timestamp: Timestamp): number {
 }
 
 export function createTimestamp(value: number): Maybe<Timestamp> {
-  return fromRight(createTimestampE(value))
+  return toMaybe(createTimestampE(value))
 }
 
-export function createTimestampE(n: number): Either<ErrorTimestamp, Timestamp> {
-  return mapEither(_validate(n), jsonValueCreate(key))
+export function createTimestampE(n: number): Result<ErrorTimestamp, Timestamp> {
+  return mapOk(_validate(n), jsonValueCreate(key))
 }
 
 export function afterNow(t: Timestamp): boolean {
@@ -93,12 +93,12 @@ export const timestampDecoder: JD.Decoder<Timestamp> = JD.number.transform(
 export const timestampDecoderFromDate: JD.Decoder<Timestamp> =
   JD.date.transform((v) => fromDate(v))
 
-function _validate(n: number): Either<ErrorTimestamp, number> {
+function _validate(n: number): Result<ErrorTimestamp, number> {
   return Number.isInteger(n) === false
-    ? left("NOT_AN_INT")
+    ? err("NOT_AN_INT")
     : n <= 0
-      ? left("NOT_A_TIMESTAMP")
-      : right(n)
+      ? err("NOT_A_TIMESTAMP")
+      : ok(n)
 }
 
 function _create(epochMS: number): Timestamp {

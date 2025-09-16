@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Either, fromRight, left, mapEither, right } from "../Either"
+import { Result, toMaybe, err, mapOk, ok } from "../Result"
 import { Maybe, throwIfNull } from "../Maybe"
 import { Opaque, jsonValueCreate } from "../Opaque"
 import type { PositiveInt } from "./PositiveInt"
@@ -28,11 +28,11 @@ export function createAbsoluteNat(n: number): Nat {
 }
 
 export function createNat(n: number): Maybe<Nat> {
-  return fromRight(createNatE(n))
+  return toMaybe(createNatE(n))
 }
 
-export function createNatE(n: number): Either<ErrorNat, Nat> {
-  return mapEither(_validate(n), jsonValueCreate(key))
+export function createNatE(n: number): Result<ErrorNat, Nat> {
+  return mapOk(_validate(n), jsonValueCreate(key))
 }
 
 export const natDecoder: JD.Decoder<Nat> = JD.number.transform((n) => {
@@ -66,10 +66,10 @@ export function sum(nr: Nat[]): Nat {
   return jsonValueCreate<number, typeof key>(key)(sumValue)
 }
 
-function _validate(n: number): Either<ErrorNat, number> {
+function _validate(n: number): Result<ErrorNat, number> {
   return Number.isInteger(n) === false
-    ? left("NOT_AN_INT")
+    ? err("NOT_AN_INT")
     : n < 0
-      ? left("NOT_A_NAT")
-      : right(n)
+      ? err("NOT_A_NAT")
+      : ok(n)
 }

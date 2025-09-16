@@ -9,7 +9,7 @@ import {
 } from "../../../Core/Data/Api"
 import { toStringRecord, UrlRecord } from "../../../Core/Data/UrlToken"
 import { fetchE, FetchResult } from "../Data/Fetch"
-import { left, right } from "../../../Core/Data/Either"
+import { ok, err } from "../../../Core/Data/Result"
 import {
   ApiResponse,
   decodeFetchResult,
@@ -48,18 +48,18 @@ function handlePublicRequest<E, D>(
 ) {
   return function (result: FetchResult): ApiResponse<E, D> {
     const payloadM = decodeFetchResult(responseDecoder, result)
-    if (payloadM._t === "Left") {
-      return left(payloadM.error)
+    if (payloadM._t === "Err") {
+      return err(payloadM.error)
     }
 
     switch (payloadM.value._t) {
       case "Ok":
-        return right(payloadM.value.data)
+        return ok(payloadM.value.data)
       case "Err":
-        return left(payloadM.value.code)
+        return err(payloadM.value.code)
       case "ServerError":
         Logger.error(payloadM.value.errorID)
-        return left("SERVER_ERROR")
+        return err("SERVER_ERROR")
     }
   }
 }

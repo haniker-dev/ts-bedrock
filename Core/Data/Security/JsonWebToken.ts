@@ -1,7 +1,7 @@
 import * as JD from "decoders"
 import { Opaque } from "../Opaque"
 import { diffFromNow, Timestamp, timestampDecoder } from "../Timestamp"
-import { Either, left, right } from "../Either"
+import { Result, err, ok } from "../Result"
 import { parseJSON } from "../JSON"
 import { decodeBase64 } from "../Decoder"
 import { Nat } from "../Number/Nat"
@@ -32,20 +32,20 @@ export type ErrorCode = "INVALID_FORMAT" | "INVALID_PAYLOAD"
 export function parseJWT<T>(
   payloadDecoder: JD.Decoder<T>,
   s: string,
-): Either<ErrorCode, JsonWebToken<T>> {
+): Result<ErrorCode, JsonWebToken<T>> {
   const parts = s.split(".")
-  if (parts.length !== 3) return left("INVALID_FORMAT")
+  if (parts.length !== 3) return err("INVALID_FORMAT")
 
   const header = parts[0]
   const payloadStr = decodeBase64(parts[1])
   const signature = parts[2]
   if (header === "" || payloadStr === null || signature === "") {
-    return left("INVALID_FORMAT")
+    return err("INVALID_FORMAT")
   }
 
   const payloadM = parseJSON(payloadStr)
-  if (payloadM._t === "Left") {
-    return left("INVALID_PAYLOAD")
+  if (payloadM._t === "Err") {
+    return err("INVALID_PAYLOAD")
   }
   const payload = payloadM.value
 
@@ -53,13 +53,13 @@ export function parseJWT<T>(
   // Expired JWT is still a "valid" JWT
   const expM = claimsDecoder.decode(payload)
   if (expM.ok === false) {
-    return left("INVALID_PAYLOAD")
+    return err("INVALID_PAYLOAD")
   }
 
   // Decode Payload
   const appPayloadM = payloadDecoder.decode(payload)
   if (appPayloadM.ok === false) {
-    return left("INVALID_PAYLOAD")
+    return err("INVALID_PAYLOAD")
   }
 
   const state: State<T> = {
@@ -72,7 +72,7 @@ export function parseJWT<T>(
     signature,
   }
 
-  return right({
+  return ok({
     [key]: state,
     unwrap: function () {
       return this[key].payload
@@ -113,7 +113,7 @@ export function jsonWebTokenDecoder<T>(
 ): JD.Decoder<JsonWebToken<T>> {
   return JD.string.transform((s) => {
     const result = parseJWT(payloadDecoder, s)
-    if (result._t === "Left") {
+    if (result._t === "Err") {
       throw new Error(`Invalid JWT: ${result.error}`)
     }
 

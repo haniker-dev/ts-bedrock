@@ -157,7 +157,7 @@ export async function removeAllExpired(): Promise<number> {
     createNow().unwrap() - refreshTokenExpiryMS,
   )
 
-  if (lastCreatedAt._t === "Left") {
+  if (lastCreatedAt._t === "Err") {
     Logger.error(`#${tableName}.removeAllExpired error ${lastCreatedAt.error}`)
     throw new Error(lastCreatedAt.error)
   }

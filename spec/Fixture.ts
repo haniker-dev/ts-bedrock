@@ -1,3 +1,3 @@
-export * from "./Fixture/Either"
+export * from "./Fixture/Result"
 export * from "./Fixture/Maybe"
 export * from "./Fixture/User"

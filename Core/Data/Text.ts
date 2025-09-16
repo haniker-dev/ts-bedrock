@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Either, left, right, fromRight, mapEither } from "./Either"
+import { Result, err, ok, toMaybe, mapOk } from "./Result"
 import { Maybe, throwIfNull } from "./Maybe"
 import { Opaque, jsonValueCreate } from "./Opaque"
 
@@ -110,13 +110,13 @@ const keyNoLimit: unique symbol = Symbol()
 export type TextNoLimit = Text<typeof keyNoLimit>
 export function createTextNoLimitE(
   s: string,
-): Either<"EMPTY_TEXT", TextNoLimit> {
+): Result<"EMPTY_TEXT", TextNoLimit> {
   return s === ""
-    ? left("EMPTY_TEXT")
-    : right(jsonValueCreate<string, typeof keyNoLimit>(keyNoLimit)(s))
+    ? err("EMPTY_TEXT")
+    : ok(jsonValueCreate<string, typeof keyNoLimit>(keyNoLimit)(s))
 }
 export function createTextNoLimit(s: string): TextNoLimit | null {
-  return fromRight(createTextNoLimitE(s))
+  return toMaybe(createTextNoLimitE(s))
 }
 export const textNoLimitDecoder: JD.Decoder<TextNoLimit> = JD.string.transform(
   (s) => throwIfNull(createTextNoLimit(s), "EMPTY_TEXT"),
@@ -126,7 +126,7 @@ export const textNoLimitDecoder: JD.Decoder<TextNoLimit> = JD.string.transform(
 
 type CreateFactorOutput<T extends symbol> = {
   create: (v: string) => Maybe<Text<T>>
-  createE: (v: string) => Either<TextError, Text<T>>
+  createE: (v: string) => Result<TextError, Text<T>>
   decoder: JD.Decoder<Text<T>>
 }
 function _createFactory<T extends symbol>(
@@ -145,24 +145,24 @@ function _create<T extends symbol>(
   textLength: number,
   s: string,
 ): Maybe<Text<T>> {
-  return fromRight(_createE(key, textLength, s))
+  return toMaybe(_createE(key, textLength, s))
 }
 
 function _createE<T extends symbol>(
   key: T,
   textLength: number,
   s: string,
-): Either<TextError, Text<T>> {
+): Result<TextError, Text<T>> {
   const validated = _validate(textLength, s)
-  return mapEither(validated, jsonValueCreate(key))
+  return mapOk(validated, jsonValueCreate(key))
 }
 
-function _validate(textLength: number, s: string): Either<TextError, string> {
+function _validate(textLength: number, s: string): Result<TextError, string> {
   return s === ""
-    ? left("EMPTY_TEXT")
+    ? err("EMPTY_TEXT")
     : textLength > 0 && s.length > textLength
-      ? left("TEXT_TOO_LONG")
-      : right(s)
+      ? err("TEXT_TOO_LONG")
+      : ok(s)
 }
 
 function _decoder<T extends symbol>(

@@ -18,17 +18,13 @@ export async function* readFetchBodyStream(
         for (const v of values) {
           if (v.length > 0) {
             const valueM = parseJSON(v)
-            if (valueM._t === "Right") {
+            if (valueM._t === "Ok") {
               yield valueM.value
             } else {
               console.error(`Invalid fragment: ${v}`)
             }
           }
         }
-
-        // fragment = ""
-      } else {
-        // fragment += fullValue
       }
     }
   }

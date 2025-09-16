@@ -5,7 +5,7 @@ import { HttpStatus, Method } from "../../../Core/Data/Api"
 import { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
 import { toStringRecord, UrlRecord } from "../../../Core/Data/UrlToken"
 import { fetchE, FetchResult } from "../Data/Fetch"
-import { left, right } from "../../../Core/Data/Either"
+import { err, ok } from "../../../Core/Data/Result"
 import { Maybe } from "../../../Core/Data/Maybe"
 import { requestNewAccessToken } from "../Api/Public/RefreshToken"
 import {
@@ -37,7 +37,7 @@ export async function authApi<
   const path = Teki.reverse(route)(toStringRecord(urlData))
   const authHeader = await authHeaders(new Headers())
   if (authHeader == null) {
-    return left("UNAUTHORISED")
+    return err("UNAUTHORISED")
   }
 
   return fetchE(makePath(path), {
@@ -52,18 +52,18 @@ function handleAuthRequest<E, D>(
 ) {
   return function (result: FetchResult): ApiResponse<E, D> {
     const payloadM = decodeFetchResult(responseDecoder, result)
-    if (payloadM._t === "Left") {
-      return left(payloadM.error)
+    if (payloadM._t === "Err") {
+      return err(payloadM.error)
     }
 
     switch (payloadM.value._t) {
       case "AuthOk":
-        return right(payloadM.value.data)
+        return ok(payloadM.value.data)
       case "AuthErr":
-        return left(payloadM.value.code)
+        return err(payloadM.value.code)
       case "AuthServerError":
         Logger.error(payloadM.value.errorID)
-        return left("SERVER_ERROR")
+        return err("SERVER_ERROR")
     }
   }
 }
@@ -73,7 +73,7 @@ function handleAuthRequest<E, D>(
  */
 async function authHeaders(headers: Headers): Promise<Maybe<Headers>> {
   const authTokenM = await requestNewAccessToken()
-  if (authTokenM._t === "Left") {
+  if (authTokenM._t === "Err") {
     switch (authTokenM.error) {
       case "INVALID":
       case "MISSING_AUTH_TOKEN":

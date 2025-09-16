@@ -79,7 +79,7 @@ export function onSubmit(params: UpdateProfileApi.BodyParams): Action {
 
 function onSubmitResponse(response: UpdateProfileApi.Response): Action {
   return _AuthState((authState: AuthState) => {
-    if (response._t === "Left") {
+    if (response._t === "Err") {
       return [
         _UpdateProfileState(authState, {
           updateResponse: RD.failure(response.error),

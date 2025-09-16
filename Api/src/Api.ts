@@ -7,7 +7,7 @@ import * as JD from "decoders"
 import * as Express from "express"
 import { md5 } from "pure-md5"
 import { Err400, InternalErr500, Ok200 } from "../../Core/Data/Api"
-import { Either, left, right } from "../../Core/Data/Either"
+import { Result, err, ok } from "../../Core/Data/Result"
 import { Annotation, fromDecodeResult } from "../../Core/Data/Decoder"
 import * as Logger from "./Logger"
 import {
@@ -45,16 +45,16 @@ export function decodeParams<UrlParams, RequestBody>(
   req: Express.Request,
   urlDecoder: JD.Decoder<UrlParams>,
   bodyDecoder: JD.Decoder<RequestBody>,
-): Either<Annotation, UrlParams & RequestBody> {
+): Result<Annotation, UrlParams & RequestBody> {
   const urlResult = fromDecodeResult(
     urlDecoder.decode({ ...req.query, ...req.params }),
   )
-  if (urlResult._t === "Left") return left(urlResult.error)
+  if (urlResult._t === "Err") return err(urlResult.error)
 
   const bodyResult = fromDecodeResult(bodyDecoder.decode(req.body))
-  if (bodyResult._t === "Left") return left(bodyResult.error)
+  if (bodyResult._t === "Err") return err(bodyResult.error)
 
-  return right({ ...urlResult.value, ...bodyResult.value })
+  return ok({ ...urlResult.value, ...bodyResult.value })
 }
 
 export function decoderErrorMessage<P>(params: P, error: Annotation): string {

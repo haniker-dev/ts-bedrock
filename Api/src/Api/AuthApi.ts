@@ -1,6 +1,6 @@
 import * as Express from "express"
 import { UrlRecord } from "../../../Core/Data/UrlToken"
-import { Either, left, mapEither } from "../../../Core/Data/Either"
+import { Result, err, mapOk } from "../../../Core/Data/Result"
 import {
   internalErr500,
   decodeParams,
@@ -25,7 +25,7 @@ import * as AccessToken from "../App/AccessToken"
 export type AuthHandler<P, E, T> = (
   authUser: AuthUser,
   params: P,
-) => Promise<Either<E, T>>
+) => Promise<Result<E, T>>
 
 export type AuthUser = UserRow.UserRow
 
@@ -52,7 +52,7 @@ export function authApi<
   const expressRoute = removeQuery(route)
   const handlerRunner = catchCallback((req, res) => {
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
-    return paramsResult._t === "Right"
+    return paramsResult._t === "Ok"
       ? runAuthHandler(paramsResult.value, handler, req, res)
       : internalErr500(
           res,
@@ -87,7 +87,7 @@ async function runAuthHandler<ErrorCode, Params, Payload>(
   res: Express.Response<AuthResponseJson<ErrorCode, Payload>>,
 ): Promise<void> {
   const jwtPayload = await verifyToken(req)
-  if (jwtPayload._t === "Left") return unauthorised(res, jwtPayload.error)
+  if (jwtPayload._t === "Err") return unauthorised(res, jwtPayload.error)
 
   const { userID } = jwtPayload.value
   const user = await UserRow.getByID(userID)
@@ -97,7 +97,7 @@ async function runAuthHandler<ErrorCode, Params, Payload>(
 
   return handler(user, params)
     .then((result) => {
-      return result._t === "Right"
+      return result._t === "Ok"
         ? authOk200(res, result.value)
         : authErr400(res, result.error)
     })
@@ -112,14 +112,14 @@ async function runAuthHandler<ErrorCode, Params, Payload>(
 
 async function verifyToken(
   req: Express.Request,
-): Promise<Either<string, JwtPayload>> {
+): Promise<Result<string, JwtPayload>> {
   const { authorization } = req.headers
   if (authorization == null || authorization.startsWith("Bearer ") === false) {
-    return left(`Invalid authorization header: ${authorization}`)
+    return err(`Invalid authorization header: ${authorization}`)
   } else {
     const token = authorization.slice(7)
     return AccessToken.verify(token).then((result) => {
-      return mapEither(result, (accessToken) => accessToken.unwrap())
+      return mapOk(result, (accessToken) => accessToken.unwrap())
     })
   }
 }

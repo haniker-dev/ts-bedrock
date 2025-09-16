@@ -9,7 +9,7 @@ export function onEnterRoute(authState: AuthState): [State, Cmd] {
 
 function profileResponse(response: ProfileApi.Response): Action {
   return _AuthState((authState: AuthState) => {
-    return response._t === "Left"
+    return response._t === "Err"
       ? [authState, cmd()]
       : [{ ...authState, profile: response.value.user }, cmd()]
   })

@@ -1,6 +1,6 @@
 import * as Express from "express"
 import { UrlRecord } from "../../../Core/Data/UrlToken"
-import { Either } from "../../../Core/Data/Either"
+import { Result } from "../../../Core/Data/Result"
 import { Api, Method, ResponseJson } from "../../../Core/Data/Api"
 import {
   internalErr500,
@@ -14,12 +14,12 @@ import {
 } from "../Api"
 
 /** Handler type is a "pure" function that takes any P as params
- * and returns a Promise that resolves to Either<E, T>
+ * and returns a Promise that resolves to Result<E, T>
  * It is deliberately decoupled from ExpressJS
  * or any other server package so that it is easy to test and
  * allows reusing with other codes
  * */
-export type PublicHandler<P, E, T> = (params: P) => Promise<Either<E, T>>
+export type PublicHandler<P, E, T> = (params: P) => Promise<Result<E, T>>
 
 export function publicApi<
   ApiMethod extends Method,
@@ -37,7 +37,7 @@ export function publicApi<
   const expressRoute = removeQuery(route)
   const handlerRunner = catchCallback((req, res) => {
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
-    return paramsResult._t === "Right"
+    return paramsResult._t === "Ok"
       ? runPublicHandler(paramsResult.value, handler, res)
       : internalErr500(
           res,
@@ -72,7 +72,7 @@ async function runPublicHandler<ErrorCode, Params, Payload>(
 ): Promise<void> {
   return handler(params)
     .then((result) => {
-      return result._t === "Right"
+      return result._t === "Ok"
         ? ok200(res, result.value)
         : err400(res, result.error)
     })

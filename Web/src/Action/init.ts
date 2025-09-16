@@ -20,7 +20,7 @@ function initAuthCmd(): Cmd {
 
 function profileResponse(response: ProfileApi.Response): Action {
   return (state: State) => {
-    if (response._t === "Left") {
+    if (response._t === "Err") {
       return [{ ...state, _t: "Public" }, cmd()]
     }
     const authState = initAuthState(response.value.user, state)

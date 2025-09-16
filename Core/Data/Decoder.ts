@@ -1,6 +1,6 @@
 import * as JD from "decoders"
-import { Either, left, right } from "./Either"
-import { fromEither, Maybe } from "./Maybe"
+import { Result, err, ok } from "./Result"
+import { fromResult, Maybe } from "./Maybe"
 
 /** Annotation type is not exported from decoders package
  * hence, we have to do a sleight of hand to trick it out
@@ -8,8 +8,8 @@ import { fromEither, Maybe } from "./Maybe"
 export type Annotation = Parameters<typeof JD.formatInline>[0]
 export function fromDecodeResult<T>(
   result: JD.DecodeResult<T>,
-): Either<Annotation, T> {
-  return result.ok ? right(result.value) : left(result.error)
+): Result<Annotation, T> {
+  return result.ok ? ok(result.value) : err(result.error)
 }
 
 export const numberStringDecoder: JD.Decoder<number> = JD.string
@@ -35,14 +35,14 @@ export const booleanStringDecoder: JD.Decoder<boolean> = JD.string.transform(
 
 /** Decode a base64 string **/
 export function decodeBase64(s: string): Maybe<string> {
-  return fromEither(decodeBase64E(s))
+  return fromResult(decodeBase64E(s))
 }
 
-export function decodeBase64E(s: string): Either<unknown, string> {
+export function decodeBase64E(s: string): Result<unknown, string> {
   try {
-    return right(_decodeBase64(s))
+    return ok(_decodeBase64(s))
   } catch (e) {
-    return left(e)
+    return err(e)
   }
 }
 

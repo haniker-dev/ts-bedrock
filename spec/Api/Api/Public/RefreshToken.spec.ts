@@ -5,8 +5,8 @@ import {
   _createUser,
   _defaultPassword,
   _notNull,
-  _fromLeft,
-  _fromRight,
+  _fromErr,
+  _fromOk,
   _hashPassword,
 } from "../../../Fixture"
 import { refreshTokenDecoder } from "../../../../Core/Data/Security/RefreshToken"
@@ -23,10 +23,10 @@ describe("Api/Public/RefreshToken", () => {
     const { refreshToken } = await loginHandler({
       email,
       password: _defaultPassword,
-    }).then(_fromRight)
+    }).then(_fromOk)
 
     const result = await refreshHandler({ userID: user.id, refreshToken }).then(
-      _fromRight,
+      _fromOk,
     )
     expect(result.refreshToken.unwrap().length > 0).toBe(true)
     expect(result.refreshToken.unwrap() != refreshToken.unwrap()).toBe(true)
@@ -44,18 +44,18 @@ describe("Api/Public/RefreshToken", () => {
     const { refreshToken: firstToken } = await loginHandler({
       email,
       password: _defaultPassword,
-    }).then(_fromRight)
+    }).then(_fromOk)
 
     // Using firstToken to get once
     const { refreshToken: secondToken } = await refreshHandler({
       userID: user.id,
       refreshToken: firstToken,
-    }).then(_fromRight)
+    }).then(_fromOk)
     // Using firstToken to get twice
     const { refreshToken: secondToken_ } = await refreshHandler({
       userID: user.id,
       refreshToken: firstToken,
-    }).then(_fromRight)
+    }).then(_fromOk)
     expect(secondToken_.unwrap() != firstToken.unwrap()).toBe(true)
     expect(secondToken_.unwrap() === secondToken.unwrap()).toBe(true)
 
@@ -63,12 +63,12 @@ describe("Api/Public/RefreshToken", () => {
     await refreshHandler({
       userID: user.id,
       refreshToken: secondToken,
-    }).then(_fromRight)
+    }).then(_fromOk)
     // Try to use firstToken again
     const result = await refreshHandler({
       userID: user.id,
       refreshToken: firstToken,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(result).toBe("INVALID")
   })
 
@@ -82,17 +82,17 @@ describe("Api/Public/RefreshToken", () => {
 
     const [davidLogin] = await Promise.all([
       loginHandler({ email: david.email, password: _defaultPassword }).then(
-        _fromRight,
+        _fromOk,
       ),
       loginHandler({ email: sarah.email, password: _defaultPassword }).then(
-        _fromRight,
+        _fromOk,
       ),
     ])
 
     const result = await refreshHandler({
       userID: sarah.id,
       refreshToken: davidLogin.refreshToken,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(result).toBe("INVALID")
   })
 
@@ -103,7 +103,7 @@ describe("Api/Public/RefreshToken", () => {
     const result = await refreshHandler({
       userID: user.id,
       refreshToken: refreshTokenDecoder.verify("random-refresh-token-uuid"),
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(result).toBe("INVALID")
   })
 
@@ -115,7 +115,7 @@ describe("Api/Public/RefreshToken", () => {
     const result = await refreshHandler({
       userID: user.id,
       refreshToken: refreshToken,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(result).toBe("INVALID")
   })
 })

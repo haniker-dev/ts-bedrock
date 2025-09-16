@@ -1,6 +1,6 @@
 import * as JD from "decoders"
 import { Opaque, jsonValueCreate } from "../../Data/Opaque"
-import { Either, left, right, fromRight, mapEither } from "../../Data/Either"
+import { Result, toMaybe, err, mapOk, ok } from "../../Data/Result"
 import { Maybe, throwIfNull } from "../../Data/Maybe"
 
 const key: unique symbol = Symbol()
@@ -14,12 +14,12 @@ export type ErrorPassword =
   | "CONTAINS_SPACE"
 
 export function createPassword(s: string): Maybe<Password> {
-  return fromRight(createPasswordE(s))
+  return toMaybe(createPasswordE(s))
 }
 
-export function createPasswordE(s: string): Either<ErrorPassword, Password> {
+export function createPasswordE(s: string): Result<ErrorPassword, Password> {
   const validated = _validate(s)
-  return mapEither(validated, jsonValueCreate(key))
+  return mapOk(validated, jsonValueCreate(key))
 }
 
 export const passwordDecoder: JD.Decoder<Password> = JD.string.transform(
@@ -50,12 +50,12 @@ export function passwordErrors(s: string): Array<ErrorPassword> {
   return errors
 }
 
-function _validate(s: string): Either<ErrorPassword, string> {
-  if (s.length < 8) return left("INVALID_LENGTH")
-  if (numberRegex.test(s) === false) return left("MISSING_NUMBER")
-  if (symbolRegex.test(s) === false) return left("MISSING_SYMBOL")
-  if (noSpaceRegex.test(s) === false) return left("CONTAINS_SPACE")
-  return right(s)
+function _validate(s: string): Result<ErrorPassword, string> {
+  if (s.length < 8) return err("INVALID_LENGTH")
+  if (numberRegex.test(s) === false) return err("MISSING_NUMBER")
+  if (symbolRegex.test(s) === false) return err("MISSING_SYMBOL")
+  if (noSpaceRegex.test(s) === false) return err("CONTAINS_SPACE")
+  return ok(s)
 }
 
 export function passwordErrorString(error: ErrorPassword): string {

@@ -1,5 +1,5 @@
 import { contract } from "../../../../Core/Api/Public/RefreshToken"
-import { Either, left, right } from "../../../../Core/Data/Either"
+import { Result, err, ok } from "../../../../Core/Data/Result"
 import { Nat900 } from "../../../../Core/Data/Number/Nat"
 import * as Queue from "../../../../Core/Data/Queue/AggregateQueue"
 import { expiringWithin } from "../../../../Core/Data/Security/JsonWebToken"
@@ -28,14 +28,14 @@ export type ErrorCode =
   | "INVALID" /** Refresh token is invalid */
 
 export async function _requestNewAccessToken(): Promise<
-  Either<ErrorCode, AuthToken.AuthToken>
+  Result<ErrorCode, AuthToken.AuthToken>
 > {
   const authToken = AuthToken.get()
-  if (authToken == null) return left("MISSING_AUTH_TOKEN")
+  if (authToken == null) return err("MISSING_AUTH_TOKEN")
 
   const { accessToken } = authToken
   if (expiringWithin(Nat900, accessToken) === false) {
-    return right(authToken)
+    return ok(authToken)
   }
 
   const response = await publicApi(
@@ -47,18 +47,18 @@ export async function _requestNewAccessToken(): Promise<
     },
   )
 
-  if (response._t === "Left") {
+  if (response._t === "Err") {
     switch (response.error) {
       case "PAYLOAD_TOO_LARGE":
       case "UNAUTHORISED":
       case "INVALID":
         AuthToken.remove()
-        return left("INVALID")
+        return err("INVALID")
       case "SERVER_ERROR":
       case "DECODE_ERROR":
-        return left("SERVER_ERROR")
+        return err("SERVER_ERROR")
       case "NETWORK_ERROR":
-        return left("NETWORK_ERROR")
+        return err("NETWORK_ERROR")
     }
   } else {
     const newAuthToken = {
@@ -68,6 +68,6 @@ export async function _requestNewAccessToken(): Promise<
     }
 
     AuthToken.set(newAuthToken)
-    return right(newAuthToken)
+    return ok(newAuthToken)
   }
 }

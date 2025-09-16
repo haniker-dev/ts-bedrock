@@ -7,8 +7,8 @@ import { toString } from "../../../../Core/Data/Security/JsonWebToken"
 import {
   _createUser,
   _notNull,
-  _fromLeft,
-  _fromRight,
+  _fromErr,
+  _fromOk,
   _hashPassword,
 } from "../../../Fixture"
 
@@ -22,14 +22,14 @@ describe("Api/Public/Login", () => {
     const { accessToken, refreshToken, user } = await handler({
       email,
       password,
-    }).then(_fromRight)
+    }).then(_fromOk)
     expect(user.id.unwrap()).toEqual(user.id.unwrap())
     expect(user.email.unwrap()).toEqual(email.unwrap())
     expect(accessToken).toBeDefined()
     expect(refreshToken).toBeDefined()
 
     const jwtPayload = await AccessToken.verify(toString(accessToken))
-      .then(_fromRight)
+      .then(_fromOk)
       .then((t) => t.unwrap())
     expect(jwtPayload.userID.unwrap()).toEqual(user.id.unwrap())
 
@@ -44,7 +44,7 @@ describe("Api/Public/Login", () => {
     const wrongPassword = passwordDecoder.verify("Wrong&Password2")
 
     const userNotFound = await handler({ email, password: rightPassword }).then(
-      _fromLeft,
+      _fromErr,
     )
     expect(userNotFound).toEqual("USER_NOT_FOUND")
 
@@ -53,7 +53,7 @@ describe("Api/Public/Login", () => {
     const invalidPassword = await handler({
       email,
       password: wrongPassword,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(invalidPassword).toEqual("INVALID_PASSWORD")
   })
 })

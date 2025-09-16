@@ -1,5 +1,5 @@
 import * as API from "../../../../Core/Api/Public/RefreshToken"
-import { Either, left, right } from "../../../../Core/Data/Either"
+import { Result, err, ok } from "../../../../Core/Data/Result"
 import * as RefreshTokenRow from "../../Database/RefreshTokenRow"
 import * as AccessToken from "../../App/AccessToken"
 import * as UserRow from "../../Database/UserRow"
@@ -16,7 +16,7 @@ export const contract = API.contract
  * */
 export async function handler(
   params: API.BodyParams,
-): Promise<Either<API.ErrorCode, API.Payload>> {
+): Promise<Result<API.ErrorCode, API.Payload>> {
   const { userID, refreshToken } = params
   const token = await RefreshTokenRow.get(userID, refreshToken)
   if (token == null) {
@@ -26,7 +26,7 @@ export async function handler(
   }
 
   if (RefreshTokenRow.isExpired(token)) {
-    return left("INVALID")
+    return err("INVALID")
   }
 
   const newRefreshToken = await RefreshTokenRow.replace(token)
@@ -48,11 +48,11 @@ export async function handler(
  */
 async function handleByPreviousRefreshToken(
   params: API.BodyParams,
-): Promise<Either<API.ErrorCode, API.Payload>> {
+): Promise<Result<API.ErrorCode, API.Payload>> {
   const { userID, refreshToken } = params
   const token = await RefreshTokenRow.getByPrevious(userID, refreshToken)
   if (token == null || RefreshTokenRow.isExpiredPrevious(token)) {
-    return left("INVALID")
+    return err("INVALID")
   }
 
   return issueJWTandRefreshToken(userID, token.id)
@@ -61,15 +61,15 @@ async function handleByPreviousRefreshToken(
 async function issueJWTandRefreshToken(
   userID: UserID,
   refreshToken: RefreshToken,
-): Promise<Either<API.ErrorCode, API.Payload>> {
+): Promise<Result<API.ErrorCode, API.Payload>> {
   const userRow = await UserRow.getByID(userID)
   if (userRow == null) {
-    return left("INVALID")
+    return err("INVALID")
   }
 
   const accessToken = await AccessToken.issue(userRow.id)
 
-  return right({
+  return ok({
     user: toUser(userRow),
     accessToken,
     refreshToken,

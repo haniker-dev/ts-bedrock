@@ -12,9 +12,9 @@ import { JSONValue } from "decoders"
  * Code Example:
  * const key: unique symbol = Symbol()
  * type Email = Opaque<string, typeof key>
- * export function createEmailE(value: string): Either<Error, Email> {
+ * export function createEmailE(value: string): Result<Error, Email> {
  *   const validated = cleanEmail(value)
- *   return mapEither(validated, (email) => ({
+ *   return mapOk(validated, (email) => ({
  *     [key]: email,
  *     unwrap: () => email,
  *     toJSON: () => email,

@@ -1,7 +1,6 @@
 // Write a sample test case using Vitest
 import { describe, it, expect } from "vitest"
 import { emailDecoder } from "../../Core/Data/User/Email"
-import { _fromRight } from "../Fixture/Either"
 
 describe("Sample test", () => {
   it("should pass", () => {

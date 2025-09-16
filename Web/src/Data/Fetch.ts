@@ -1,9 +1,9 @@
-import { Either, left, right } from "../../../Core/Data/Either"
+import { err, ok, Result } from "../../../Core/Data/Result"
 import * as Logger from "../Logger"
 
 export type FetchError = "NETWORK_ERROR"
 export type FetchData = { httpStatus: number; data: unknown }
-export type FetchResult = Either<FetchError, FetchData>
+export type FetchResult = Result<FetchError, FetchData>
 
 export async function fetchE(
   url: string,
@@ -11,12 +11,10 @@ export async function fetchE(
 ): Promise<FetchResult> {
   return fetch(url, options)
     .then((response) =>
-      response
-        .json()
-        .then((data) => right({ httpStatus: response.status, data })),
+      response.json().then((data) => ok({ httpStatus: response.status, data })),
     )
     .catch((error) => {
       Logger.error(error)
-      return left("NETWORK_ERROR")
+      return err("NETWORK_ERROR")
     })
 }

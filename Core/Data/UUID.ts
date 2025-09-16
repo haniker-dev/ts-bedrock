@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Either, fromRight, left, mapEither, right } from "./Either"
+import { Result, toMaybe, err, mapOk, ok } from "./Result"
 import { Maybe, throwIfNull } from "./Maybe"
 import { Opaque, jsonValueCreate } from "./Opaque"
 import { v6, validate, version } from "uuid"
@@ -18,11 +18,11 @@ export const uuidDecoder: JD.Decoder<UUID> = JD.string.transform((s) => {
 })
 
 function _create(s: string): Maybe<UUID> {
-  return fromRight(mapEither(_validate(s), jsonValueCreate(key)))
+  return toMaybe(mapOk(_validate(s), jsonValueCreate(key)))
 }
 
-function _validate(s: string): Either<ErrorUUID, string> {
+function _validate(s: string): Result<ErrorUUID, string> {
   return validate(s) === true && version(s) === uuidVersion
-    ? right(s)
-    : left("INVALID_UUID")
+    ? ok(s)
+    : err("INVALID_UUID")
 }

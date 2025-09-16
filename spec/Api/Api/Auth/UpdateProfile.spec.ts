@@ -5,8 +5,8 @@ import { passwordDecoder } from "../../../../Core/App/User/Password"
 import {
   _createUser,
   _notNull,
-  _fromLeft,
-  _fromRight,
+  _fromErr,
+  _fromOk,
   _hashPassword,
 } from "../../../Fixture"
 import { nameDecoder } from "../../../../Core/App/User/Name"
@@ -28,7 +28,7 @@ describe("Api/Auth/UpdateProfile", () => {
       email,
       currentPassword,
       newPassword,
-    }).then(_fromRight)
+    }).then(_fromOk)
     expect(updatedUser.id.unwrap()).toEqual(user.id.unwrap())
     expect(updatedUser.email.unwrap()).toEqual(email.unwrap())
     expect(updatedUser.name.unwrap()).toEqual(name.unwrap())
@@ -36,7 +36,7 @@ describe("Api/Auth/UpdateProfile", () => {
     const { user: loginUser } = await loginHandler({
       email,
       password: newPassword,
-    }).then(_fromRight)
+    }).then(_fromOk)
     expect(loginUser.id.unwrap()).toEqual(user.id.unwrap())
   })
 
@@ -56,7 +56,7 @@ describe("Api/Auth/UpdateProfile", () => {
       email,
       currentPassword: newPassword,
       newPassword,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(invalidPassword).toEqual("INVALID_PASSWORD")
 
     await _createUser("new@example.com", {
@@ -67,7 +67,7 @@ describe("Api/Auth/UpdateProfile", () => {
       email,
       currentPassword,
       newPassword,
-    }).then(_fromLeft)
+    }).then(_fromErr)
     expect(emailExisted).toEqual("EMAIL_ALREADY_EXISTS")
   })
 })

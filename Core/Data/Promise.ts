@@ -1,11 +1,11 @@
-import { Either, left } from "./Either"
+import { Result, err } from "./Result"
 import { Maybe } from "./Maybe"
 
 /** Retry a promise immediately if it failed **/
 export async function retryPromise<A, B>(
   maxRetries: number,
-  fn: () => Promise<Either<A, B>>,
-): Promise<Either<A, B>> {
+  fn: () => Promise<Result<A, B>>,
+): Promise<Result<A, B>> {
   return _retryPromise(maxRetries, 0, null, fn)
 }
 
@@ -13,8 +13,8 @@ export async function retryPromise<A, B>(
 export async function retryPromiseWithDelay<A, B>(
   maxRetries: number,
   delayMS: number,
-  fn: () => Promise<Either<A, B>>,
-): Promise<Either<A, B>> {
+  fn: () => Promise<Result<A, B>>,
+): Promise<Result<A, B>> {
   return _retryPromise(maxRetries, delayMS, null, fn)
 }
 
@@ -22,14 +22,14 @@ async function _retryPromise<A, B>(
   maxRetries: number,
   delayMS: number,
   lastFailure: Maybe<A>,
-  fn: () => Promise<Either<A, B>>,
-): Promise<Either<A, B>> {
+  fn: () => Promise<Result<A, B>>,
+): Promise<Result<A, B>> {
   if (maxRetries <= 0) {
-    return lastFailure == null ? fn() : left(lastFailure)
+    return lastFailure == null ? fn() : err(lastFailure)
   }
 
   const result = await fn()
-  if (result._t === "Left") {
+  if (result._t === "Err") {
     await new Promise((resolve) => setTimeout(resolve, delayMS))
     return _retryPromise(maxRetries - 1, delayMS, result.error, fn)
   } else {

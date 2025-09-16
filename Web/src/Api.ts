@@ -14,12 +14,12 @@ import {
 } from "../../Core/Data/Api"
 import { AuthApiError } from "../../Core/Data/Api/Auth"
 import { FetchResult } from "./Data/Fetch"
-import { Either, left, right } from "../../Core/Data/Either"
+import { Result, err, ok } from "../../Core/Data/Result"
 
 /** For convenience, we merge public api response
  * and auth api response into one type
  */
-export type ApiResponse<E, D> = Either<ApiError<E>, D>
+export type ApiResponse<E, D> = Result<ApiError<E>, D>
 
 /** For convenience, we merge public api error
  * and auth api error into one type
@@ -58,25 +58,25 @@ export function apiErrorString<E>(
 export function decodeFetchResult<T>(
   responseDecoder: (status: HttpStatus) => JD.Decoder<T>,
   fetchResult: FetchResult,
-): Either<"SERVER_ERROR" | "NETWORK_ERROR" | "DECODE_ERROR", T> {
-  if (fetchResult._t === "Left") {
-    return left(fetchResult.error)
+): Result<"SERVER_ERROR" | "NETWORK_ERROR" | "DECODE_ERROR", T> {
+  if (fetchResult._t === "Err") {
+    return err(fetchResult.error)
   }
 
   const { httpStatus, data } = fetchResult.value
   const httpStatusM = httpStatusDecoder.decode(httpStatus)
   if (httpStatusM.ok === false) {
     Logger.error(`Unknown HTTP status: ${httpStatus}`)
-    return left("SERVER_ERROR")
+    return err("SERVER_ERROR")
   }
 
   const payloadM = responseDecoder(httpStatusM.value).decode(data)
   if (payloadM.ok === false) {
     Logger.error(payloadM.error.text)
-    return left("DECODE_ERROR")
+    return err("DECODE_ERROR")
   }
 
-  return right(payloadM.value)
+  return ok(payloadM.value)
 }
 
 export function makePath(endpoint: string): string {

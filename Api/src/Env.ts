@@ -46,7 +46,7 @@ function load(): Env | never {
   }
 
   const result = fromDecodeResult(decoder.decode(env))
-  if (result._t === "Right") {
+  if (result._t === "Ok") {
     return result.value
   } else {
     // Cannot use Logger because of cycle dependencies

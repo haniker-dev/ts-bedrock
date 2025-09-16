@@ -1,4 +1,4 @@
-import { Either, fromLeft, fromRight } from "../Either"
+import * as Result from "../Result"
 import { Maybe } from "../Maybe"
 import { Opaque } from "../Opaque"
 
@@ -13,10 +13,10 @@ export type Field<E, V, T> = Opaque<FieldInternal<E, V, T>, typeof fieldKey, V>
 export type FieldInternal<E, V, T> = {
   value: V
   parser: ParseDontValidateFn<E, V, T>
-  _memo: Maybe<Either<E, T>>
+  _memo: Maybe<Result.Result<E, T>>
 }
 
-export type ParseDontValidateFn<E, V, T> = (s: V) => Either<E, T>
+export type ParseDontValidateFn<E, V, T> = (s: V) => Result.Result<E, T>
 
 export function init<E, V, T>(
   value: V,
@@ -54,12 +54,12 @@ export function clearError<E, V, T>(f: Field<E, V, T>): Field<E, V, T> {
 
 export function error<E, V, T>(f: Field<E, V, T>): Maybe<E> {
   const fi = _internal(f)
-  return fi._memo == null ? null : fromLeft(fi._memo)
+  return fi._memo == null ? null : Result.error(fi._memo)
 }
 
 export function value<E, V, T>(f: Field<E, V, T>): Maybe<T> {
   const fi = _internal(f)
-  return fi._memo == null ? null : fromRight(fi._memo)
+  return fi._memo == null ? null : Result.value(fi._memo)
 }
 
 function _create<E, V, T>(f: FieldInternal<E, V, T>): Field<E, V, T> {

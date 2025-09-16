@@ -1,6 +1,6 @@
 import * as JD from "decoders"
 import { Opaque } from "../Opaque"
-import { Either, fromRight, left, right } from "../Either"
+import { Result, err, ok, toMaybe } from "../Result"
 import { Maybe, throwIfNull } from "../Maybe"
 import { parse } from "date-fns"
 import { Nat, natDecoder } from "../Number/Nat"
@@ -80,21 +80,21 @@ export function createDateOfBirth(
   month: Month,
   day: Day,
 ): Maybe<DateOfBirth> {
-  return fromRight(createDateOfBirthE(year, month, day))
+  return toMaybe(createDateOfBirthE(year, month, day))
 }
 
 export function createDateOfBirthE(
   year: Nat,
   month: Month,
   day: Day,
-): Either<ErrorCode, DateOfBirth> {
+): Result<ErrorCode, DateOfBirth> {
   const internal = { year, month, day }
   const jsDateE = _validate(internal)
-  if (jsDateE._t === "Left") {
+  if (jsDateE._t === "Err") {
     return jsDateE
   }
 
-  return right({
+  return ok({
     [key]: internal,
     unwrap: function () {
       return this[key]
@@ -116,7 +116,7 @@ function _toString(year: number, month: number, day: number): string {
   return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`
 }
 
-function _validate(internal: Internal): Either<ErrorCode, Internal> {
+function _validate(internal: Internal): Result<ErrorCode, Internal> {
   const { year, month, day } = internal
 
   try {
@@ -130,12 +130,12 @@ function _validate(internal: Internal): Either<ErrorCode, Internal> {
 
     // WARN parseISO always return a Date even if it is invalid
     if (String(jsDate) === "Invalid Date") {
-      return left("INVALID_DATE_OF_BIRTH")
+      return err("INVALID_DATE_OF_BIRTH")
     }
 
-    return jsDate > new Date() ? left("INVALID_DATE_OF_BIRTH") : right(internal)
+    return jsDate > new Date() ? err("INVALID_DATE_OF_BIRTH") : ok(internal)
   } catch (_e) {
-    return left("INVALID_DATE_OF_BIRTH")
+    return err("INVALID_DATE_OF_BIRTH")
   }
 }
 
