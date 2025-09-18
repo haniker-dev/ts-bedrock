@@ -1,3 +1,4 @@
+import * as JD from "decoders"
 import * as jose from "jose"
 import { jwtVerify } from "jose"
 import ENV from "../Env"
@@ -7,7 +8,6 @@ import { UserID } from "../../../Core/App/User/UserID"
 import {
   AccessToken,
   accessTokenDecoder,
-  JwtPayload,
 } from "../../../Core/App/User/AccessToken"
 
 const jwt_config = {
@@ -20,11 +20,9 @@ const jwt_config = {
 }
 
 export async function issue(userID: UserID): Promise<AccessToken> {
-  const payload: JwtPayload = {
-    userID,
-  }
-
-  const signer = new jose.SignJWT(payload)
+  // Jose can only sign with JSON object
+  const payloadJSON: JD.JSONObject = { userID: userID.unwrap() }
+  const signer = new jose.SignJWT(payloadJSON)
     .setProtectedHeader({ alg: jwt_config.algorithm })
     .setExpirationTime(jwt_config.expirationTime)
 
