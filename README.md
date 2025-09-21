@@ -34,7 +34,7 @@ As this repo is meant to be imported for other repo, there is no `/src` folder.
 
 - Adopt functional programming style 
   - No OOP, classes, attaching methods to object
-  - Use common functional data types such as `Either` or `Maybe` in `/Core/Data/*`
+  - Use common functional data types such as `Result` or `Maybe` in `/Core/Data/*`
 
 - FTFC: Function follows Type, Type follows File, File follows Context
   - This is a functional programming convention to build a common and intuitive file/folder structure which promotes function discovery
@@ -50,14 +50,14 @@ As this repo is meant to be imported for other repo, there is no `/src` folder.
     - Eg: `/Api/src/App/User.ts` holds functions that do transformations targeting the type `User` in `/Core/App/User.ts`
 
 - Error handling
-  - Use `Either` type if we want to handle the error (most common)
+  - Use `Result` type if we want to handle the error (most common)
   - Use `Maybe` type if we don't want to handle the error (most common)
   - Only use `throw new Error()` if we don't want to handle the exception (rare)
     - Never use in frontend
     - Only used in backend where the error is not recoverable
     - Exception Example: Database connection failure is an exception which no one can handle
     - Error Example: Transforming a string to int may fail which can be handled 
-      so we should return `Either<string, number>` or `number | null`
+      so we should return `Result<string, number>` or `number | null`
 
 ## TODO
 - Timestamp: We need Time/Second.ts, etc types

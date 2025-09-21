@@ -64,7 +64,7 @@ export function error<E, T>(result: Result<E, T>): Maybe<E> {
 }
 
 /* Type inference for a JD.object({ t: JD.Decoder<T> }) is always { t: T | undefined }
- * hence, we have to do a roundabout way to decode an Either type
+ * hence, we have to do a roundabout way to decode an Result type
  * Ref: https://github.com/nvie/decoders/issues/930
  */
 export function resultOkDecoder<T>(
@@ -90,7 +90,7 @@ export function resultOkDecoder<T>(
 }
 
 /* Type inference for a JD.object({ t: JD.Decoder<T> }) is always { t: T | undefined }
- * hence, we have to do a roundabout way to decode an Either type
+ * hence, we have to do a roundabout way to decode an Result type
  * Ref: https://github.com/nvie/decoders/issues/930
  */
 export function resultErrDecoder<E>(

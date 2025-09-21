@@ -15,7 +15,7 @@ The general idea of how API folder works is as follows:
 - Routes are added to the Express instance which binds a handler function with its corresponding T3 contract to the Express instance.
   Routes are defined in `/Api/src/Route.ts` and `/Api/src/Route/*`.
   Refer to `/Api/src/Api/PublicApi.ts` and `/Api/src/Api/AuthApi.ts` for implementation details.
-- The handler function is a "pure" function that takes the params of the T3 contract and returns an `Either` type of the T3 contract ErrorCode and Payload.
+- The handler function is a "pure" function that takes the params of the T3 contract and returns an `Result` type of the T3 contract ErrorCode and Payload.
   This allows easy testing of the handler without spinning up the Express instance in test cases.
   Handlers are defined in `/Api/src/Api/*`.
 - Handler function uses database functions defined in `/Api/src/Database/*` to interact with the database.
