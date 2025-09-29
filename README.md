@@ -44,8 +44,6 @@ Type-5: The frontend action types/functions
 `/spec`: Test cases
 
 ## Api Runtime
-This is the API folder which contains all the APIs for the project.
-
 The API folder uses the Core folder's `/Core/Api` Type 3 contracts to implement handlers to serve the APIs.
 This allows us to bind the types of API params/response to Core folder which in turn are being imported by Web folder to call the APIs. 
 This way, we can ensure that the API params/response are consistent across the Core, API, and Web folders.
@@ -96,12 +94,11 @@ and State is only changed on Action (usually triggered from user's interaction o
 - Error handling
   - Use `Result` type if we want to handle the error (most common)
   - Use `Maybe` type if we don't want to handle the error (most common)
-  - Only use `throw new Error()` if we don't want to handle the exception (rare)
-    - Never use in frontend
-    - Only used in backend where the error is not recoverable
+  - Never throw unless
+    - within decoders using `.verify` (because decoders catches it)
+    - error is not recoverable (eg. database connection failure)
     - Exception Example: Database connection failure is an exception which no one can handle
-    - Error Example: Transforming a string to int may fail which can be handled 
-      so we should return `Result<string, number>` or `number | null`
+    - Error Example: Transforming a string to int may fail which can be handled so we should return `Result<string, number>` or `number | null`
 
 ## TODO
 Core
