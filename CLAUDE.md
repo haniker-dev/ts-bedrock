@@ -45,6 +45,83 @@ breaks the template's purpose.
   `npm test`, which needs `npm run external:start` first.
 - Branch off `main`; this repo has no `development` branch.
 
+## Coding style
+
+**Exhaustive `switch` over sum types — no `default`.** Switch in a
+value-returning function with an EXPLICIT return type and no `default`
+branch. Adding a case to the union then makes tsc error (TS2366 "lacks
+ending return statement") at every switch that must now handle it — that
+error is wanted; a `default` (or fallback return) silently swallows new
+cases, so never add one to satisfy the compiler. The check is tsc-only and
+fires only on value-returning switches with a declared return type:
+void/side-effecting switches and if-chains get no exhaustiveness check, so
+prefer the value-returning shape (there is no `assertNever` helper). One
+legitimate `default`: dispatching a generic remainder that cannot be
+enumerated (see `apiErrorString` in `Web/src/Api.ts`).
+
+```typescript
+// Good: no default — adding a variant to Status breaks compilation here
+function statusLabel(s: Status): string {
+  switch (s._t) {
+    case "Active":
+      return "Active"
+    case "Suspended":
+      return "Suspended until " + formatDate(s.until)
+  }
+}
+```
+
+**The stepdown rule.** A file reads top-to-bottom: the supervisor/entry
+function at the top, detail helpers below. Retry/control flow is an
+explicit loop at the top, not recursion threaded through callbacks.
+
+**Imperative islands.** Perf-critical imperative code (eg. raw video/canvas
+rendering) is a module-level function driven from a ref — an explicit
+escape hatch, never hooks (the hooks ban is architectural: see the Web
+Runtime section of `README.md`; eslint enforces it).
+
+## Planning convention
+
+Implementation plans are delivered for review BEFORE code, in a fixed
+nine-section shape, in dependency order — the plan reads the way the code
+compiles. In a TypeFirst repo the type edit IS the plan: types are the
+overview, and everything downstream derives from them.
+
+1. Scope of work — the feature/change request, stated simply; plus what is
+   explicitly NOT in scope
+2. Solution approach — the main idea in a short paragraph, closing with the
+   one-sentence invariant the change enforces
+3. Types — real code: Core (T1/T3), then storage (T2, DDL as a compact
+   column list), then T4/T5
+4. Functions — signatures + doc comments, FTFC-placed; a body only where
+   the body IS the decision rather than its consequence
+5. Call-site deltas — before/after for the few sites that change shape;
+   mechanical ones as one-liners
+6. Edit order — what tsc will flag, in sequence: start at the type
+   everything derives from, then let the compiler walk you through the
+   fallout file by file (an edit sequence, not a runtime flow)
+7. Illegal states removed — what became unrepresentable
+8. Tests as propositions — each test stated as the claim it proves
+9. Gates & open items — including what has NOT been verified
+
+Format rules:
+
+- Changed code is shown as UNIFIED DIFFS against the branch (real
+  surrounding context from the current files), never as snippets of the end
+  state — the reader must see what is removed as much as what is added; new
+  files may be shown whole, marked as new
+- Keep it short and conceptual: full diffs for types, signatures as a list,
+  bodies only where the body is the idea — signal per line is the metric,
+  not coverage
+- Omit decoders that mirror their type field-for-field; show a decoder only
+  when it does something (transform, tagged union, non-obvious
+  verify/decode choice)
+- No diagrams — the signatures already say it
+- The title carries a version (`Plan — <name> (v2)`), incremented on every
+  re-delivery, so review comments can name a draft
+- Sub-number every item (`7.1`, `7.2`, …) so review comments can reference
+  a point instead of quoting it
+
 ## Keeping this file useful
 
 If you learn something about this repo that the next developer — or the next

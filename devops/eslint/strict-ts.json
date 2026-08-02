@@ -13,6 +13,10 @@
       {
         "selector": "TSTypePredicate",
         "message": "Type predicates (`is`) are not allowed. Use boolean return types instead."
+      },
+      {
+        "selector": "MemberExpression[object.name='React'][property.name=/^use[A-Z]/]",
+        "message": "React hooks are forbidden in TypeFirst. Use Action to perform effects."
       }
     ]
   }
