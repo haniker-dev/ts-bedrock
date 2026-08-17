@@ -5,9 +5,12 @@ Guidance for Claude Code (claude.ai/code) working in this repository.
 ## What this is
 
 `ts-bedrock` is the **TypeFirst template** — a monorepo skeleton (Core / Api /
-Web) that real projects are started from, not a product itself. The production
-project built on it is the Toppan checkpoint control-panel (`dashboard`), which
-is the place to look for how these patterns behave at scale.
+Web) that real projects are started from, not a product itself.
+
+**This repository is PUBLIC.** Nothing in it — code, comments, this file,
+commit messages, branch names — names a client, an engagement or a private
+project. Patterns learned on private work belong here; the fact that the work
+exists does not. Examples take invented anchors, never real ones.
 
 `README.md` is the specification and is kept current — read it first. It defines
 the five type levels and the exact folder each kind of code belongs in. This
