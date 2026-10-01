@@ -38,13 +38,11 @@ breaks the template's purpose.
 - **Three separate `node_modules`**: run `npm install` in the root, `Api/` and
   `Web/`. This is not an npm workspace. After any dependency change, or for a
   `tsc` error that makes no sense, check `npm ls <pkg>` in both the package and
-  the root before treating it as a code bug. The root's `vite` (vitest's peer,
-  and the binary `npm start` serves Web with) and Web's `vite` must resolve to
-  the same version, because Web's config and plugins run under the root binary.
-  The root `tsconfig.json` `paths` maps `vite` to the root copy so the tsc
-  program holds one copy of vite's main types (`vite/client` still loads from
-  Web's copy): two copies each augment rollup's plugin context, and fail with
-  TS2320/TS2416 whenever TypeScript dedupes their rollup.
+  the root before treating it as a code bug. `vite` and `@vitejs/plugin-react`
+  are root devDependencies, never Web's: Web resolves them from the root.
+  Installing either in Web puts a second vite in the tsc program (npm
+  auto-installs plugin-react's vite peer), and the two copies fail tsc with
+  TS2320/TS2416 when both augment one deduped rollup.
 - **npm 11 blocks postinstall scripts.** `npm ci` can silently skip native
   builds (e.g. `esbuild`), which surfaces later as a broken vite. Fix with
   `npm rebuild <pkg>`. Do **not** run `npm approve-scripts` — it writes an

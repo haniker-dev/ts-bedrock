@@ -15,8 +15,7 @@
     "noImplicitThis": true,
     "strict": true,
     "strictNullChecks": true,
-    "types": ["vitest/globals"],
-    "paths": { "vite": ["./node_modules/vite"] }
+    "types": ["vitest/globals"]
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
   "exclude": ["**/node_modules", "**/dist"]
