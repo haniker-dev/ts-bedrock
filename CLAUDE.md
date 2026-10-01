@@ -55,6 +55,9 @@ breaks the template's purpose.
   `devops/lint/typefirst-plugin.mjs`, loaded as a JS plugin;
   `oxlint --print-config` does not list them. oxlint has no watch mode, so
   `npm start` lints once.
+- `typefirst/import-boundaries` sees relative imports only: a tsconfig
+  `paths` or package.json `imports` alias crosses the Core/Api/Web boundary
+  unreported.
 - Branch off `main`; this repo has no `development` branch.
 
 ## Coding style

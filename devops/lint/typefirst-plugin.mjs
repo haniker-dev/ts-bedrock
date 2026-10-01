@@ -1,20 +1,5 @@
 import path from "node:path"
 
-const elementOf = (elements, cwd, absolutePath) => {
-  const first = path.relative(cwd, absolutePath).split(path.sep)[0]
-  return elements.includes(first) ? first : null
-}
-
-const relativeImportElement = (elements, cwd, importer, source) =>
-  source.startsWith(".")
-    ? elementOf(elements, cwd, path.resolve(path.dirname(importer), source))
-    : null
-
-const sourceOf = (node) =>
-  node.source != null && typeof node.source.value === "string"
-    ? node.source.value
-    : null
-
 const importBoundaries = {
   meta: {
     type: "problem",
@@ -68,6 +53,21 @@ const importBoundaries = {
     }
   },
 }
+
+const elementOf = (elements, cwd, absolutePath) => {
+  const first = path.relative(cwd, absolutePath).split(path.sep)[0]
+  return elements.includes(first) ? first : null
+}
+
+const relativeImportElement = (elements, cwd, importer, source) =>
+  source.startsWith(".")
+    ? elementOf(elements, cwd, path.resolve(path.dirname(importer), source))
+    : null
+
+const sourceOf = (node) =>
+  node.source != null && typeof node.source.value === "string"
+    ? node.source.value
+    : null
 
 const noTypePredicate = {
   meta: {

@@ -45,7 +45,7 @@
         "patterns": [
           {
             "group": ["react"],
-            "importNamePattern": "^use",
+            "importNamePattern": "(^|_)use",
             "message": "React hooks are forbidden in TypeFirst. Use Action to perform effects."
           }
         ]
