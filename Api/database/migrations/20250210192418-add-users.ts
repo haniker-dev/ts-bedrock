@@ -33,7 +33,7 @@ export async function down(db: Kysely<unknown>): Promise<void> {
   //   "Do not rollback database. Push another migration to fix database migration.",
   // )
 
-  await Promise.all([db.schema.dropTable("refresh_token").execute()])
+  await db.schema.dropTable("refresh_token").execute()
 
-  await Promise.all([db.schema.dropTable("user").execute()])
+  await db.schema.dropTable("user").execute()
 }

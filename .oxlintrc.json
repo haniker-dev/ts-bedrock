@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["eslint", "typescript", "import", "react"],
+  "plugins": ["eslint", "typescript", "import", "react", "unicorn"],
   "jsPlugins": ["./devops/lint/typefirst-plugin.mts"],
   "options": { "typeAware": true },
   "rules": {
@@ -118,6 +118,22 @@
     "react/require-render-return": "error",
     "react/no-danger-with-children": "error",
     "react/no-unsafe": ["error", { "checkAliases": true }],
+    "no-param-reassign": ["error", { "props": true }],
+    "import/no-mutable-exports": "error",
+    "unicorn/no-array-sort": "error",
+    "unicorn/no-array-reverse": "error",
+    "no-multi-assign": "error",
+    "no-return-assign": "error",
+    "no-sequences": "error",
+    "typescript/no-dynamic-delete": "error",
+    "typescript/consistent-type-definitions": ["error", "type"],
+    "typescript/no-invalid-void-type": "error",
+    "typescript/restrict-plus-operands": [
+      "error",
+      { "allowNumberAndString": false }
+    ],
+    "no-implicit-coercion": "error",
+    "array-callback-return": "error",
     "no-var": "error",
     "prefer-const": "error",
     "prefer-rest-params": "error",

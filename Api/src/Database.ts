@@ -29,9 +29,11 @@ type RefreshTokenTable = {
 const databaseName =
   Number(process.env.TOTAL_TEST_DB) > 0
     ? ENV.DB_DATABASE +
-      ((Number(process.env.VITEST_WORKER_ID) %
-        Number(process.env.TOTAL_TEST_DB)) +
-        1)
+      String(
+        (Number(process.env.VITEST_WORKER_ID) %
+          Number(process.env.TOTAL_TEST_DB)) +
+          1,
+      )
     : ENV.DB_DATABASE
 
 const pool = new Pool({
