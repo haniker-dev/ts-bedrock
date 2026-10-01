@@ -16,6 +16,7 @@ import {
   makePath,
 } from "../Api"
 import { sleep } from "../../../Core/Data/Time/Timer"
+import * as JsonWebToken from "../../../Core/Data/Security/JsonWebToken"
 
 // Convenience
 export type { ApiResponse, ApiError } from "../Api"
@@ -85,6 +86,9 @@ async function authHeaders(headers: Headers): Promise<Maybe<Headers>> {
   }
 
   const { accessToken } = authTokenM.value
-  headers.append("Authorization", `Bearer ${accessToken.toJSON()}`)
+  headers.append(
+    "Authorization",
+    `Bearer ${JsonWebToken.toString(accessToken)}`,
+  )
   return headers
 }
