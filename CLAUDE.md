@@ -48,9 +48,7 @@ breaks the template's purpose.
   `npm rebuild <pkg>`. Do **not** run `npm approve-scripts` — it writes an
   `allowScripts` block into `package.json`, which should never be committed.
 - Gates: `npm run tsc` and `npm run lint` (`--deny-warnings`). Tests are
-  `npm test`, which needs `npm run external:start` first. `npm run lint:strict`
-  adds oxlint's type-aware rules (oxlint-tsgolint); it is not a gate and its
-  findings are untriaged.
+  `npm test`, which needs `npm run external:start` first.
 - **TypeScript 7's bare `typescript` import exports only version info**; its new
   API is `typescript/unstable/*`. Code written against the classic compiler API
   needs its own nested package pinning TypeScript 5.
@@ -68,12 +66,11 @@ breaks the template's purpose.
 value-returning function with an EXPLICIT return type and no `default` branch.
 Adding a case to the union then makes tsc error (TS2366 "lacks ending return
 statement") at every switch that must now handle it — that error is wanted; a
-`default` (or fallback return) silently swallows new cases, so never add one to
-satisfy the compiler. The check is tsc-only and fires only on value-returning
-switches with a declared return type: void/side-effecting switches and if-chains
-get no exhaustiveness check, so prefer the value-returning shape (there is no
-`assertNever` helper). One legitimate `default`: dispatching a generic remainder
-that cannot be enumerated (see `apiErrorString` in `Web/src/Api.ts`).
+`default` (or fallback return) hides new cases from tsc, so never add one to
+satisfy the compiler. If-chains get no exhaustiveness check, so prefer the
+value-returning shape (there is no `assertNever` helper). One legitimate
+`default`: dispatching a generic remainder that cannot be enumerated (see
+`apiErrorString` in `Web/src/Api.ts`).
 
 ```typescript
 // Good: no default — adding a variant to Status breaks compilation here
