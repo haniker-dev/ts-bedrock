@@ -40,6 +40,8 @@
     "typescript/no-non-null-assertion": "error",
     "typescript/no-explicit-any": "error",
     "typescript/prefer-as-const": "off",
+    "typescript/consistent-type-imports": "error",
+    "typescript/no-import-type-side-effects": "error",
     "import/no-cycle": "error",
     "no-restricted-imports": [
       "error",
