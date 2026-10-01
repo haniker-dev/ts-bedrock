@@ -64,55 +64,27 @@ export function error<E, T>(result: Result<E, T>): Maybe<E> {
 }
 
 /* Type inference for a JD.object({ t: JD.Decoder<T> }) is always { t: T | undefined }
- * hence, we have to do a roundabout way to decode an Result type
  * Ref: https://github.com/nvie/decoders/issues/930
  */
 export function resultOkDecoder<T>(
   valueDecoder: JD.Decoder<T>,
 ): JD.Decoder<ResultOk<T>> {
-  return JD.define((blob, ok, err) => {
-    const decoded = JD.object({
-      _t: JD.constant("Ok"),
-      value: valueDecoder,
-    }).decode(blob)
-
-    if (decoded.ok === false) {
-      return err(decoded.error)
-    }
-
-    const valueM = valueDecoder.decode(decoded.value.value)
-    if (valueM.ok === false) {
-      return err(valueM.error)
-    }
-
-    return ok({ _t: "Ok", value: valueM.value })
-  })
+  return JD.object({
+    _t: JD.constant("Ok"),
+    value: valueDecoder.transform(ok),
+  }).transform(({ value: resultOk }) => resultOk)
 }
 
 /* Type inference for a JD.object({ t: JD.Decoder<T> }) is always { t: T | undefined }
- * hence, we have to do a roundabout way to decode an Result type
  * Ref: https://github.com/nvie/decoders/issues/930
  */
 export function resultErrDecoder<E>(
   errorDecoder: JD.Decoder<E>,
 ): JD.Decoder<ResultErr<E>> {
-  return JD.define((blob, ok, err) => {
-    const decoded = JD.object({
-      _t: JD.constant("Err"),
-      error: errorDecoder,
-    }).decode(blob)
-
-    if (decoded.ok === false) {
-      return err(decoded.error)
-    }
-
-    const errorM = errorDecoder.decode(decoded.value.error)
-    if (errorM.ok === false) {
-      return err(errorM.error)
-    }
-
-    return ok({ _t: "Err", error: errorM.value })
-  })
+  return JD.object({
+    _t: JD.constant("Err"),
+    error: errorDecoder.transform(err),
+  }).transform(({ error: resultErr }) => resultErr)
 }
 
 export function resultDecoder<E, T>(
