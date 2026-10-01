@@ -14,40 +14,53 @@ frontend.
 ## Type Specifications
 
 TypeSpec is a specification for defining types in Typescript for the entire
-application (Web/Api/database/etc). It has 5 levels of specifications: Type-1:
-The core types that are used in the application such as User in all platforms
-(eg. Web/Api/database) Type-2: The database types that represents the table in
-the database (eg. UserRow => user db table) Type-3: The API types (aka API
-contract) that represents the request/response of the API Type-4: The frontend
-state types Type-5: The frontend action types/functions
+application (Web/Api/database/etc). It has 5 levels of specifications:
+
+- Type-1: The core types that are used in the application such as User in all
+  platforms (eg. Web/Api/database)
+- Type-2: The database types that represents the table in the database (eg.
+  UserRow => user db table)
+- Type-3: The API types (aka API contract) that represents the request/response
+  of the API
+- Type-4: The frontend state types
+- Type-5: The frontend action types/functions
 
 ## File Structure
 
-`/Core/Api`: Contains all Type-3 (API Contracts) definitions and functions
-`/Core/App`: Contains all Type-1 (App types) definitions and functions which are
-used in this project `/Core/Data`: Contains all Type-1 common data types and
-functions which can be reused in any project `/Api/database`: Contains database
-migrations and seeds `/Api/src/Api`: This folder contains the API handlers which
-fulfills the core's T3 contracts `/Api/src/App`: This folder contains the
-transformations of API types to core types `/Api/src/Data`: Contains all common
-data types and functions which can be reused in any _API_ project
-`/Api/src/Database`: Contains all the T2 database row types and functions
-`/Api/src/Route`: Contains all the routes for the API which links T3 contracts
-to API handlers `/Web/public`: Web assets as per Vite `/Web/src/Action`:
-Contains all the actions `/Web/src/Api`: Contains the API call function which
-fulfills the core's T3 contracts `/Web/src/App`: Contains the transformations of
-web types to core/API types or specific implementations for the project in web
-`/Web/src/Data`: Contains all common data types and functions which can be
-reused in any _Web_ project `/Web/src/Page`: Contains pages of Web (Generally
-named after routes) `/Web/src/Route.ts`: Contains all the routes
-`/Web/src/Runtime`: Contains the runtime files `/Web/src/State`: Contains states
-of Web `/Web/src/View`: Contains view files which are reusable across Pages
-
-- Form: Contains form view components Eg: Button, Input, etc
-- Layout: Contains layout view components
-- Theme: Define the theme of the web Eg: spacing, colors, font, etc
-- ImageLocalSrc: Define local images
-- Link: `a` tag with required props to navigate among routes `/spec`: Test cases
+- `/Core/Api`: Contains all Type-3 (API Contracts) definitions and functions
+- `/Core/App`: Contains all Type-1 (App types) definitions and functions which
+  are used in this project
+- `/Core/Data`: Contains all Type-1 common data types and functions which can be
+  reused in any project
+- `/Api/database`: Contains database migrations and seeds
+- `/Api/src/Api`: This folder contains the API handlers which fulfills the
+  core's T3 contracts
+- `/Api/src/App`: This folder contains the transformations of API types to core
+  types
+- `/Api/src/Data`: Contains all common data types and functions which can be
+  reused in any _API_ project
+- `/Api/src/Database`: Contains all the T2 database row types and functions
+- `/Api/src/Route`: Contains all the routes for the API which links T3 contracts
+  to API handlers
+- `/Web/public`: Web assets as per Vite
+- `/Web/src/Action`: Contains all the actions
+- `/Web/src/Api`: Contains the API call function which fulfills the core's T3
+  contracts
+- `/Web/src/App`: Contains the transformations of web types to core/API types or
+  specific implementations for the project in web
+- `/Web/src/Data`: Contains all common data types and functions which can be
+  reused in any _Web_ project
+- `/Web/src/Page`: Contains pages of Web (Generally named after routes)
+- `/Web/src/Route.ts`: Contains all the routes
+- `/Web/src/Runtime`: Contains the runtime files
+- `/Web/src/State`: Contains states of Web
+- `/Web/src/View`: Contains view files which are reusable across Pages
+  - Form: Contains form view components Eg: Button, Input, etc
+  - Layout: Contains layout view components
+  - Theme: Define the theme of the web Eg: spacing, colors, font, etc
+  - ImageLocalSrc: Define local images
+  - Link: `a` tag with required props to navigate among routes
+- `/spec`: Test cases
 
 ## Api Runtime
 
@@ -141,21 +154,23 @@ in `.oxlintrc.json` and `typefirst/no-react-hook-member` in
 
 ## TODO
 
-Core
-
-- Timestamp: We need Time/Second.ts, etc types
-- Devops add example staging/production deployment Api
-- Add check for duplicated routes in Express
-- Devops add example staging/production deployment Web
-- Add RemoteCache
-- Add RemotePage
+- Core
+  - Timestamp: We need Time/Second.ts, etc types
+  - Devops add example staging/production deployment
+- Api
+  - Add check for duplicated routes in Express
+  - Devops add example staging/production deployment
+- Web
+  - Add RemoteCache
+  - Add RemotePage
 
 ## Enhancement
 
-Core
-
-- Enforce no throw
-- A faster decoder library
-- Use deno Api
-- Switch to Fastify or upgrade to Express 5 Web
-- Use Preact or write our own render library to remove `emit`
+- Core
+  - Enforce no throw
+  - A faster decoder library
+  - Use deno
+- Api
+  - Switch to Fastify or upgrade to Express 5
+- Web
+  - Use Preact or write our own render library to remove `emit`
