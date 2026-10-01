@@ -7,6 +7,8 @@ import type { Maybe } from "../Maybe"
 import { throwIfNull } from "../Maybe"
 import type { Nat } from "../Number/Nat"
 import type { Millisecond } from "./Millisecond"
+import { fromSecond } from "./Millisecond"
+import { secondDecoder } from "./Second"
 
 const key: unique symbol = Symbol()
 /** Timestamp is epoch milliseconds */
@@ -87,6 +89,14 @@ export const timestampDecoder: JD.Decoder<Timestamp> = JD.number.transform(
     return throwIfNull(createTimestamp(n), `Invalid timestamp: ${n}`)
   },
 )
+
+export const timestampSecondDecoder: JD.Decoder<Timestamp> =
+  secondDecoder.transform((s) => {
+    return throwIfNull(
+      createTimestamp(fromSecond(s).unwrap()),
+      `Invalid timestamp: ${s.unwrap()} seconds`,
+    )
+  })
 
 export const timestampJSDateDecoder: JD.Decoder<Timestamp> = JD.date.transform(
   (v) => fromDate(v),

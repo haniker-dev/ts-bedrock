@@ -1,7 +1,11 @@
 import * as JD from "decoders"
 import type { Opaque } from "../Opaque"
 import type { Timestamp } from "../Time/Timestamp"
-import { addMillisecond, createNow, timestampDecoder } from "../Time/Timestamp"
+import {
+  addMillisecond,
+  createNow,
+  timestampSecondDecoder,
+} from "../Time/Timestamp"
 import type { Millisecond } from "../Time/Millisecond"
 import type { Result } from "../Result"
 import { err, ok } from "../Result"
@@ -108,7 +112,8 @@ export function getExpiry<T>(jwt: JsonWebToken<T>): Timestamp {
 }
 
 const claimsDecoder: JD.Decoder<Claims> = JD.object({
-  exp: timestampDecoder,
+  // RFC 7519 4.1.4: exp is a NumericDate, seconds since the epoch
+  exp: timestampSecondDecoder,
 })
 
 export function jsonWebTokenDecoder<T>(
