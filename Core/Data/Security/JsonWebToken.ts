@@ -1,12 +1,12 @@
 import * as JD from "decoders"
 import type { Opaque } from "../Opaque"
 import type { Timestamp } from "../Time/Timestamp"
-import { diffFromNow, timestampDecoder } from "../Time/Timestamp"
+import { addMillisecond, createNow, timestampDecoder } from "../Time/Timestamp"
+import type { Millisecond } from "../Time/Millisecond"
 import type { Result } from "../Result"
 import { err, ok } from "../Result"
 import { parseJSON } from "../JSON"
 import { decodeBase64 } from "../Decoder"
-import type { Nat } from "../Number/Nat"
 
 const key: unique symbol = Symbol()
 /** Json Web Token is a string of this
@@ -95,16 +95,12 @@ export function toString<T>(jwt: JsonWebToken<T>): string {
   return jwt[key].token
 }
 
-export function expiringWithin<T>(seconds: Nat, jwt: JsonWebToken<T>): boolean {
-  const diff = diffFromNow(getExpiry(jwt))
-
-  // JWT has already expired
-  if (diff <= 0) {
-    return true
-  }
-
-  // Check if JWT is going to expire soon
-  return diff < seconds.unwrap()
+export function expiringWithin<T>(
+  within: Millisecond,
+  jwt: JsonWebToken<T>,
+): boolean {
+  const windowEnd = addMillisecond(createNow(), within)
+  return getExpiry(jwt).unwrap() < windowEnd.unwrap()
 }
 
 export function getExpiry<T>(jwt: JsonWebToken<T>): Timestamp {

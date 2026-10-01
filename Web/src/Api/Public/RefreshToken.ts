@@ -1,7 +1,8 @@
 import { contract } from "../../../../Core/Api/Public/RefreshToken"
 import type { Result } from "../../../../Core/Data/Result"
 import { err, ok } from "../../../../Core/Data/Result"
-import { Nat900 } from "../../../../Core/Data/Number/Nat"
+import { fromMinute } from "../../../../Core/Data/Time/Millisecond"
+import { Minute15 } from "../../../../Core/Data/Time/Minute"
 import * as Queue from "../../../../Core/Data/Queue/AggregateQueue"
 import { expiringWithin } from "../../../../Core/Data/Security/JsonWebToken"
 import * as AuthToken from "../../App/AuthToken"
@@ -35,7 +36,7 @@ export async function _requestNewAccessToken(): Promise<
   if (authToken == null) return err("MISSING_AUTH_TOKEN")
 
   const { accessToken } = authToken
-  if (expiringWithin(Nat900, accessToken) === false) {
+  if (expiringWithin(fromMinute(Minute15), accessToken) === false) {
     return ok(authToken)
   }
 

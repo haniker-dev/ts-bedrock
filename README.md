@@ -156,7 +156,6 @@ in `.oxlintrc.json` and `typefirst/no-react-hook-member` in
 ## TODO
 
 - Core
-  - Timestamp: We need Time/Second.ts, etc types
   - Devops add example staging/production deployment
 - Api
   - Add check for duplicated routes in Express

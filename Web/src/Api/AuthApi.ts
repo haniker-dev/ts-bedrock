@@ -18,6 +18,8 @@ import {
   makePath,
 } from "../Api"
 import { sleep } from "../../../Core/Data/Time/Timer"
+import { fromSecond } from "../../../Core/Data/Time/Millisecond"
+import { Second1 } from "../../../Core/Data/Time/Second"
 import * as JsonWebToken from "../../../Core/Data/Security/JsonWebToken"
 
 // Convenience
@@ -83,7 +85,7 @@ async function authHeaders(headers: Headers): Promise<Maybe<Headers>> {
         return null
       case "NETWORK_ERROR":
       case "SERVER_ERROR":
-        return sleep(1000).then(() => authHeaders(headers))
+        return sleep(fromSecond(Second1)).then(() => authHeaders(headers))
     }
   }
 

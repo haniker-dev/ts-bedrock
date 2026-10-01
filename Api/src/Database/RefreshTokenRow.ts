@@ -4,12 +4,17 @@ import type { UserID } from "../../../Core/App/User/UserID"
 import { userIDDecoder } from "../../../Core/App/User/UserID"
 import type { Timestamp } from "../../../Core/Data/Time/Timestamp"
 import {
+  addMillisecond,
+  beforeNow,
   createNow,
   createTimestampE,
-  diffFromNow,
   fromDate,
   toDate,
 } from "../../../Core/Data/Time/Timestamp"
+import type { Millisecond } from "../../../Core/Data/Time/Millisecond"
+import { fromHour, fromSecond } from "../../../Core/Data/Time/Millisecond"
+import { Hour2160 } from "../../../Core/Data/Time/Hour"
+import { Second1 } from "../../../Core/Data/Time/Second"
 import type { RefreshToken } from "../../../Core/Data/Security/RefreshToken"
 import {
   createRefreshToken,
@@ -20,7 +25,7 @@ import db from "../Database"
 const tableName = "refresh_token"
 
 /** RefreshToken has a 90 days expiry **/
-export const refreshTokenExpiryMS = 90 * 24 * 60 * 60 * 1000
+export const refreshTokenExpiry: Millisecond = fromHour(Hour2160)
 
 /**
  * There is a racing condition where a user is refreshing the token
@@ -84,11 +89,11 @@ export async function replace(row: RefreshTokenRow): Promise<RefreshTokenRow> {
 }
 
 export function isExpired(row: RefreshTokenRow): boolean {
-  return Math.abs(diffFromNow(row.createdAt)) > refreshTokenExpiryMS
+  return beforeNow(addMillisecond(row.createdAt, refreshTokenExpiry))
 }
 
 export function isExpiredPrevious(row: RefreshTokenRow): boolean {
-  return Math.abs(diffFromNow(row.previousCreatedAt)) > refreshTokenExpiryMS
+  return beforeNow(addMillisecond(row.previousCreatedAt, refreshTokenExpiry))
 }
 
 export async function get(
@@ -155,7 +160,7 @@ export async function removeAllByUser(userID: UserID): Promise<number> {
 
 export async function removeAllExpired(): Promise<number> {
   const lastCreatedAt = createTimestampE(
-    createNow().unwrap() - refreshTokenExpiryMS,
+    createNow().unwrap() - refreshTokenExpiry.unwrap(),
   )
 
   if (lastCreatedAt._t === "Err") {
@@ -177,7 +182,7 @@ export async function removeAllExpired(): Promise<number> {
 /** For testing */
 export async function _createExpired(userID: UserID): Promise<RefreshToken> {
   const expiredCreatedAt = new Date(
-    Date.now() - refreshTokenExpiryMS - 1000, // 1 second expired
+    Date.now() - refreshTokenExpiry.unwrap() - fromSecond(Second1).unwrap(),
   )
   const refreshToken = createRefreshToken()
   return db

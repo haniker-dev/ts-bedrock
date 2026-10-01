@@ -6,7 +6,7 @@ import { toMaybe, err, mapOk, ok } from "../Result"
 import type { Maybe } from "../Maybe"
 import { throwIfNull } from "../Maybe"
 import type { Nat } from "../Number/Nat"
-import type { PositiveInt } from "../Number/PositiveInt"
+import type { Millisecond } from "./Millisecond"
 
 const key: unique symbol = Symbol()
 /** Timestamp is epoch milliseconds */
@@ -45,16 +45,11 @@ export function beforeNow(t: Timestamp): boolean {
   return t.unwrap() - _now() < 0
 }
 
-export function diffTimestamp(t1: Timestamp, t2: Timestamp): number {
-  return t1.unwrap() - t2.unwrap()
-}
-
-export function diffFromNow(t1: Timestamp): number {
-  return t1.unwrap() - _now()
-}
-
-export function addSeconds(t1: Timestamp, seconds: PositiveInt): Timestamp {
-  return _create(t1.unwrap() + seconds.unwrap() * 1000)
+export function addMillisecond(
+  t1: Timestamp,
+  duration: Millisecond,
+): Timestamp {
+  return _create(t1.unwrap() + duration.unwrap())
 }
 
 export function isSameDay(a: Timestamp, b: Timestamp): boolean {
@@ -105,8 +100,8 @@ function _validate(n: number): Result<ErrorTimestamp, number> {
       : ok(n)
 }
 
-function _create(epochMS: number): Timestamp {
-  return jsonValueCreate<number, typeof key>(key)(Math.floor(epochMS))
+function _create(epochMillisecond: number): Timestamp {
+  return jsonValueCreate<number, typeof key>(key)(Math.floor(epochMillisecond))
 }
 
 function _now(): number {

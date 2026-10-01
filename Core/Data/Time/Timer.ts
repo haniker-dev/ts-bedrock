@@ -1,14 +1,14 @@
-import type { PositiveInt } from "../Number/PositiveInt"
+import type { Millisecond } from "./Millisecond"
 
-export function sleep(ms: number): Promise<void> {
+export function sleep(duration: Millisecond): Promise<void> {
   return new Promise((resolve) => {
-    setTimeout(resolve, ms)
+    setTimeout(resolve, duration.unwrap())
   })
 }
 
 export function debounce<T extends unknown[]>(
   fn: (...args: T) => void,
-  delayInMillis: number,
+  delay: Millisecond,
 ): (...args: T) => void {
   let timer: NodeJS.Timeout | null = null
   return (...args: T) => {
@@ -16,13 +16,13 @@ export function debounce<T extends unknown[]>(
 
     timer = setTimeout(() => {
       fn.call(null, ...args)
-    }, delayInMillis)
+    }, delay.unwrap())
   }
 }
 
 export type EveryClearFn = () => void
-export function every(fn: () => void, internalMs: PositiveInt): EveryClearFn {
-  const timer = setInterval(fn, internalMs.unwrap())
+export function every(fn: () => void, interval: Millisecond): EveryClearFn {
+  const timer = setInterval(fn, interval.unwrap())
   return () => {
     clearTimeout(timer)
   }
