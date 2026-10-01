@@ -26,11 +26,11 @@ export function removeQuery(route: string): string {
  * and return it as a higher-order function to be used as a callback
  ***/
 export function catchCallback(
-  fn: (req: Express.Request, res: Express.Response) => void,
+  fn: (req: Express.Request, res: Express.Response<unknown>) => Promise<void>,
 ) {
-  return function (req: Express.Request, res: Express.Response) {
+  return async function (req: Express.Request, res: Express.Response<unknown>) {
     try {
-      return fn(req, res)
+      return await fn(req, res)
     } catch (error) {
       return internalErr500(
         res,

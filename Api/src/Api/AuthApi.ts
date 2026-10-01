@@ -53,7 +53,7 @@ export function authApi<
   const { contract, handler } = api
   const { method, route, urlDecoder, bodyDecoder } = contract
   const expressRoute = removeQuery(route)
-  const handlerRunner = catchCallback((req, res) => {
+  const handlerRunner = catchCallback(async (req, res) => {
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
     return paramsResult._t === "Ok"
       ? runAuthHandler(paramsResult.value, handler, req, res)
