@@ -6,7 +6,7 @@ export const JSONStreamDelimiter = "\0"
 
 export function parseJSON(s: string): Result<string, unknown> {
   try {
-    const data = JSON.parse(s)
+    const data: unknown = JSON.parse(s)
     return ok(data)
   } catch (error) {
     return err(String(error))

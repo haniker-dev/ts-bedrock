@@ -43,7 +43,7 @@ describe("Data/Security/Nonce", () => {
     })
 
     // SERVER: Let's pretend we are decoding the received nonce JSON on server
-    const clientNonceJSON = JSON.parse(JSON.stringify(clientNonce))
+    const clientNonceJSON: unknown = JSON.parse(JSON.stringify(clientNonce))
     const receivedNonceOnServer =
       nonceDecoder(payloadDecoder).verify(clientNonceJSON)
     const isNonceValid = await verifyNonce(

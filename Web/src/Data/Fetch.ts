@@ -11,7 +11,9 @@ export async function fetchE(
 ): Promise<FetchResult> {
   return fetch(url, options)
     .then((response) =>
-      response.json().then((data) => ok({ httpStatus: response.status, data })),
+      response
+        .json()
+        .then((data: unknown) => ok({ httpStatus: response.status, data })),
     )
     .catch((error) => {
       Logger.error(error)
