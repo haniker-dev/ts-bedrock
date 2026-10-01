@@ -100,11 +100,11 @@ export async function get(
     .selectAll()
     .where("id", "=", refreshToken.unwrap())
     .where("userID", "=", userID.unwrap())
-    .executeTakeFirstOrThrow()
-    .then((dbRow) => rowDecoder.verify(dbRow))
+    .executeTakeFirst()
+    .then((dbRow) => (dbRow == null ? null : rowDecoder.verify(dbRow)))
     .catch((e) => {
       Logger.error(`#${tableName}.get error ${e}`)
-      return null
+      throw e
     })
 }
 
@@ -117,11 +117,11 @@ export async function getByPrevious(
     .selectAll()
     .where("previousID", "=", refreshToken.unwrap())
     .where("userID", "=", userID.unwrap())
-    .executeTakeFirstOrThrow()
-    .then((dbRow) => rowDecoder.verify(dbRow))
+    .executeTakeFirst()
+    .then((dbRow) => (dbRow == null ? null : rowDecoder.verify(dbRow)))
     .catch((e) => {
-      Logger.error(`#${tableName}.get error ${e}`)
-      return null
+      Logger.error(`#${tableName}.getByPrevious error ${e}`)
+      throw e
     })
 }
 
