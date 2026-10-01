@@ -30,6 +30,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@oxlint/plugins": "^1.86.0",
     "@types/node": "^24.1.0",
     "@types/uuid": "^10.0.0",
     "@vitejs/plugin-react": "^4.7.0",

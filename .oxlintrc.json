@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["eslint", "typescript", "import", "react"],
-  "jsPlugins": ["./devops/lint/typefirst-plugin.mjs"],
+  "jsPlugins": ["./devops/lint/typefirst-plugin.mts"],
   "rules": {
     "typefirst/import-boundaries": [
       "error",

@@ -55,9 +55,13 @@ breaks the template's purpose.
   API is `typescript/unstable/*`. Code written against the classic compiler API
   needs its own nested package pinning TypeScript 5.
 - **Lint is oxlint** (`.oxlintrc.json`). The TypeFirst bans oxlint has no native
-  rule for are the `typefirst/*` rules in `devops/lint/typefirst-plugin.mjs`,
+  rule for are the `typefirst/*` rules in `devops/lint/typefirst-plugin.mts`,
   loaded as a JS plugin; `oxlint --print-config` does not list them. oxlint has
   no watch mode, so `npm start` lints once.
+- The plugin is TypeScript that Node runs by type stripping: erasable syntax
+  only (no `enum`, `namespace`, parameter properties), and types come from
+  `@oxlint/plugins` through `import type` — a value import of it is a runtime
+  dependency the rules do not need.
 - `typefirst/import-boundaries` sees relative imports only: a tsconfig `paths`
   or package.json `imports` alias crosses the Core/Api/Web boundary unreported.
 - Branch off `main`; this repo has no `development` branch.

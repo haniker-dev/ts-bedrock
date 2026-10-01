@@ -99,7 +99,7 @@ through State → View → Action → State — never backwards or sideways. Bec
 component-local state is invisible to the TEA runtime, React hooks (`useState`,
 `useEffect`, etc) are forbidden — oxlint enforces this (`no-restricted-imports`
 in `.oxlintrc.json` and `typefirst/no-react-hook-member` in
-`devops/lint/typefirst-plugin.mjs`); `memo` and ref callbacks are fine.
+`devops/lint/typefirst-plugin.mts`); `memo` and ref callbacks are fine.
 [![](https://mermaid.ink/img/pako:eNqNkU1LBDEMhv9KyEWQmYvHIsKgF2_CgJftHso0o4V-SD9WZN3_btrqzu7NHmbaN0_yJuSIS9CEAlNWmZ6MeovKjYc76YFPE0HiXP8SQSWYryPTkk3wIATsGjTAo9P7jk7Sd9gHZi2tGcJaVbg4W4GWD-PDdaUrmJVKvsTgTKL7v-Rv8MVa4Ey4SCCvm3NX-nd3u4eRLZ69yX2oJp-fLfhq6LPr9dakSQD7lETxJoHxmaJq1h2bGjML8IynrWzXuen_tFxn-7WKlII9kO6B-dxUjYyR56KIAzqKThnNuztWUGJ-J8dbEnzVtKpis0TpT4yqksP85RcUORYasHzobdsoVmUTnX4ATcedeg?type=png)](https://mermaid.live/edit#pako:eNqNkU1LBDEMhv9KyEWQmYvHIsKgF2_CgJftHso0o4V-SD9WZN3_btrqzu7NHmbaN0_yJuSIS9CEAlNWmZ6MeovKjYc76YFPE0HiXP8SQSWYryPTkk3wIATsGjTAo9P7jk7Sd9gHZi2tGcJaVbg4W4GWD-PDdaUrmJVKvsTgTKL7v-Rv8MVa4Ey4SCCvm3NX-nd3u4eRLZ69yX2oJp-fLfhq6LPr9dakSQD7lETxJoHxmaJq1h2bGjML8IynrWzXuen_tFxn-7WKlII9kO6B-dxUjYyR56KIAzqKThnNuztWUGJ-J8dbEnzVtKpis0TpT4yqksP85RcUORYasHzobdsoVmUTnX4ATcedeg)
 
 ## TypeFirst Principles and Conventions
