@@ -86,7 +86,10 @@
         "allowNullableObject": false
       }
     ],
-    "typescript/only-throw-error": "error",
+    "typescript/only-throw-error": [
+      "error",
+      { "allowThrowingAny": false, "allowThrowingUnknown": false }
+    ],
     "typescript/restrict-template-expressions": "error",
     "typescript/ban-ts-comment": "error",
     "typescript/no-empty-object-type": "error",
@@ -139,7 +142,13 @@
     "typescript/no-invalid-void-type": "error",
     "typescript/restrict-plus-operands": [
       "error",
-      { "allowNumberAndString": false }
+      {
+        "allowAny": false,
+        "allowBoolean": false,
+        "allowNullish": false,
+        "allowNumberAndString": false,
+        "allowRegExp": false
+      }
     ],
     "no-implicit-coercion": "error",
     "array-callback-return": "error",
