@@ -1,4 +1,3 @@
-/// <reference types="vite/client" />
 import * as JD from "decoders"
 
 const env = JD.object({
