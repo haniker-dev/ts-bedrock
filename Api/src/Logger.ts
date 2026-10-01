@@ -64,11 +64,13 @@ export function fullError(e: Error): void {
   return debugTest ? _Logger.error(fullErrorDetail(e)) : undefined
 }
 
-export function fullErrorDetail(e: Error) {
-  return {
-    name: e.name,
-    message: e.message,
-    cause: e.cause,
-    stack: e.stack?.split("\n"),
-  }
+export function fullErrorDetail(e: unknown) {
+  return e instanceof Error
+    ? {
+        name: e.name,
+        message: e.message,
+        cause: e.cause,
+        stack: e.stack?.split("\n"),
+      }
+    : { value: e }
 }

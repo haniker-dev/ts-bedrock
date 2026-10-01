@@ -16,7 +16,5 @@ async function checkDB(): Promise<unknown> {
   return sql`SELECT 1 AS result`
     .execute(db)
     .then(() => "Ok")
-    .catch((e: unknown) =>
-      e instanceof Error ? Logger.fullErrorDetail(e) : String(e),
-    )
+    .catch((e: unknown) => Logger.fullErrorDetail(e))
 }
