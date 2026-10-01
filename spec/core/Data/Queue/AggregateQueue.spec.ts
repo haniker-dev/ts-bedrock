@@ -20,4 +20,24 @@ describe("Data/Queue/AggregateQueue", () => {
     // The state of queue1 and queue2 are separated
     assert.deepStrictEqual(allResults, [1, 1, 1, 2, 2, 2])
   })
+
+  it("Rejects every queued call with the error of resolveFn and runs it again on the next call", async () => {
+    const error = new Error("boom")
+    let calls = 0
+    const failOnce = () => {
+      calls++
+      return calls === 1 ? Promise.reject(error) : Promise.resolve(calls)
+    }
+    const runQueue = create(failOnce)
+    const reasons = await Promise.all(
+      [runQueue(), runQueue(), runQueue()].map((call) =>
+        call.then(
+          () => null,
+          (reason: unknown) => reason,
+        ),
+      ),
+    )
+    assert.sameOrderedMembers(reasons, [error, error, error])
+    assert.strictEqual(await runQueue(), 2)
+  })
 })

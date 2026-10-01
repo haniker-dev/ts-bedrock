@@ -1,13 +1,11 @@
 type AggregateQueueState<T> = {
-  isResolving: boolean
-  queue: Array<(v: T) => void>
+  running: Promise<T> | null
   resolveFn: () => Promise<T>
 }
 
 /** Creates an AggregateQueue which will
  * run the resolveFn *once*
  * and hold all other calls
- * and finally resolving all calls with the result of resolveFn
  *
  * Example:
  * ```
@@ -20,23 +18,20 @@ type AggregateQueueState<T> = {
 export function create<T>(resolveFn: () => Promise<T>) {
   // A mutatable state
   const state: AggregateQueueState<T> = {
-    isResolving: false,
-    queue: [],
+    running: null,
     resolveFn,
   }
 
-  return async (): Promise<T> => {
-    if (state.isResolving === true) {
-      // It is already resolving... just queue it up
-      return new Promise((resolve) => state.queue.push(resolve))
+  return (): Promise<T> => {
+    if (state.running != null) {
+      return state.running
     }
 
-    // Start the resolveFn
-    state.isResolving = true
-    const value = await state.resolveFn()
-    state.queue.forEach((resolve) => resolve(value))
-    state.queue = []
-    state.isResolving = false
-    return value
+    state.running = Promise.resolve()
+      .then(state.resolveFn)
+      .finally(() => {
+        state.running = null
+      })
+    return state.running
   }
 }
