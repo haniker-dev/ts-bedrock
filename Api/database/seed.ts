@@ -1,7 +1,7 @@
 import ENV from "../src/Env"
 import * as User from "./Seed/User"
 
-export async function run(): Promise<void | never> {
+export async function run(): Promise<void> {
   const { APP_ENV } = ENV
   console.info(`Seeding for ${APP_ENV}:`)
 
