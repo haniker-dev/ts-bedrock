@@ -1,6 +1,7 @@
 import { cmd, type Cmd } from "../Action"
 import { parseRoute } from "../Route"
-import { _AuthState, _PublicState, State } from "../State"
+import type { State } from "../State"
+import { _AuthState, _PublicState } from "../State"
 import * as ProfileAction from "./Profile"
 
 export function onUrlChange(s: State): [State, Cmd] {

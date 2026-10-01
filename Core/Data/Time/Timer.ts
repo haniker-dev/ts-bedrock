@@ -1,4 +1,4 @@
-import { PositiveInt } from "../Number/PositiveInt"
+import type { PositiveInt } from "../Number/PositiveInt"
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => {

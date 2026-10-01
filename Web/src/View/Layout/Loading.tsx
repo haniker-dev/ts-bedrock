@@ -1,7 +1,7 @@
 import { css } from "@emotion/css"
 import { color, font, theme } from "../Theme"
 import { localImage } from "../ImageLocalSrc"
-import { JSX } from "react"
+import type { JSX } from "react"
 import { spin } from "../Theme/Keyframe"
 
 export function LoadingLayout(): JSX.Element {

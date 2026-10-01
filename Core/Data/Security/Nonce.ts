@@ -1,7 +1,9 @@
 import * as JD from "decoders"
-import { Timestamp, timestampDecoder } from "../Time/Timestamp"
-import { Opaque } from "../Opaque"
-import { Text256, text256Decoder } from "../Text"
+import type { Timestamp } from "../Time/Timestamp"
+import { timestampDecoder } from "../Time/Timestamp"
+import type { Opaque } from "../Opaque"
+import type { Text256 } from "../Text"
+import { text256Decoder } from "../Text"
 
 const key: unique symbol = Symbol()
 /** A hashed string that is used to prevent replay attacks

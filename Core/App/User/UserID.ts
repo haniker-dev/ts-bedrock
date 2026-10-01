@@ -1,6 +1,8 @@
-import * as JD from "decoders"
-import { jsonValueCreate, Opaque } from "../../Data/Opaque"
-import { createUUID, UUID, uuidDecoder } from "../../Data/UUID"
+import type * as JD from "decoders"
+import type { Opaque } from "../../Data/Opaque"
+import { jsonValueCreate } from "../../Data/Opaque"
+import type { UUID } from "../../Data/UUID"
+import { createUUID, uuidDecoder } from "../../Data/UUID"
 
 const key: unique symbol = Symbol()
 export type UserID = Opaque<string, typeof key>

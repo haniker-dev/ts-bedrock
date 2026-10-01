@@ -1,6 +1,6 @@
 import { css } from "@emotion/css"
-import { State } from "../../State"
-import { JSX } from "react"
+import type { State } from "../../State"
+import type { JSX } from "react"
 
 type Props = { state: State; Page: React.FC<{ state: State }> }
 export function EmptyLayout(props: Props): JSX.Element {

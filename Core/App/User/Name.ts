@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "../../Data/Opaque"
-import { Result, toMaybe, err, ok } from "../../Data/Result"
-import { Maybe, throwIfNull } from "../../Data/Maybe"
+import type { Opaque } from "../../Data/Opaque"
+import { jsonValueCreate } from "../../Data/Opaque"
+import type { Result } from "../../Data/Result"
+import { toMaybe, err, ok } from "../../Data/Result"
+import type { Maybe } from "../../Data/Maybe"
+import { throwIfNull } from "../../Data/Maybe"
 import { createText100 } from "../../Data/Text"
 
 const key: unique symbol = Symbol()

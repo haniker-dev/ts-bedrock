@@ -1,9 +1,12 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "../Opaque"
-import { Result, toMaybe, err, mapOk, ok } from "../Result"
-import { Maybe, throwIfNull } from "../Maybe"
-import { Nat } from "../Number/Nat"
-import { PositiveInt } from "../Number/PositiveInt"
+import type { Opaque } from "../Opaque"
+import { jsonValueCreate } from "../Opaque"
+import type { Result } from "../Result"
+import { toMaybe, err, mapOk, ok } from "../Result"
+import type { Maybe } from "../Maybe"
+import { throwIfNull } from "../Maybe"
+import type { Nat } from "../Number/Nat"
+import type { PositiveInt } from "../Number/PositiveInt"
 
 const key: unique symbol = Symbol()
 /** Timestamp is epoch milliseconds */

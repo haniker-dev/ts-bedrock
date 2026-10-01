@@ -1,18 +1,16 @@
 import * as JD from "decoders"
-import {
-  responseDecoder,
-  Api,
-  NoUrlParams,
-  noUrlParamsDecoder,
-} from "../../Data/Api"
-import { User, userDecoder } from "../../App/User"
-import { Email, emailDecoder } from "../../Data/User/Email"
-import { Password, passwordDecoder } from "../../App/User/Password"
-import { AccessToken, accessTokenDecoder } from "../../App/User/AccessToken"
-import {
-  RefreshToken,
-  refreshTokenDecoder,
-} from "../../Data/Security/RefreshToken"
+import type { Api, NoUrlParams } from "../../Data/Api"
+import { responseDecoder, noUrlParamsDecoder } from "../../Data/Api"
+import type { User } from "../../App/User"
+import { userDecoder } from "../../App/User"
+import type { Email } from "../../Data/User/Email"
+import { emailDecoder } from "../../Data/User/Email"
+import type { Password } from "../../App/User/Password"
+import { passwordDecoder } from "../../App/User/Password"
+import type { AccessToken } from "../../App/User/AccessToken"
+import { accessTokenDecoder } from "../../App/User/AccessToken"
+import type { RefreshToken } from "../../Data/Security/RefreshToken"
+import { refreshTokenDecoder } from "../../Data/Security/RefreshToken"
 
 export type Contract = Api<
   "POST",

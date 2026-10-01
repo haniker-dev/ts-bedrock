@@ -1,5 +1,6 @@
 import { contract } from "../../../../Core/Api/Public/RefreshToken"
-import { Result, err, ok } from "../../../../Core/Data/Result"
+import type { Result } from "../../../../Core/Data/Result"
+import { err, ok } from "../../../../Core/Data/Result"
 import { Nat900 } from "../../../../Core/Data/Number/Nat"
 import * as Queue from "../../../../Core/Data/Queue/AggregateQueue"
 import { expiringWithin } from "../../../../Core/Data/Security/JsonWebToken"

@@ -1,6 +1,7 @@
-import * as Express from "express"
-import { UrlRecord } from "../../../Core/Data/UrlToken"
-import { Result, err, mapOk } from "../../../Core/Data/Result"
+import type * as Express from "express"
+import type { UrlRecord } from "../../../Core/Data/UrlToken"
+import type { Result } from "../../../Core/Data/Result"
+import { err, mapOk } from "../../../Core/Data/Result"
 import {
   decodeParams,
   removeQuery,
@@ -12,9 +13,9 @@ import {
   unauthorised,
 } from "../Api"
 import * as UserRow from "../Database/UserRow"
-import { Method } from "../../../Core/Data/Api"
-import { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
-import { JwtPayload } from "../../../Core/App/User/AccessToken"
+import type { Method } from "../../../Core/Data/Api"
+import type { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
+import type { JwtPayload } from "../../../Core/App/User/AccessToken"
 import * as AccessToken from "../App/AccessToken"
 
 /**

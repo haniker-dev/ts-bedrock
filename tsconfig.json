@@ -16,6 +16,7 @@
     "strict": true,
     "strictNullChecks": true,
     "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
     "noUncheckedIndexedAccess": true,
     "types": ["vitest/globals"]
   },

@@ -1,4 +1,5 @@
-import { Action, cmd } from "../Action"
+import type { Action } from "../Action"
+import { cmd } from "../Action"
 import {
   _UpdateProfileState,
   initUpdateProfileState,
@@ -6,7 +7,8 @@ import {
 import * as FieldString from "../../../Core/Data/Form/FieldString"
 import * as UpdateProfileApi from "../Api/Auth/UpdateProfile"
 import * as RD from "../../../Core/Data/RemoteData"
-import { _AuthState, AuthState } from "../State"
+import type { AuthState } from "../State"
+import { _AuthState } from "../State"
 
 export function onChangeName(value: string): Action {
   return _AuthState((authState: AuthState) => {

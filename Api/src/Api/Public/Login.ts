@@ -1,5 +1,6 @@
 import * as API from "../../../../Core/Api/Public/Login"
-import { Result, err, ok } from "../../../../Core/Data/Result"
+import type { Result } from "../../../../Core/Data/Result"
+import { err, ok } from "../../../../Core/Data/Result"
 import * as UserRow from "../../Database/UserRow"
 import * as RefreshTokenRow from "../../Database/RefreshTokenRow"
 import * as Hash from "../../Data/Hash"

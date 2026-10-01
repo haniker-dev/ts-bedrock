@@ -1,8 +1,8 @@
-import { User } from "../../Core/App/User"
-import { LoginState } from "./State/Login"
-import { Route } from "./Route"
-import { Action, Cmd } from "./Action"
-import { UpdateProfileState } from "./State/UpdateProfile"
+import type { User } from "../../Core/App/User"
+import type { LoginState } from "./State/Login"
+import type { Route } from "./Route"
+import type { Action, Cmd } from "./Action"
+import type { UpdateProfileState } from "./State/UpdateProfile"
 
 export type State = PublicState | AuthState
 

@@ -1,17 +1,18 @@
 import * as JD from "decoders"
 import * as Logger from "../Logger"
-import { UserID, userIDDecoder } from "../../../Core/App/User/UserID"
+import type { UserID } from "../../../Core/App/User/UserID"
+import { userIDDecoder } from "../../../Core/App/User/UserID"
+import type { Timestamp } from "../../../Core/Data/Time/Timestamp"
 import {
   createNow,
   createTimestampE,
   diffFromNow,
   fromDate,
-  Timestamp,
   toDate,
 } from "../../../Core/Data/Time/Timestamp"
+import type { RefreshToken } from "../../../Core/Data/Security/RefreshToken"
 import {
   createRefreshToken,
-  RefreshToken,
   refreshTokenDecoder,
 } from "../../../Core/Data/Security/RefreshToken"
 import db from "../Database"

@@ -1,4 +1,4 @@
-import { css } from "@emotion/css"
+import type { css } from "@emotion/css"
 
 // @emotion/css does not export css function parameter directly
 // so we have to coax it out this way

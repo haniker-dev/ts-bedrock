@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { UrlRecord } from "./UrlToken"
+import type { UrlRecord } from "./UrlToken"
 
 /** Base type to describe an API endpoint
  * You can use this for public APIs

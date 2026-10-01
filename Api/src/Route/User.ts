@@ -1,4 +1,4 @@
-import { Express } from "express"
+import type { Express } from "express"
 import { publicApi } from "../Api/PublicApi"
 import * as Login from "../Api/Public/Login"
 import * as Logout from "../Api/Auth/Logout"

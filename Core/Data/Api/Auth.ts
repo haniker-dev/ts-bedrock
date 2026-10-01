@@ -1,6 +1,6 @@
 import * as JD from "decoders"
-import { HttpStatus, Method } from "../Api"
-import { UrlRecord } from "../UrlToken"
+import type { HttpStatus, Method } from "../Api"
+import type { UrlRecord } from "../UrlToken"
 
 /** Auth APIs requires a request header "authorization: Bearer <JWT-Token>"
  * and returns AuthResponseJson

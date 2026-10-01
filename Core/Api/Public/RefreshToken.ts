@@ -1,17 +1,14 @@
 import * as JD from "decoders"
-import {
-  Api,
-  NoUrlParams,
-  noUrlParamsDecoder,
-  responseDecoder,
-} from "../../Data/Api"
-import { User, userDecoder } from "../../App/User"
-import { UserID, userIDDecoder } from "../../App/User/UserID"
-import {
-  RefreshToken,
-  refreshTokenDecoder,
-} from "../../Data/Security/RefreshToken"
-import { AccessToken, accessTokenDecoder } from "../../App/User/AccessToken"
+import type { Api, NoUrlParams } from "../../Data/Api"
+import { noUrlParamsDecoder, responseDecoder } from "../../Data/Api"
+import type { User } from "../../App/User"
+import { userDecoder } from "../../App/User"
+import type { UserID } from "../../App/User/UserID"
+import { userIDDecoder } from "../../App/User/UserID"
+import type { RefreshToken } from "../../Data/Security/RefreshToken"
+import { refreshTokenDecoder } from "../../Data/Security/RefreshToken"
+import type { AccessToken } from "../../App/User/AccessToken"
+import { accessTokenDecoder } from "../../App/User/AccessToken"
 
 /**
  * NOTE Client-side MUST update the local user with this returned user

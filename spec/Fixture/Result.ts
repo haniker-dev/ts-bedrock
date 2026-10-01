@@ -1,4 +1,4 @@
-import { Result } from "../../Core/Data/Result"
+import type { Result } from "../../Core/Data/Result"
 
 export function _fromOk<E, T>(result: Result<E, T>): T {
   if (result._t === "Ok") return result.value

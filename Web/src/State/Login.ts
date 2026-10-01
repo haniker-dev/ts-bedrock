@@ -1,14 +1,12 @@
-import * as LoginApi from "../../../Core/Api/Public/Login"
-import {
-  createPasswordE,
-  ErrorPassword,
-  Password,
-} from "../../../Core/App/User/Password"
+import type * as LoginApi from "../../../Core/Api/Public/Login"
+import type { ErrorPassword, Password } from "../../../Core/App/User/Password"
+import { createPasswordE } from "../../../Core/App/User/Password"
 import * as FieldString from "../../../Core/Data/Form/FieldString"
-import { Maybe } from "../../../Core/Data/Maybe"
+import type { Maybe } from "../../../Core/Data/Maybe"
 import * as RD from "../../../Core/Data/RemoteData"
-import { createEmailE, Email, ErrorEmail } from "../../../Core/Data/User/Email"
-import { ApiError } from "../Api"
+import type { Email, ErrorEmail } from "../../../Core/Data/User/Email"
+import { createEmailE } from "../../../Core/Data/User/Email"
+import type { ApiError } from "../Api"
 import type { State } from "../State"
 
 export type LoginState = {

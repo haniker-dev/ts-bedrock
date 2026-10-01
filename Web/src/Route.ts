@@ -1,7 +1,9 @@
 import * as JD from "decoders"
 import * as Teki from "teki"
-import { serializeUrlRecord, UrlRecord } from "../../Core/Data/UrlToken"
-import { Maybe, maybeOptionalDecoder } from "../../Core/Data/Maybe"
+import type { UrlRecord } from "../../Core/Data/UrlToken"
+import { serializeUrlRecord } from "../../Core/Data/UrlToken"
+import type { Maybe } from "../../Core/Data/Maybe"
+import { maybeOptionalDecoder } from "../../Core/Data/Maybe"
 import type { Action } from "./Action"
 import type { State } from "./State"
 

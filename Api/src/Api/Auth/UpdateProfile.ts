@@ -1,6 +1,7 @@
 import * as API from "../../../../Core/Api/Auth/UpdateProfile"
-import { Result, err, ok } from "../../../../Core/Data/Result"
-import { AuthUser } from "../AuthApi"
+import type { Result } from "../../../../Core/Data/Result"
+import { err, ok } from "../../../../Core/Data/Result"
+import type { AuthUser } from "../AuthApi"
 import * as Hash from "../../Data/Hash"
 import * as UserRow from "../../Database/UserRow"
 

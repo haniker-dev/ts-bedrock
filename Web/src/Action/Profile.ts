@@ -1,5 +1,7 @@
-import { Action, cmd, Cmd } from "../Action"
-import { _AuthState, AuthState, State } from "../State"
+import type { Action, Cmd } from "../Action"
+import { cmd } from "../Action"
+import type { AuthState, State } from "../State"
+import { _AuthState } from "../State"
 import * as ProfileApi from "../Api/Auth/Profile"
 
 // This onEnterRoute just for presentation purposes

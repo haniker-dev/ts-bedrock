@@ -1,5 +1,5 @@
-import { JSX } from "react"
-import { AuthState, State } from "./State"
+import type { JSX } from "react"
+import type { AuthState, State } from "./State"
 import { LoadingLayout } from "./View/Layout/Loading"
 import { EmptyLayout } from "./View/Layout/Empty"
 import { AuthLayout } from "./View/Layout/Auth"

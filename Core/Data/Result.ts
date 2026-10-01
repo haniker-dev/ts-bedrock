@@ -1,5 +1,5 @@
 import * as JD from "decoders"
-import { Maybe } from "./Maybe"
+import type { Maybe } from "./Maybe"
 
 /**
  * A Result is either

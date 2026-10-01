@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "../Opaque"
-import { err, mapOk, ok, Result, toMaybe } from "../Result"
-import { Maybe, throwIfNull } from "../Maybe"
+import type { Opaque } from "../Opaque"
+import { jsonValueCreate } from "../Opaque"
+import type { Result } from "../Result"
+import { err, mapOk, ok, toMaybe } from "../Result"
+import type { Maybe } from "../Maybe"
+import { throwIfNull } from "../Maybe"
 
 const key: unique symbol = Symbol()
 /** Max email length is 320 as per RFC 5321 and RFC 5322

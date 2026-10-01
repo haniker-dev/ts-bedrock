@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Name, nameDecoder } from "./User/Name"
-import { UserID, userIDDecoder } from "./User/UserID"
-import { Email, emailDecoder } from "../Data/User/Email"
+import type { Name } from "./User/Name"
+import { nameDecoder } from "./User/Name"
+import type { UserID } from "./User/UserID"
+import { userIDDecoder } from "./User/UserID"
+import type { Email } from "../Data/User/Email"
+import { emailDecoder } from "../Data/User/Email"
 
 /** Provided as an example for App-level Type 1
  * User type differs from app to app

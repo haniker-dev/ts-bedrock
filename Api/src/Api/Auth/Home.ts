@@ -1,7 +1,8 @@
 import * as API from "../../../../Core/Api/Auth/Home"
-import { NoBodyParams } from "../../../../Core/Data/Api"
-import { Result, ok } from "../../../../Core/Data/Result"
-import { AuthUser } from "../AuthApi"
+import type { NoBodyParams } from "../../../../Core/Data/Api"
+import type { Result } from "../../../../Core/Data/Result"
+import { ok } from "../../../../Core/Data/Result"
+import type { AuthUser } from "../AuthApi"
 
 export const contract = API.contract
 

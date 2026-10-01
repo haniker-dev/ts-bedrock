@@ -1,11 +1,12 @@
 import * as API from "../../../../Core/Api/Public/RefreshToken"
-import { Result, err, ok } from "../../../../Core/Data/Result"
+import type { Result } from "../../../../Core/Data/Result"
+import { err, ok } from "../../../../Core/Data/Result"
 import * as RefreshTokenRow from "../../Database/RefreshTokenRow"
 import * as AccessToken from "../../App/AccessToken"
 import * as UserRow from "../../Database/UserRow"
 import { toUser } from "../../App/User"
-import { UserID } from "../../../../Core/App/User/UserID"
-import { RefreshToken } from "../../../../Core/Data/Security/RefreshToken"
+import type { UserID } from "../../../../Core/App/User/UserID"
+import type { RefreshToken } from "../../../../Core/Data/Security/RefreshToken"
 
 export const contract = API.contract
 

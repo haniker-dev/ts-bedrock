@@ -1,14 +1,13 @@
-import * as JD from "decoders"
+import type * as JD from "decoders"
 import * as jose from "jose"
 import { jwtVerify } from "jose"
 import ENV from "../Env"
-import { Result, ok, err } from "../../../Core/Data/Result"
+import type { Result } from "../../../Core/Data/Result"
+import { ok, err } from "../../../Core/Data/Result"
 import * as Logger from "../Logger"
-import { UserID } from "../../../Core/App/User/UserID"
-import {
-  AccessToken,
-  accessTokenDecoder,
-} from "../../../Core/App/User/AccessToken"
+import type { UserID } from "../../../Core/App/User/UserID"
+import type { AccessToken } from "../../../Core/App/User/AccessToken"
+import { accessTokenDecoder } from "../../../Core/App/User/AccessToken"
 
 const jwt_config = {
   // HS256 = HMAC 256-bits which is "fastest"

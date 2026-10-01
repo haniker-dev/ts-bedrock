@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "./Opaque"
-import { Result, err, ok, toMaybe, mapOk } from "./Result"
-import { Maybe, throwIfNull } from "./Maybe"
+import type { Opaque } from "./Opaque"
+import { jsonValueCreate } from "./Opaque"
+import type { Result } from "./Result"
+import { err, ok, toMaybe, mapOk } from "./Result"
+import type { Maybe } from "./Maybe"
+import { throwIfNull } from "./Maybe"
 
 const key: unique symbol = Symbol()
 /** Ensure a string conforms to a full URL

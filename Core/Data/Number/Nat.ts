@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Result, toMaybe, err, mapOk, ok } from "../Result"
-import { Maybe, throwIfNull } from "../Maybe"
-import { Opaque, jsonValueCreate } from "../Opaque"
+import type { Result } from "../Result"
+import { toMaybe, err, mapOk, ok } from "../Result"
+import type { Maybe } from "../Maybe"
+import { throwIfNull } from "../Maybe"
+import type { Opaque } from "../Opaque"
+import { jsonValueCreate } from "../Opaque"
 import type { PositiveInt } from "./PositiveInt"
 
 const key: unique symbol = Symbol()

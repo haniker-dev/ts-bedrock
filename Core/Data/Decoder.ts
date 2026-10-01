@@ -1,6 +1,8 @@
 import * as JD from "decoders"
-import { Result, err, ok } from "./Result"
-import { fromResult, Maybe } from "./Maybe"
+import type { Result } from "./Result"
+import { err, ok } from "./Result"
+import type { Maybe } from "./Maybe"
+import { fromResult } from "./Maybe"
 
 /** Annotation type is not exported from decoders package
  * hence, we have to do a sleight of hand to trick it out

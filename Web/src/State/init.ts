@@ -1,8 +1,8 @@
-import { Route } from "../Route"
-import { AuthState, State } from "../State"
+import type { Route } from "../Route"
+import type { AuthState, State } from "../State"
 import * as AuthToken from "../App/AuthToken"
 import { initLoginState } from "./Login"
-import { User } from "../../../Core/App/User"
+import type { User } from "../../../Core/App/User"
 import { initUpdateProfileState } from "./UpdateProfile"
 
 export function initState(route: Route): State {

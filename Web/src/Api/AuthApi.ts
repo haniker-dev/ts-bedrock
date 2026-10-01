@@ -1,15 +1,17 @@
-import * as JD from "decoders"
+import type * as JD from "decoders"
 import * as Teki from "teki"
 import * as Logger from "../Logger"
-import { HttpStatus, Method } from "../../../Core/Data/Api"
-import { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
-import { serializeUrlRecord, UrlRecord } from "../../../Core/Data/UrlToken"
-import { fetchE, FetchResult } from "../Data/Fetch"
+import type { HttpStatus, Method } from "../../../Core/Data/Api"
+import type { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
+import type { UrlRecord } from "../../../Core/Data/UrlToken"
+import { serializeUrlRecord } from "../../../Core/Data/UrlToken"
+import type { FetchResult } from "../Data/Fetch"
+import { fetchE } from "../Data/Fetch"
 import { err, ok } from "../../../Core/Data/Result"
-import { Maybe } from "../../../Core/Data/Maybe"
+import type { Maybe } from "../../../Core/Data/Maybe"
 import { requestNewAccessToken } from "../Api/Public/RefreshToken"
+import type { ApiResponse } from "../Api"
 import {
-  ApiResponse,
   decodeFetchResult,
   isNoBodyMethod,
   jsonHeaders,

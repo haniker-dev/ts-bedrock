@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { responseDecoder, Api } from "../Data/Api"
-import { Timestamp, timestampDecoder } from "../Data/Time/Timestamp"
-import { User, userDecoder } from "../App/User"
+import type { Api } from "../Data/Api"
+import { responseDecoder } from "../Data/Api"
+import type { Timestamp } from "../Data/Time/Timestamp"
+import { timestampDecoder } from "../Data/Time/Timestamp"
+import type { User } from "../App/User"
+import { userDecoder } from "../App/User"
 
 export type Contract = Api<
   "POST",

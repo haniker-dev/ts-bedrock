@@ -1,5 +1,6 @@
-import { Result, err } from "./Result"
-import { Maybe } from "./Maybe"
+import type { Result } from "./Result"
+import { err } from "./Result"
+import type { Maybe } from "./Maybe"
 
 /** Retry a promise immediately if it failed **/
 export async function retryPromise<A, B>(

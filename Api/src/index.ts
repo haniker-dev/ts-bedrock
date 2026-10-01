@@ -1,4 +1,5 @@
-import express, { Express, json } from "express"
+import type { Express } from "express"
+import express, { json } from "express"
 import cors from "cors"
 import { routes } from "./Route"
 import ENV from "./Env"

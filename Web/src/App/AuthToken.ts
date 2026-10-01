@@ -1,13 +1,10 @@
-import { UserID, userIDDecoder } from "../../../Core/App/User/UserID"
-import {
-  AccessToken,
-  accessTokenDecoder,
-} from "../../../Core/App/User/AccessToken"
+import type { UserID } from "../../../Core/App/User/UserID"
+import { userIDDecoder } from "../../../Core/App/User/UserID"
+import type { AccessToken } from "../../../Core/App/User/AccessToken"
+import { accessTokenDecoder } from "../../../Core/App/User/AccessToken"
 import { toString } from "../../../Core/Data/Security/JsonWebToken"
-import {
-  RefreshToken,
-  unsafeToRefreshToken,
-} from "../../../Core/Data/Security/RefreshToken"
+import type { RefreshToken } from "../../../Core/Data/Security/RefreshToken"
+import { unsafeToRefreshToken } from "../../../Core/Data/Security/RefreshToken"
 
 export type AuthToken = {
   userID: UserID

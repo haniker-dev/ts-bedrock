@@ -1,4 +1,5 @@
-import { Result, err, ok } from "./Result"
+import type { Result } from "./Result"
+import { err, ok } from "./Result"
 
 /** When streaming JSON, multiple different JSON values can be read at once
  * We delimit each JSON value using this **/

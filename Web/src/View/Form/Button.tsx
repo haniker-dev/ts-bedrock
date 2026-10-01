@@ -1,4 +1,4 @@
-import { JSX } from "react"
+import type { JSX } from "react"
 import { css } from "@emotion/css"
 import { color, font, theme } from "../Theme"
 

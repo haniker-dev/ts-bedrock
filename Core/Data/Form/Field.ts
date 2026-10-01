@@ -1,6 +1,6 @@
 import * as Result from "../Result"
-import { Maybe } from "../Maybe"
-import { Opaque } from "../Opaque"
+import type { Maybe } from "../Maybe"
+import type { Opaque } from "../Opaque"
 
 const fieldKey: unique symbol = Symbol()
 /** Captures error with input value

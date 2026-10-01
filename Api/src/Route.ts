@@ -1,4 +1,4 @@
-import { Express } from "express"
+import type { Express } from "express"
 import { authApi } from "./Api/AuthApi"
 import { userRoutes } from "./Route/User"
 import * as Home from "./Api/Auth/Home"

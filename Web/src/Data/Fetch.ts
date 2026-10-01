@@ -1,4 +1,5 @@
-import { err, ok, Result } from "../../../Core/Data/Result"
+import type { Result } from "../../../Core/Data/Result"
+import { err, ok } from "../../../Core/Data/Result"
 import * as Logger from "../Logger"
 
 export type FetchError = "NETWORK_ERROR"

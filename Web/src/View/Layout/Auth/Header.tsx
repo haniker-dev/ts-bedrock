@@ -1,6 +1,6 @@
 import { css } from "@emotion/css"
-import { AuthState } from "../../../State"
-import { JSX } from "react"
+import type { AuthState } from "../../../State"
+import type { JSX } from "react"
 import { localImage } from "../../ImageLocalSrc"
 import Link from "../../Link"
 import { toRoute } from "../../../Route"

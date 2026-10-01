@@ -1,6 +1,7 @@
 import * as bcrypt from "bcrypt"
-import { Maybe } from "../../../Core/Data/Maybe"
-import { Opaque, jsonValueCreate } from "../../../Core/Data/Opaque"
+import type { Maybe } from "../../../Core/Data/Maybe"
+import type { Opaque } from "../../../Core/Data/Opaque"
+import { jsonValueCreate } from "../../../Core/Data/Opaque"
 import * as Logger from "../Logger"
 
 const key: unique symbol = Symbol()

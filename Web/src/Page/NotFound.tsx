@@ -1,6 +1,6 @@
-import { JSX } from "react"
+import type { JSX } from "react"
 import { css } from "@emotion/css"
-import { State } from "../State"
+import type { State } from "../State"
 import { color, font, theme } from "../View/Theme"
 
 export type Props = { state: State }

@@ -1,4 +1,4 @@
-import { JSONValue } from "decoders"
+import type { JSONValue } from "decoders"
 
 /** An opaque type is a type where coders cannot create or edit it
  * thereby guaranteeing the integrity of the value

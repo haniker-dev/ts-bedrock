@@ -1,6 +1,6 @@
-import { JSX } from "react"
+import type { JSX } from "react"
 import { css } from "@emotion/css"
-import { AuthState } from "../State"
+import type { AuthState } from "../State"
 import { bp, color, font, theme } from "../View/Theme"
 
 export type Props = { authState: AuthState }

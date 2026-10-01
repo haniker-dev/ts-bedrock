@@ -4,7 +4,7 @@
  * that the image path is always correct
  * (provided it is created correctly)
  */
-import { Opaque } from "../../../Core/Data/Opaque"
+import type { Opaque } from "../../../Core/Data/Opaque"
 
 const key: unique symbol = Symbol()
 export type ImageLocalSrc = Opaque<string, typeof key>

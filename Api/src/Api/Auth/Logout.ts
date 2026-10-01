@@ -1,6 +1,7 @@
 import * as API from "../../../../Core/Api/Auth/Logout"
-import { Result, ok } from "../../../../Core/Data/Result"
-import { AuthUser } from "../AuthApi"
+import type { Result } from "../../../../Core/Data/Result"
+import { ok } from "../../../../Core/Data/Result"
+import type { AuthUser } from "../AuthApi"
 import * as RefreshTokenRow from "../../Database/RefreshTokenRow"
 
 export const contract = API.contract

@@ -1,5 +1,5 @@
-import { User } from "../../../Core/App/User"
-import { UserRow } from "../Database/UserRow"
+import type { User } from "../../../Core/App/User"
+import type { UserRow } from "../Database/UserRow"
 
 export function toUser(userRow: UserRow): User {
   return {

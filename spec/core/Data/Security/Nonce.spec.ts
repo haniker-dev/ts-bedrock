@@ -1,8 +1,8 @@
 import * as JD from "decoders"
 import { createHash } from "crypto"
+import type { Nonce } from "../../../../Core/Data/Security/Nonce"
 import {
   createNonce,
-  Nonce,
   nonceDecoder,
   payloadNonce,
   verifyNonce,

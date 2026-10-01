@@ -1,5 +1,6 @@
-import { BaseSyntheticEvent, JSX } from "react"
-import { navigateTo, Route, toPath } from "../Route"
+import type { BaseSyntheticEvent, JSX } from "react"
+import type { Route } from "../Route"
+import { navigateTo, toPath } from "../Route"
 import { emit } from "../Runtime/React"
 
 type Props = {

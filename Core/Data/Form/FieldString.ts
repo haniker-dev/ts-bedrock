@@ -1,4 +1,4 @@
-import { Maybe } from "../Maybe"
+import type { Maybe } from "../Maybe"
 import * as Field from "./Field"
 
 export type FieldString<E, T> = Field.Field<E, string, T>

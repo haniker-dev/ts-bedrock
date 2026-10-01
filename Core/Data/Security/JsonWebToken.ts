@@ -1,10 +1,12 @@
 import * as JD from "decoders"
-import { Opaque } from "../Opaque"
-import { diffFromNow, Timestamp, timestampDecoder } from "../Time/Timestamp"
-import { Result, err, ok } from "../Result"
+import type { Opaque } from "../Opaque"
+import type { Timestamp } from "../Time/Timestamp"
+import { diffFromNow, timestampDecoder } from "../Time/Timestamp"
+import type { Result } from "../Result"
+import { err, ok } from "../Result"
 import { parseJSON } from "../JSON"
 import { decodeBase64 } from "../Decoder"
-import { Nat } from "../Number/Nat"
+import type { Nat } from "../Number/Nat"
 
 const key: unique symbol = Symbol()
 /** Json Web Token is a string of this

@@ -1,4 +1,4 @@
-import { Maybe } from "./Maybe"
+import type { Maybe } from "./Maybe"
 
 /** Break an array into its last element and all preceding elements.
  * Function naming from:

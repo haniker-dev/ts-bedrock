@@ -4,13 +4,15 @@
  *
  */
 import * as JD from "decoders"
-import * as Express from "express"
+import type * as Express from "express"
 import { md5 } from "pure-md5"
-import { Err400, InternalErr500, Ok200 } from "../../Core/Data/Api"
-import { Result, err, ok } from "../../Core/Data/Result"
-import { Annotation, fromDecodeResult } from "../../Core/Data/Decoder"
+import type { Err400, InternalErr500, Ok200 } from "../../Core/Data/Api"
+import type { Result } from "../../Core/Data/Result"
+import { err, ok } from "../../Core/Data/Result"
+import type { Annotation } from "../../Core/Data/Decoder"
+import { fromDecodeResult } from "../../Core/Data/Decoder"
 import * as Logger from "./Logger"
-import {
+import type {
   AuthApiError,
   AuthErr400,
   AuthInternalErr500,

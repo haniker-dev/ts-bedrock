@@ -1,7 +1,10 @@
 import * as JD from "decoders"
-import { Result, err, ok, toMaybe, mapOk } from "./Result"
-import { Maybe, throwIfNull } from "./Maybe"
-import { Opaque, jsonValueCreate } from "./Opaque"
+import type { Result } from "./Result"
+import { err, ok, toMaybe, mapOk } from "./Result"
+import type { Maybe } from "./Maybe"
+import { throwIfNull } from "./Maybe"
+import type { Opaque } from "./Opaque"
+import { jsonValueCreate } from "./Opaque"
 
 type Text<T extends symbol> = Opaque<string, T>
 export type TextError = "EMPTY_TEXT" | "TEXT_TOO_LONG"

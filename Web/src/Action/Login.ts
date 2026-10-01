@@ -1,4 +1,5 @@
-import { Action, cmd, perform } from "../Action"
+import type { Action } from "../Action"
+import { cmd, perform } from "../Action"
 import { _LoginState } from "../State/Login"
 import * as LoginApi from "../Api/Public/Login"
 import * as LogoutApi from "../Api/Auth/Logout"

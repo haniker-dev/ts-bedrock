@@ -1,12 +1,12 @@
 import * as JD from "decoders"
-import { User, userDecoder } from "../../App/User"
-import { AuthApi, authResponseDecoder } from "../../Data/Api/Auth"
+import type { User } from "../../App/User"
+import { userDecoder } from "../../App/User"
+import type { AuthApi } from "../../Data/Api/Auth"
+import { authResponseDecoder } from "../../Data/Api/Auth"
+import type { NoBodyParams, NoErrorCode, NoUrlParams } from "../../Data/Api"
 import {
-  NoBodyParams,
   noBodyParamsDecoder,
-  NoErrorCode,
   noErrorCodeDecoder,
-  NoUrlParams,
   noUrlParamsDecoder,
 } from "../../Data/Api"
 

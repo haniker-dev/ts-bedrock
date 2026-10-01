@@ -1,7 +1,7 @@
-import * as Express from "express"
-import { UrlRecord } from "../../../Core/Data/UrlToken"
-import { Result } from "../../../Core/Data/Result"
-import { Api, Method, ResponseJson } from "../../../Core/Data/Api"
+import type * as Express from "express"
+import type { UrlRecord } from "../../../Core/Data/UrlToken"
+import type { Result } from "../../../Core/Data/Result"
+import type { Api, Method, ResponseJson } from "../../../Core/Data/Api"
 import {
   internalErr500,
   decodeParams,

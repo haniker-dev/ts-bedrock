@@ -1,5 +1,6 @@
 import * as JD from "decoders"
-import { Opaque, jsonValueCreate } from "../Opaque"
+import type { Opaque } from "../Opaque"
+import { jsonValueCreate } from "../Opaque"
 import { v6 } from "uuid"
 
 const key: unique symbol = Symbol()

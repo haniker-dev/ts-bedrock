@@ -3,18 +3,19 @@
  * You probably want to see /Api/AuthApi.ts or /Api/PublicApi.ts instead
  *
  */
-import * as JD from "decoders"
+import type * as JD from "decoders"
 import * as Logger from "./Logger"
 import Env from "./Env"
-import {
+import type {
   HttpStatus,
-  httpStatusDecoder,
   Method,
   ApiError as PublicApiError,
 } from "../../Core/Data/Api"
-import { AuthApiError } from "../../Core/Data/Api/Auth"
-import { FetchResult } from "./Data/Fetch"
-import { Result, err, ok } from "../../Core/Data/Result"
+import { httpStatusDecoder } from "../../Core/Data/Api"
+import type { AuthApiError } from "../../Core/Data/Api/Auth"
+import type { FetchResult } from "./Data/Fetch"
+import type { Result } from "../../Core/Data/Result"
+import { err, ok } from "../../Core/Data/Result"
 
 /** For convenience, we merge public api response
  * and auth api response into one type

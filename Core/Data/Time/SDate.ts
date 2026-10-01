@@ -1,10 +1,14 @@
 import * as JD from "decoders"
-import { Opaque } from "../Opaque"
-import { Result, err, ok, toMaybe } from "../Result"
-import { Maybe, throwIfNull } from "../Maybe"
+import type { Opaque } from "../Opaque"
+import type { Result } from "../Result"
+import { err, ok, toMaybe } from "../Result"
+import type { Maybe } from "../Maybe"
+import { throwIfNull } from "../Maybe"
 import { parse } from "date-fns"
-import { Nat, natDecoder } from "../Number/Nat"
-import { fromDate, Timestamp } from "./Timestamp"
+import type { Nat } from "../Number/Nat"
+import { natDecoder } from "../Number/Nat"
+import type { Timestamp } from "./Timestamp"
+import { fromDate } from "./Timestamp"
 
 const key: unique symbol = Symbol()
 /** Represents a date of birth

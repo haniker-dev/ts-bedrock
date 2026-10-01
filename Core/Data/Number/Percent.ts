@@ -1,6 +1,7 @@
 import * as JD from "decoders"
-import { Opaque } from "../Opaque"
-import { createAbsoluteNat, Nat } from "./Nat"
+import type { Opaque } from "../Opaque"
+import type { Nat } from "./Nat"
+import { createAbsoluteNat } from "./Nat"
 import { clamp } from "../Number"
 
 const key: unique symbol = Symbol()

@@ -1,22 +1,22 @@
 import * as JD from "decoders"
-import { Hash } from "../Data/Hash"
-import { Email, emailDecoder } from "../../../Core/Data/User/Email"
-import { Name, nameDecoder } from "../../../Core/App/User/Name"
-import {
-  createUserID,
-  UserID,
-  userIDDecoder,
-} from "../../../Core/App/User/UserID"
+import type { Hash } from "../Data/Hash"
+import type { Email } from "../../../Core/Data/User/Email"
+import { emailDecoder } from "../../../Core/Data/User/Email"
+import type { Name } from "../../../Core/App/User/Name"
+import { nameDecoder } from "../../../Core/App/User/Name"
+import type { UserID } from "../../../Core/App/User/UserID"
+import { createUserID, userIDDecoder } from "../../../Core/App/User/UserID"
+import type { Timestamp } from "../../../Core/Data/Time/Timestamp"
 import {
   createNow,
-  Timestamp,
   timestampJSDateDecoder,
   toDate,
 } from "../../../Core/Data/Time/Timestamp"
 import db from "../Database"
 import * as Logger from "../Logger"
-import { Nat, natDecoder } from "../../../Core/Data/Number/Nat"
-import { Maybe } from "../../../Core/Data/Maybe"
+import type { Nat } from "../../../Core/Data/Number/Nat"
+import { natDecoder } from "../../../Core/Data/Number/Nat"
+import type { Maybe } from "../../../Core/Data/Maybe"
 
 const tableName = "user"
 

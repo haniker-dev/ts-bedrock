@@ -1,10 +1,11 @@
-import { publicApi, apiErrorString, ApiError, ApiResponse } from "../PublicApi"
-import {
-  contract,
+import type { ApiError, ApiResponse } from "../PublicApi"
+import { publicApi, apiErrorString } from "../PublicApi"
+import type {
   ErrorCode,
   Payload,
   BodyParams,
 } from "../../../../Core/Api/Public/Login"
+import { contract } from "../../../../Core/Api/Public/Login"
 
 export type { ErrorCode, Payload, BodyParams }
 export type Response = ApiResponse<ErrorCode, Payload>

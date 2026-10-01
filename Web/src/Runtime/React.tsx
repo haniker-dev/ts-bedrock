@@ -1,11 +1,12 @@
 /** Customised Runtime for React Web */
-import React, { JSX } from "react"
+import type { JSX } from "react"
+import React from "react"
 import { flushSync } from "react-dom"
 import { createRoot } from "react-dom/client"
 import * as Runtime from "./Internal"
 import type { State } from "../State"
 import type { Action, Cmd } from "../Action"
-import { EmitFn } from "./Internal"
+import type { EmitFn } from "./Internal"
 
 // Due to cyclic dependencies between Runtime.start and View,
 // we have to do this trick to allow View to import emit
