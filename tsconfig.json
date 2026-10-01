@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "declaration": false,
     "module": "esnext",
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -9,15 +8,14 @@
     "jsx": "react-jsx",
     "moduleResolution": "bundler",
     "resolveJsonModule": false,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
     "strict": true,
-    "strictNullChecks": true,
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
     "types": ["vitest/globals"]
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
