@@ -28,7 +28,7 @@ export async function issue(userID: UserID): Promise<AccessToken> {
 
   return signer
     .sign(jwt_config.secret)
-    .then(accessTokenDecoder.verify)
+    .then((token) => accessTokenDecoder.verify(token))
     .catch((error) => {
       Logger.error(`jwt issue error: ${error}`)
       throw `jwt issue error: ${error}`

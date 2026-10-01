@@ -13,4 +13,4 @@ export function clamp(min: number, max: number, value: number): number {
 
 export const numberStringDecoder: JD.Decoder<number> = JD.string
   .transform(Number)
-  .transform(JD.number.verify)
+  .transform((n) => JD.number.verify(n))

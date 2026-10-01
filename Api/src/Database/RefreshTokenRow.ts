@@ -75,7 +75,7 @@ export async function replace(row: RefreshTokenRow): Promise<RefreshTokenRow> {
     .where("userID", "=", row.userID.unwrap())
     .returningAll()
     .executeTakeFirstOrThrow()
-    .then(rowDecoder.verify)
+    .then((dbRow) => rowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.create error ${e}`)
       throw e
@@ -100,7 +100,7 @@ export async function get(
     .where("id", "=", refreshToken.unwrap())
     .where("userID", "=", userID.unwrap())
     .executeTakeFirstOrThrow()
-    .then(rowDecoder.verify)
+    .then((dbRow) => rowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.get error ${e}`)
       return null
@@ -117,7 +117,7 @@ export async function getByPrevious(
     .where("previousID", "=", refreshToken.unwrap())
     .where("userID", "=", userID.unwrap())
     .executeTakeFirstOrThrow()
-    .then(rowDecoder.verify)
+    .then((dbRow) => rowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.get error ${e}`)
       return null

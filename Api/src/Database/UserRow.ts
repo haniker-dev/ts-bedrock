@@ -52,7 +52,7 @@ export async function create(params: CreateParams): Promise<UserRow> {
     })
     .returningAll()
     .executeTakeFirstOrThrow()
-    .then(userRowDecoder.verify)
+    .then((dbRow) => userRowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.create error ${e}`)
       throw e
@@ -115,7 +115,7 @@ export async function update(
     .where("id", "=", id.unwrap())
     .returningAll()
     .executeTakeFirstOrThrow()
-    .then(userRowDecoder.verify)
+    .then((dbRow) => userRowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.update error ${e}`)
       throw e
@@ -149,7 +149,7 @@ export async function unsafeCreate(row: UserRow): Promise<UserRow> {
     })
     .returningAll()
     .executeTakeFirstOrThrow()
-    .then(userRowDecoder.verify)
+    .then((dbRow) => userRowDecoder.verify(dbRow))
     .catch((e) => {
       Logger.error(`#${tableName}.unsafeCreate error ${e}`)
       throw e
