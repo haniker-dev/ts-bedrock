@@ -11,7 +11,7 @@ import type { Timestamp } from "./Timestamp"
 import { fromDate } from "./Timestamp"
 
 const key: unique symbol = Symbol()
-/** Represents a date of birth
+/** Represents a calendar date
  * Internally it cannot be a JS Date
  * as JS Date include timezone which causes issue with different timezone
  **/
@@ -54,7 +54,7 @@ export type Day =
   | 29
   | 30
   | 31
-export type ErrorCode = "INVALID_DATE_OF_BIRTH"
+export type ErrorCode = "INVALID_SDATE"
 
 /** WARN JS Date is adjusted for timezone
  * and it is different in different environments such as API or web or mobile
@@ -68,26 +68,22 @@ export function fromJsDateLocal(d: Date): Maybe<SDate> {
   return sdateStringDecoder.value(_toString(year, month, day)) ?? null
 }
 
-export function toJsDateLocal(dob: SDate): Date {
-  const { year, month, day } = dob.unwrap()
+export function toJsDateLocal(d: SDate): Date {
+  const { year, month, day } = d.unwrap()
   const date = new Date()
   date.setFullYear(year.unwrap(), month - 1, day)
   return date
 }
 
-export function toTimestamp(dob: SDate): Timestamp {
-  return fromDate(toJsDateLocal(dob))
+export function toTimestamp(d: SDate): Timestamp {
+  return fromDate(toJsDateLocal(d))
 }
 
-export function createDateOfBirth(
-  year: Nat,
-  month: Month,
-  day: Day,
-): Maybe<SDate> {
-  return toMaybe(createDateOfBirthE(year, month, day))
+export function createSDate(year: Nat, month: Month, day: Day): Maybe<SDate> {
+  return toMaybe(createSDateE(year, month, day))
 }
 
-export function createDateOfBirthE(
+export function createSDateE(
   year: Nat,
   month: Month,
   day: Day,
@@ -134,12 +130,12 @@ function _validate(internal: Internal): Result<ErrorCode, Internal> {
 
     // WARN parseISO always return a Date even if it is invalid
     if (String(jsDate) === "Invalid Date") {
-      return err("INVALID_DATE_OF_BIRTH")
+      return err("INVALID_SDATE")
     }
 
-    return jsDate > new Date() ? err("INVALID_DATE_OF_BIRTH") : ok(internal)
+    return ok(internal)
   } catch (_e) {
-    return err("INVALID_DATE_OF_BIRTH")
+    return err("INVALID_SDATE")
   }
 }
 
@@ -150,10 +146,7 @@ export const sdateStringDecoder: JD.Decoder<SDate> = JD.string.transform(
     const year = natDecoder.verify(parseInt(JD.string.verify(yearM)))
     const month = monthDecoder.verify(monthM)
     const day = dayDecoder.verify(dayM)
-    return throwIfNull(
-      createDateOfBirth(year, month, day),
-      `Invalid DateOfBirth: ${s}`,
-    )
+    return throwIfNull(createSDate(year, month, day), `Invalid SDate: ${s}`)
   },
 )
 
