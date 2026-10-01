@@ -115,7 +115,8 @@ in `.oxlintrc.json` and `typefirst/no-react-hook-member` in
     https://www.typescriptlang.org/docs/handbook/intro.html
 
 - Adopt functional programming style
-  - No OOP, classes, attaching methods to object
+  - No OOP, classes, attaching methods to object — oxlint rejects a class
+    (`typefirst/no-class` in `devops/lint/typefirst-plugin.mts`)
   - Use common functional data types such as `Result` or `Maybe` in
     `/Core/Data/*`
 

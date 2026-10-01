@@ -30,6 +30,7 @@
     "typefirst/no-type-predicate": "error",
     "typefirst/no-const-assertion": "error",
     "typefirst/no-react-hook-member": "error",
+    "typefirst/no-class": "error",
     "typescript/consistent-type-assertions": [
       "error",
       {

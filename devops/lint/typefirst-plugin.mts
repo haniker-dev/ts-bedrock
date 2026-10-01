@@ -178,6 +178,26 @@ const noReactHookMember: Rule = {
   },
 }
 
+const noClass: Rule = {
+  meta: {
+    type: "problem",
+    docs: { description: "Classes are not allowed" },
+  },
+  create(context) {
+    const report = (node: ESTree.Class) => {
+      context.report({
+        node,
+        message:
+          "Classes are not allowed. Use a type and the functions on it instead.",
+      })
+    }
+    return {
+      ClassDeclaration: report,
+      ClassExpression: report,
+    }
+  },
+}
+
 const plugin: Plugin = {
   meta: { name: "typefirst" },
   rules: {
@@ -185,6 +205,7 @@ const plugin: Plugin = {
     "no-type-predicate": noTypePredicate,
     "no-const-assertion": noConstAssertion,
     "no-react-hook-member": noReactHookMember,
+    "no-class": noClass,
   },
 }
 
