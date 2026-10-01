@@ -2,7 +2,6 @@ import * as Express from "express"
 import { UrlRecord } from "../../../Core/Data/UrlToken"
 import { Result, err, mapOk } from "../../../Core/Data/Result"
 import {
-  internalErr500,
   decodeParams,
   removeQuery,
   catchCallback,
@@ -57,12 +56,12 @@ export function authApi<
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
     return paramsResult._t === "Ok"
       ? runAuthHandler(paramsResult.value, handler, req, res)
-      : internalErr500(
+      : authInternalErr500(
           res,
           paramsResult.error,
           decoderErrorMessage(req.query, paramsResult.error),
         )
-  })
+  }, authInternalErr500)
 
   switch (method) {
     case "GET":

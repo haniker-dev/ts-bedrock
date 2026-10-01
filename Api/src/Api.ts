@@ -27,12 +27,17 @@ export function removeQuery(route: string): string {
  ***/
 export function catchCallback(
   fn: (req: Express.Request, res: Express.Response<unknown>) => Promise<void>,
+  respond500: (
+    res: Express.Response<unknown>,
+    error: unknown,
+    errorMessage: string,
+  ) => void,
 ) {
   return async function (req: Express.Request, res: Express.Response<unknown>) {
     try {
       return await fn(req, res)
     } catch (error) {
-      return internalErr500(
+      return respond500(
         res,
         error,
         internalErrMessage("API Uncaught Exception", req.query, error),

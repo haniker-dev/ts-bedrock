@@ -47,7 +47,7 @@ export function publicApi<
           paramsResult.error,
           decoderErrorMessage(req.query, paramsResult.error),
         )
-  })
+  }, internalErr500)
 
   switch (method) {
     case "GET":
