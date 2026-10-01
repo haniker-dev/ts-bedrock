@@ -86,7 +86,7 @@ const elementOf = (
   absolutePath: string,
 ): string | null => {
   const first = path.relative(cwd, absolutePath).split(path.sep)[0]
-  return first != null && elements.includes(first) ? first : null
+  return elements.includes(first) ? first : null
 }
 
 const relativeImportElement = (
