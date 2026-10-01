@@ -7,7 +7,7 @@ import {
   Api as PublicApi,
   ResponseJson,
 } from "../../../Core/Data/Api"
-import { toStringRecord, UrlRecord } from "../../../Core/Data/UrlToken"
+import { serializeUrlRecord, UrlRecord } from "../../../Core/Data/UrlToken"
 import { fetchE, FetchResult } from "../Data/Fetch"
 import { ok, err } from "../../../Core/Data/Result"
 import {
@@ -35,7 +35,7 @@ export async function publicApi<
   bodyData: RequestBody,
 ): Promise<ApiResponse<ErrorCode, Payload>> {
   const { method, route, responseDecoder } = contract
-  const path = Teki.reverse(route)(toStringRecord(urlData))
+  const path = Teki.reverse(route)(serializeUrlRecord(urlData))
   return fetchE(makePath(path), {
     method,
     headers: jsonHeaders(new Headers()),

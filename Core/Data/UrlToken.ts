@@ -41,21 +41,42 @@ type ExtractQueryToken<T extends string> =
 
 type RemoveBracket<T> = T extends `${infer Token}[]` ? Token : T
 
-export function toStringRecord<R extends string>(
+export function serializeUrlRecord<R extends string>(
   urlData: UrlRecord<R>,
-): Record<string, string> {
-  return Object.entries(urlData).reduce(
-    (acc: Record<string, string>, [key, value]) => {
-      acc[key] =
-        value == null
-          ? ""
-          : typeof value === "string"
-            ? value
-            : // Quick fix to remove double quotes
-              // when opaque type is JSON.stringify into a string
-              JSON.stringify(value).replace(/^"|"$/g, "")
-      return acc
-    },
-    {},
+): Record<string, string | string[]> {
+  return Object.fromEntries(
+    Object.entries(urlData).map(([key, value]) => [key, serializeValue(value)]),
   )
+}
+
+function serializeValue(value: unknown): string | string[] {
+  return Array.isArray(value)
+    ? value.map(serializeScalar)
+    : serializeScalar(value)
+}
+
+function serializeScalar(value: unknown): string {
+  switch (typeof value) {
+    case "string":
+      return value
+    case "number":
+    case "bigint":
+    case "boolean":
+      return String(value)
+    case "undefined":
+    case "function":
+    case "symbol":
+      return ""
+    case "object":
+      return value == null ? "" : serializeViaToJSON(value)
+  }
+}
+
+function serializeViaToJSON(value: object): string {
+  const serialized: unknown = JSON.parse(
+    JSON.stringify(value, (_key, toJSONApplied: unknown) =>
+      typeof toJSONApplied === "object" ? "" : serializeScalar(toJSONApplied),
+    ),
+  )
+  return typeof serialized === "string" ? serialized : ""
 }

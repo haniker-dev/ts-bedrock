@@ -1,6 +1,6 @@
 import * as JD from "decoders"
 import * as Teki from "teki"
-import { UrlRecord } from "../../Core/Data/UrlToken"
+import { serializeUrlRecord, UrlRecord } from "../../Core/Data/UrlToken"
 import { Maybe, maybeOptionalDecoder } from "../../Core/Data/Maybe"
 import type { Action } from "./Action"
 import type { State } from "./State"
@@ -16,7 +16,7 @@ import type { State } from "./State"
  * - *Ensure* your route params can be serialized into JSON string
  *   otherwise we can't use it in the url
  *   We don't allow object and function to be serialized
- *   Read _serializeParams function to understand more
+ *   Read serializeUrlRecord in Core/Data/UrlToken.ts to understand more
  * - URL params are always a string in the url
  *   so start decoding with a string first then transform
  *   Eg. numberStringDecoder, booleanStringDecoder, natStringDecoder, etc
@@ -139,9 +139,9 @@ export function toRoute<K extends keyof RouteTable>(
   return routeDef.decoder.verify({
     _t: routeT,
     path: routeDef.path,
-    // We need to _serializeParams
+    // We need to serializeUrlRecord
     // because the route decoder is targetting string params
-    params: _serializeParams(params),
+    params: serializeUrlRecord(params),
   })
 }
 
@@ -154,7 +154,7 @@ export function toPath(route: Route): string {
   const { params } = route
   // We need to convert all the param values into string
   // before we can put them into the path
-  const urlParams = _serializeParams(params)
+  const urlParams = serializeUrlRecord(params)
   return Teki.reverse(path)(urlParams)
 }
 
@@ -185,9 +185,6 @@ export function parseRoute(fullUrl: string): Route {
 
 // *** Internal ***
 
-// Teki does not expose RouteParams
-// so we are coaxing it out here
-type RouteParams = NonNullable<ReturnType<ReturnType<typeof Teki.parse>>>
 type NoParams = Record<string, never>
 
 // Kept as private so that developers cannot use the path directly
@@ -207,36 +204,6 @@ type RouteDef<R extends Route> = {
       params: UrlRecord<R["path"]>
     }
   >
-}
-
-/** We need to carefully convert params into URL context
- * where number is a string, undefined to be "", etc
- */
-function _serializeParams(params: Route["params"]): RouteParams {
-  return JSON.parse(
-    JSON.stringify(params, (_key, value) => {
-      switch (typeof value) {
-        case "string":
-          return value
-        case "number":
-        case "bigint":
-        case "boolean":
-          // We need to set all these as string in URL
-          return String(value)
-        case "undefined":
-        case "function":
-        case "symbol":
-          return ""
-        case "object":
-          if (value == null) {
-            return ""
-          } else {
-            // value could be array or object
-            return value
-          }
-      }
-    }),
-  )
 }
 
 // Simple test: `tsx src/Route.ts`

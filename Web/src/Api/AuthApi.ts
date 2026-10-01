@@ -3,7 +3,7 @@ import * as Teki from "teki"
 import * as Logger from "../Logger"
 import { HttpStatus, Method } from "../../../Core/Data/Api"
 import { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
-import { toStringRecord, UrlRecord } from "../../../Core/Data/UrlToken"
+import { serializeUrlRecord, UrlRecord } from "../../../Core/Data/UrlToken"
 import { fetchE, FetchResult } from "../Data/Fetch"
 import { err, ok } from "../../../Core/Data/Result"
 import { Maybe } from "../../../Core/Data/Maybe"
@@ -35,7 +35,7 @@ export async function authApi<
   bodyData: RequestBody,
 ): Promise<ApiResponse<ErrorCode, Payload>> {
   const { method, route, responseDecoder } = contract
-  const path = Teki.reverse(route)(toStringRecord(urlData))
+  const path = Teki.reverse(route)(serializeUrlRecord(urlData))
   const authHeader = await authHeaders(new Headers())
   if (authHeader == null) {
     return err("UNAUTHORISED")
