@@ -48,8 +48,9 @@ breaks the template's purpose.
   `npm test`, which needs `npm run external:start` first. `npm run
   lint:strict` adds oxlint's type-aware rules (oxlint-tsgolint); it is not a
   gate and its findings are untriaged.
-- **TypeScript 7 ships only the native `tsc`**, no compiler API: code that
-  imports `typescript` needs its own nested package pinning TypeScript 5.
+- **TypeScript 7's bare `typescript` import exports only `version`**; its
+  new API is `typescript/unstable/*`. Code written against the classic
+  compiler API needs its own nested package pinning TypeScript 5.
 - **Lint is oxlint** (`.oxlintrc.json`). The TypeFirst bans oxlint has no
   native rule for are the `typefirst/*` rules in
   `devops/lint/typefirst-plugin.mjs`, loaded as a JS plugin;
