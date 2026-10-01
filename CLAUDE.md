@@ -56,11 +56,6 @@ breaks the template's purpose.
   rule for are the `typefirst/*` rules in `devops/lint/typefirst-plugin.mts`,
   loaded as a JS plugin; `oxlint --print-config` does not list them. oxlint has
   no watch mode, so `npm start` lints once.
-- A plugin named in `plugins` in `.oxlintrc.json` brings its whole correctness
-  category as warnings, and the gate denies warnings: adding a plugin for one
-  rule turns on the rest of that category. A rule missing from the `rules` list
-  may therefore already be enforced — `oxlint --print-config` shows the resolved
-  set.
 - `typefirst/import-boundaries` sees relative imports only: a tsconfig `paths`
   or package.json `imports` alias crosses the Core/Api/Web boundary unreported.
 - Branch off `main`; this repo has no `development` branch.

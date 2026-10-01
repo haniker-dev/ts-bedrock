@@ -3,6 +3,7 @@
   "plugins": ["eslint", "typescript", "import", "react", "unicorn"],
   "jsPlugins": ["./devops/lint/typefirst-plugin.mts"],
   "options": { "typeAware": true },
+  "categories": { "correctness": "error" },
   "rules": {
     "typefirst/import-boundaries": [
       "error",
