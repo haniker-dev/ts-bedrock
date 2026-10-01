@@ -38,7 +38,10 @@ breaks the template's purpose.
 - **Three separate `node_modules`**: run `npm install` in the root, `Api/` and
   `Web/`. This is not an npm workspace. After any dependency change, or for a
   `tsc` error that makes no sense, check `npm ls <pkg>` in both the package and
-  the root before treating it as a code bug.
+  the root before treating it as a code bug. The root's `vite` (vitest's
+  peer, and the binary `npm start` serves Web with) and Web's `vite` must
+  resolve to the same version: two copies in one tsc program fail with
+  TS2430 in vite's `module-runner.d.ts`.
 - **npm 11 blocks postinstall scripts.** `npm ci` can silently skip native
   builds (e.g. `esbuild`), which surfaces later as a broken vite. Fix with
   `npm rebuild <pkg>`.
@@ -48,7 +51,7 @@ breaks the template's purpose.
   `npm test`, which needs `npm run external:start` first. `npm run
   lint:strict` adds oxlint's type-aware rules (oxlint-tsgolint); it is not a
   gate and its findings are untriaged.
-- **TypeScript 7's bare `typescript` import exports only `version`**; its
+- **TypeScript 7's bare `typescript` import exports only version info**; its
   new API is `typescript/unstable/*`. Code written against the classic
   compiler API needs its own nested package pinning TypeScript 5.
 - **Lint is oxlint** (`.oxlintrc.json`). The TypeFirst bans oxlint has no

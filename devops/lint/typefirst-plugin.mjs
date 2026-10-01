@@ -90,24 +90,28 @@ const noTypePredicate = {
 const noConstAssertion = {
   meta: {
     type: "problem",
-    docs: { description: "Const assertions (`as const`) are not allowed" },
+    docs: {
+      description: "Const assertions (`as const`, `<const>`) are not allowed",
+    },
   },
   create(context) {
+    const check = (node) => {
+      const type = node.typeAnnotation
+      if (
+        type.type === "TSTypeReference" &&
+        type.typeName.type === "Identifier" &&
+        type.typeName.name === "const"
+      ) {
+        context.report({
+          node,
+          message:
+            "Type assertions (`as`) are not allowed. Use explicit type annotations instead.",
+        })
+      }
+    }
     return {
-      TSAsExpression(node) {
-        const type = node.typeAnnotation
-        if (
-          type.type === "TSTypeReference" &&
-          type.typeName.type === "Identifier" &&
-          type.typeName.name === "const"
-        ) {
-          context.report({
-            node,
-            message:
-              "Type assertions (`as`) are not allowed. Use explicit type annotations instead.",
-          })
-        }
-      },
+      TSAsExpression: check,
+      TSTypeAssertion: check,
     }
   },
 }

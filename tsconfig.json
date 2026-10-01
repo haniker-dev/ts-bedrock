@@ -17,6 +17,6 @@
     "strictNullChecks": true,
     "types": ["vitest/globals"]
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
   "exclude": ["**/node_modules", "**/dist"]
 }
