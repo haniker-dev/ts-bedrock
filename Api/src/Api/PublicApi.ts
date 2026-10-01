@@ -6,7 +6,6 @@ import {
   internalErr500,
   decodeParams,
   removeQuery,
-  catchCallback,
   decoderErrorMessage,
   err400,
   internalErrMessage,
@@ -38,16 +37,27 @@ export function publicApi<
   const { contract, handler } = api
   const { method, route, urlDecoder, bodyDecoder } = contract
   const expressRoute = removeQuery(route)
-  const handlerRunner = catchCallback(async (req, res) => {
+  const handlerRunner = async (
+    req: Express.Request,
+    res: Express.Response<unknown>,
+  ): Promise<void> => {
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
-    return paramsResult._t === "Ok"
-      ? runPublicHandler(paramsResult.value, handler, res)
-      : internalErr500(
-          res,
-          paramsResult.error,
-          decoderErrorMessage(req.query, paramsResult.error),
-        )
-  }, internalErr500)
+    if (paramsResult._t === "Err") {
+      return internalErr500(
+        res,
+        paramsResult.error,
+        decoderErrorMessage(req.query, paramsResult.error),
+      )
+    }
+
+    return runPublicHandler(paramsResult.value, handler, res).catch((error) =>
+      internalErr500(
+        res,
+        error,
+        internalErrMessage("API Uncaught Exception", req.query, error),
+      ),
+    )
+  }
 
   switch (method) {
     case "GET":

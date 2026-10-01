@@ -21,31 +21,6 @@ export function removeQuery(route: string): string {
   return route.split("?")[0] || ""
 }
 
-/** An error thrown in a callback cannot be caught in the same closure
- * Hence, we have to wrapped the function itself in a try..catch
- * and return it as a higher-order function to be used as a callback
- ***/
-export function catchCallback(
-  fn: (req: Express.Request, res: Express.Response<unknown>) => Promise<void>,
-  respond500: (
-    res: Express.Response<unknown>,
-    error: unknown,
-    errorMessage: string,
-  ) => void,
-) {
-  return async function (req: Express.Request, res: Express.Response<unknown>) {
-    try {
-      return await fn(req, res)
-    } catch (error) {
-      return respond500(
-        res,
-        error,
-        internalErrMessage("API Uncaught Exception", req.query, error),
-      )
-    }
-  }
-}
-
 export function decodeParams<UrlParams, RequestBody>(
   req: Express.Request,
   urlDecoder: JD.Decoder<UrlParams>,

@@ -4,7 +4,6 @@ import { Result, err, mapOk } from "../../../Core/Data/Result"
 import {
   decodeParams,
   removeQuery,
-  catchCallback,
   decoderErrorMessage,
   internalErrMessage,
   authOk200,
@@ -52,16 +51,28 @@ export function authApi<
   const { contract, handler } = api
   const { method, route, urlDecoder, bodyDecoder } = contract
   const expressRoute = removeQuery(route)
-  const handlerRunner = catchCallback(async (req, res) => {
+  const handlerRunner = async (
+    req: Express.Request,
+    res: Express.Response<unknown>,
+  ): Promise<void> => {
     const paramsResult = decodeParams(req, urlDecoder, bodyDecoder)
-    return paramsResult._t === "Ok"
-      ? runAuthHandler(paramsResult.value, handler, req, res)
-      : authInternalErr500(
+    if (paramsResult._t === "Err") {
+      return authInternalErr500(
+        res,
+        paramsResult.error,
+        decoderErrorMessage(req.query, paramsResult.error),
+      )
+    }
+
+    return runAuthHandler(paramsResult.value, handler, req, res).catch(
+      (error) =>
+        authInternalErr500(
           res,
-          paramsResult.error,
-          decoderErrorMessage(req.query, paramsResult.error),
-        )
-  }, authInternalErr500)
+          error,
+          internalErrMessage("API Uncaught Exception", req.query, error),
+        ),
+    )
+  }
 
   switch (method) {
     case "GET":
