@@ -22,7 +22,7 @@ export type AuthApi<
   ) => JD.Decoder<AuthResponseJson<ErrorCode, Payload>>
 }
 
-export type AuthApiError = "UNAUTHORISED"
+export type AuthApiError = "UNAUTHORISED" | "PAYLOAD_TOO_LARGE"
 export type AuthOk200<D> = { _t: "AuthOk"; data: D }
 export type AuthErr400<E> = { _t: "AuthErr"; code: E | AuthApiError }
 export type AuthInternalErr500 = { _t: "AuthServerError"; errorID: string }
@@ -77,4 +77,5 @@ export function authInternalErr500Decoder(): JD.Decoder<AuthInternalErr500> {
 
 export const authApiErrorDecoder: JD.Decoder<AuthApiError> = JD.oneOf([
   "UNAUTHORISED",
+  "PAYLOAD_TOO_LARGE",
 ])

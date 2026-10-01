@@ -1,7 +1,12 @@
 import type * as Express from "express"
 import type { UrlRecord } from "../../../Core/Data/UrlToken"
 import type { Result } from "../../../Core/Data/Result"
-import type { Api, Method, ResponseJson } from "../../../Core/Data/Api"
+import type {
+  Api,
+  ApiError,
+  Method,
+  ResponseJson,
+} from "../../../Core/Data/Api"
 import {
   internalErr500,
   decodeParams,
@@ -9,6 +14,9 @@ import {
   decoderErrorMessage,
   err400,
   internalErrMessage,
+  bodyParserErrorType,
+  bodyParserTooLargeType,
+  jsonBody,
   ok200,
 } from "../Api"
 
@@ -61,21 +69,39 @@ export function publicApi<
 
   switch (method) {
     case "GET":
-      app.get(expressRoute, handlerRunner)
+      app.get(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "DELETE":
-      app.delete(expressRoute, handlerRunner)
+      app.delete(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "POST":
-      app.post(expressRoute, handlerRunner)
+      app.post(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "PATCH":
-      app.patch(expressRoute, handlerRunner)
+      app.patch(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "PUT":
-      app.put(expressRoute, handlerRunner)
+      app.put(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
   }
+}
+
+// Express runs a handler as error middleware only when it declares
+// four parameters, hence the unused _next
+function bodyErrorRunner(
+  error: unknown,
+  req: Express.Request,
+  res: Express.Response<unknown>,
+  _next: Express.NextFunction,
+): void {
+  const errorType = bodyParserErrorType(error)
+  return errorType === bodyParserTooLargeType
+    ? err400<ApiError>(res, "PAYLOAD_TOO_LARGE")
+    : internalErr500(
+        res,
+        errorType,
+        internalErrMessage("Request Body Parse Failed", req.query, errorType),
+      )
 }
 
 async function runPublicHandler<ErrorCode, Params, Payload>(

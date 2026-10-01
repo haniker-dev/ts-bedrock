@@ -5,8 +5,10 @@
  */
 import * as JD from "decoders"
 import type * as Express from "express"
+import { json } from "express"
 import { md5 } from "pure-md5"
 import type { Err400, InternalErr500, Ok200 } from "../../Core/Data/Api"
+import type { Maybe } from "../../Core/Data/Maybe"
 import type { Result } from "../../Core/Data/Result"
 import { err, ok } from "../../Core/Data/Result"
 import type { Annotation } from "../../Core/Data/Decoder"
@@ -21,6 +23,21 @@ import type {
 
 export function removeQuery(route: string): string {
   return route.split("?")[0] ?? ""
+}
+
+export const jsonBody: Express.RequestHandler = json({
+  limit: "400kb",
+  type: "application/json",
+})
+
+export const bodyParserTooLargeType = "entity.too.large"
+
+export function bodyParserErrorType(error: unknown): Maybe<string> {
+  return error instanceof Error &&
+    "type" in error &&
+    typeof error.type === "string"
+    ? error.type
+    : null
 }
 
 export function decodeParams<UrlParams, RequestBody>(
@@ -130,4 +147,16 @@ export function unauthorised(
   res.status(400)
   res.json({ _t: "AuthErr", code: "UNAUTHORISED" })
   return
+}
+
+export function unknownRoute(
+  req: Express.Request,
+  res: Express.Response<InternalErr500>,
+): void {
+  const route = `${req.method} ${req.path}`
+  return internalErr500(
+    res,
+    route,
+    internalErrMessage("Unknown Route", req.query, route),
+  )
 }

@@ -7,6 +7,9 @@ import {
   removeQuery,
   decoderErrorMessage,
   internalErrMessage,
+  bodyParserErrorType,
+  bodyParserTooLargeType,
+  jsonBody,
   authOk200,
   authErr400,
   authInternalErr500,
@@ -14,7 +17,11 @@ import {
 } from "../Api"
 import * as UserRow from "../Database/UserRow"
 import type { Method } from "../../../Core/Data/Api"
-import type { AuthApi, AuthResponseJson } from "../../../Core/Data/Api/Auth"
+import type {
+  AuthApi,
+  AuthApiError,
+  AuthResponseJson,
+} from "../../../Core/Data/Api/Auth"
 import type { JwtPayload } from "../../../Core/App/User/AccessToken"
 import * as AccessToken from "../App/AccessToken"
 
@@ -77,21 +84,39 @@ export function authApi<
 
   switch (method) {
     case "GET":
-      app.get(expressRoute, handlerRunner)
+      app.get(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "DELETE":
-      app.delete(expressRoute, handlerRunner)
+      app.delete(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "POST":
-      app.post(expressRoute, handlerRunner)
+      app.post(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "PATCH":
-      app.patch(expressRoute, handlerRunner)
+      app.patch(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
     case "PUT":
-      app.put(expressRoute, handlerRunner)
+      app.put(expressRoute, jsonBody, bodyErrorRunner, handlerRunner)
       break
   }
+}
+
+// Express runs a handler as error middleware only when it declares
+// four parameters, hence the unused _next
+function bodyErrorRunner(
+  error: unknown,
+  req: Express.Request,
+  res: Express.Response<unknown>,
+  _next: Express.NextFunction,
+): void {
+  const errorType = bodyParserErrorType(error)
+  return errorType === bodyParserTooLargeType
+    ? authErr400<AuthApiError>(res, "PAYLOAD_TOO_LARGE")
+    : authInternalErr500(
+        res,
+        errorType,
+        internalErrMessage("Request Body Parse Failed", req.query, errorType),
+      )
 }
 
 async function runAuthHandler<ErrorCode, Params, Payload>(
