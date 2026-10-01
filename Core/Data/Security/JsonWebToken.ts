@@ -33,12 +33,17 @@ export function parseJWT<T>(
   payloadDecoder: JD.Decoder<T>,
   s: string,
 ): Result<ErrorCode, JsonWebToken<T>> {
-  const parts = s.split(".")
-  if (parts.length !== 3) return err("INVALID_FORMAT")
+  const [header, payloadBase64, signature, ...extraParts] = s.split(".")
+  if (
+    header == null ||
+    payloadBase64 == null ||
+    signature == null ||
+    extraParts.length > 0
+  ) {
+    return err("INVALID_FORMAT")
+  }
 
-  const header = parts[0]
-  const payloadStr = decodeBase64(parts[1])
-  const signature = parts[2]
+  const payloadStr = decodeBase64(payloadBase64)
   if (header === "" || payloadStr === null || signature === "") {
     return err("INVALID_FORMAT")
   }

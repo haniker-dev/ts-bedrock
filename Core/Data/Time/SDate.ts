@@ -142,8 +142,8 @@ function _validate(internal: Internal): Result<ErrorCode, Internal> {
 export const sdateStringDecoder: JD.Decoder<SDate> = JD.string.transform(
   (s) => {
     const [yyyymmdd] = s.split("T") // to allow ISO string eg. 1981-01-27T23:59:59Z
-    const [yearM, monthM, dayM] = yyyymmdd.split("-")
-    const year = natDecoder.verify(parseInt(yearM))
+    const [yearM, monthM, dayM] = JD.string.verify(yyyymmdd).split("-")
+    const year = natDecoder.verify(parseInt(JD.string.verify(yearM)))
     const month = monthDecoder.verify(monthM)
     const day = dayDecoder.verify(dayM)
     return throwIfNull(

@@ -16,6 +16,7 @@
     "strict": true,
     "strictNullChecks": true,
     "erasableSyntaxOnly": true,
+    "noUncheckedIndexedAccess": true,
     "types": ["vitest/globals"]
   },
   "include": ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
