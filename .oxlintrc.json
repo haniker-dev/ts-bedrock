@@ -78,6 +78,15 @@
     "typescript/no-unsafe-member-access": "error",
     "typescript/no-unsafe-return": "error",
     "typescript/switch-exhaustiveness-check": "error",
+    "typescript/strict-boolean-expressions": [
+      "error",
+      {
+        "allowString": false,
+        "allowNumber": false,
+        "allowNullableObject": false
+      }
+    ],
+    "typescript/only-throw-error": "error",
     "typescript/restrict-template-expressions": "error",
     "typescript/ban-ts-comment": "error",
     "typescript/no-empty-object-type": "error",

@@ -22,9 +22,9 @@ function View({
   changed,
   type,
 }: Props): JSX.Element {
-  const disabled_ = disabled || false
-  const invalid_ = invalid || false
-  const changed_ = changed || false
+  const disabled_ = disabled ?? false
+  const invalid_ = invalid ?? false
+  const changed_ = changed ?? false
   return (
     <div className={styles.container(disabled_, invalid_, changed_)}>
       <input
@@ -35,7 +35,7 @@ function View({
           onChange(e.target.value)
         }}
         onBlur={(e) => {
-          if (onBlur) onBlur(e.target.value)
+          if (onBlur != null) onBlur(e.target.value)
         }}
         className={styles.input(disabled_, invalid_)}
         type={type}

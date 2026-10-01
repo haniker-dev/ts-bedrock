@@ -48,7 +48,7 @@ export function increment(n: Nat): Nat {
 
 export function decrement(n: Nat): Maybe<Nat> {
   const num = n.unwrap() - 1
-  return natDecoder.decode(num).value || null
+  return natDecoder.decode(num).value ?? null
 }
 
 export function add(n: Nat, i: Nat): Nat {

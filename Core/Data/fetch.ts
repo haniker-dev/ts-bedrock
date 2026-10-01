@@ -10,7 +10,7 @@ export async function* readFetchBodyStream(
     if (done) {
       return null
     } else {
-      const fullValue = decoder.decode(value, { stream: true }) || ""
+      const fullValue = decoder.decode(value, { stream: true })
 
       // A very stupid way of parsing streaming JSON object
       if (fullValue.endsWith(JSONStreamDelimiter)) {

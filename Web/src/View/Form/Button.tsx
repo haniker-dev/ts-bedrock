@@ -12,7 +12,7 @@ type Props = {
   disabled?: boolean
 }
 function View({ size, theme_, label, onClick, disabled }: Props): JSX.Element {
-  const disabled_ = disabled || false
+  const disabled_ = disabled ?? false
   return (
     <button
       disabled={disabled}

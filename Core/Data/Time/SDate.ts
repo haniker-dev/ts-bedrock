@@ -65,7 +65,7 @@ export function fromJsDateLocal(d: Date): Maybe<SDate> {
   const month = d.getMonth() + 1 // January is 0
   const day = d.getDate()
 
-  return sdateStringDecoder.value(_toString(year, month, day)) || null
+  return sdateStringDecoder.value(_toString(year, month, day)) ?? null
 }
 
 export function toJsDateLocal(dob: SDate): Date {

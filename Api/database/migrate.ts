@@ -16,8 +16,10 @@ const migrator = new Migrator({
 migrator
   .migrateToLatest()
   .then(({ results, error }) => {
-    if (error != null) throw error
-    if (results == null) throw "No rollback results"
+    if (error != null) {
+      throw error instanceof Error ? error : new Error(JSON.stringify(error))
+    }
+    if (results == null) throw new Error("No rollback results")
 
     if (results.length > 0) {
       results.forEach((r) => {

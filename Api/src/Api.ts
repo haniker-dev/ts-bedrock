@@ -20,7 +20,7 @@ import type {
 } from "../../Core/Data/Api/Auth"
 
 export function removeQuery(route: string): string {
-  return route.split("?")[0] || ""
+  return route.split("?")[0] ?? ""
 }
 
 export function decodeParams<UrlParams, RequestBody>(

@@ -30,7 +30,7 @@ export async function issue(userID: UserID): Promise<AccessToken> {
     .then((token) => accessTokenDecoder.verify(token))
     .catch((error) => {
       Logger.error(`jwt issue error: ${error}`)
-      throw `jwt issue error: ${error}`
+      throw new Error(`jwt issue error: ${error}`)
     })
 }
 

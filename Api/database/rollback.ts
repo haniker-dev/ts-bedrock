@@ -16,9 +16,13 @@ const migrator = new Migrator({
 migrator
   .migrateDown()
   .then(({ results, error }) => {
-    if (error != null) throw error
-    if (results == null) throw "No rollback results"
-    if (results.length > 1) throw "Rollback only apply for Initial Migration"
+    if (error != null) {
+      throw error instanceof Error ? error : new Error(JSON.stringify(error))
+    }
+    if (results == null) throw new Error("No rollback results")
+    if (results.length > 1) {
+      throw new Error("Rollback only apply for Initial Migration")
+    }
 
     const result = results[0]
     if (result != null) {
@@ -28,11 +32,13 @@ migrator
           break
         case "Error":
         case "NotExecuted":
-          throw `Something went wrong with rollback: ${JSON.stringify(
-            result,
-            null,
-            2,
-          )}`
+          throw new Error(
+            `Something went wrong with rollback: ${JSON.stringify(
+              result,
+              null,
+              2,
+            )}`,
+          )
       }
     } else {
       console.info("Nothing to rollback")

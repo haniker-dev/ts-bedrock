@@ -59,13 +59,13 @@ function _decodeBase64(input: string): string | never {
     // initialize result and counters
     let bc = 0, bs = 0, buffer, idx = 0;
     // get next character
-    (buffer = str.charAt(idx++));
+    (buffer = str.charAt(idx++)) !== "";
     // character found in table? initialize bit storage and add its ascii value;
-    ~buffer &&
-    ((bs = bc % 4 ? bs * 64 + buffer : buffer),
+    buffer !== -1 &&
+    ((bs = bc % 4 !== 0 ? bs * 64 + buffer : buffer),
     // and if not first of each 4 characters,
     // convert the first 8 bits to one ascii character
-    bc++ % 4)
+    bc++ % 4 !== 0)
       ? (output += String.fromCharCode(255 & (bs >> ((-2 * bc) & 6))))
       : 0
   ) {

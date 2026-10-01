@@ -134,7 +134,7 @@ export async function remove(
     .where("id", "=", refreshToken.unwrap())
     .where("userID", "=", userID.unwrap())
     .executeTakeFirst()
-    .then((r) => Number(r.numDeletedRows) || 0)
+    .then((r) => Number(r.numDeletedRows))
     .catch((e) => {
       Logger.error(`#${tableName}.remove error ${e}`)
       throw e
@@ -146,7 +146,7 @@ export async function removeAllByUser(userID: UserID): Promise<number> {
     .deleteFrom(tableName)
     .where("userID", "=", userID.unwrap())
     .executeTakeFirst()
-    .then((r) => Number(r.numDeletedRows) || 0)
+    .then((r) => Number(r.numDeletedRows))
     .catch((e) => {
       Logger.error(`#${tableName}.removeAllByUser error ${e}`)
       throw e
@@ -167,7 +167,7 @@ export async function removeAllExpired(): Promise<number> {
     .deleteFrom(tableName)
     .where("createdAt", "<=", toDate(lastCreatedAt.value))
     .executeTakeFirst()
-    .then((r) => Number(r.numDeletedRows) || 0)
+    .then((r) => Number(r.numDeletedRows))
     .catch((e) => {
       Logger.error(`#${tableName}.removeAllExpired error ${e}`)
       throw e

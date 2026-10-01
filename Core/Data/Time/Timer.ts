@@ -12,7 +12,7 @@ export function debounce<T extends unknown[]>(
 ): (...args: T) => void {
   let timer: NodeJS.Timeout | null = null
   return (...args: T) => {
-    if (timer) clearTimeout(timer)
+    if (timer != null) clearTimeout(timer)
 
     timer = setTimeout(() => {
       fn.call(null, ...args)
