@@ -15,7 +15,6 @@
     "noImplicitThis": true,
     "strict": true,
     "strictNullChecks": true,
-    "skipLibCheck": true,
     "types": ["vitest/globals"]
   },
   "include": [
@@ -25,7 +24,10 @@
     "spec/**/*",
     "Api/src/**/*",
     "Api/database/**/*",
-    "Web/src/**/*"
+    "Web/src/**/*",
+    "Web/vite.config.ts",
+    "prettier.config.ts",
+    "vitest.config.ts"
   ],
   "exclude": ["node_modules"]
 }

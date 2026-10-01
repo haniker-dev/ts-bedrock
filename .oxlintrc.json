@@ -113,6 +113,7 @@
     "react/no-direct-mutation-state": "error",
     "react/require-render-return": "error",
     "react/no-danger-with-children": "error",
+    "react/no-unsafe": ["error", { "checkAliases": true }],
     "no-var": "error",
     "prefer-const": "error",
     "prefer-rest-params": "error",

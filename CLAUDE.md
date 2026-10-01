@@ -51,10 +51,10 @@ breaks the template's purpose.
 - **TypeScript 7 ships only the native `tsc`**, no compiler API: code that
   imports `typescript` needs its own nested package pinning TypeScript 5.
 - **Lint is oxlint** (`.oxlintrc.json`). The TypeFirst bans oxlint has no
-  native rule for — package boundaries, `is`, `as const`, `React.useX` — are
-  the `typefirst/*` rules in `devops/lint/typefirst-plugin.mjs`, loaded as a
-  JS plugin; `oxlint --print-config` does not list them. oxlint has no watch
-  mode, so `npm start` lints once.
+  native rule for are the `typefirst/*` rules in
+  `devops/lint/typefirst-plugin.mjs`, loaded as a JS plugin;
+  `oxlint --print-config` does not list them. oxlint has no watch mode, so
+  `npm start` lints once.
 - Branch off `main`; this repo has no `development` branch.
 
 ## Coding style
