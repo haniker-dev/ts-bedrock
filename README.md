@@ -66,7 +66,7 @@ where View is pure function of State
 and State is only changed on Action (usually triggered from user's interaction or subscription)
 
 This shape is Unidirectional Data Flow (UDF): data enters at the top (database/external systems → Api → push/fetch into Web) and only cycles forward through State → View → Action → State — never backwards or sideways.
-Because component-local state is invisible to the TEA runtime, React hooks (`useState`, `useEffect`, etc) are forbidden — eslint enforces this (`devops/eslint/strict-react.json` and `strict-ts.json`); `memo` and ref callbacks are fine.
+Because component-local state is invisible to the TEA runtime, React hooks (`useState`, `useEffect`, etc) are forbidden — oxlint enforces this (`no-restricted-imports` in `.oxlintrc.json` and `typefirst/no-react-hook-member` in `devops/lint/typefirst-plugin.mjs`); `memo` and ref callbacks are fine.
 [![](https://mermaid.ink/img/pako:eNqNkU1LBDEMhv9KyEWQmYvHIsKgF2_CgJftHso0o4V-SD9WZN3_btrqzu7NHmbaN0_yJuSIS9CEAlNWmZ6MeovKjYc76YFPE0HiXP8SQSWYryPTkk3wIATsGjTAo9P7jk7Sd9gHZi2tGcJaVbg4W4GWD-PDdaUrmJVKvsTgTKL7v-Rv8MVa4Ey4SCCvm3NX-nd3u4eRLZ69yX2oJp-fLfhq6LPr9dakSQD7lETxJoHxmaJq1h2bGjML8IynrWzXuen_tFxn-7WKlII9kO6B-dxUjYyR56KIAzqKThnNuztWUGJ-J8dbEnzVtKpis0TpT4yqksP85RcUORYasHzobdsoVmUTnX4ATcedeg?type=png)](https://mermaid.live/edit#pako:eNqNkU1LBDEMhv9KyEWQmYvHIsKgF2_CgJftHso0o4V-SD9WZN3_btrqzu7NHmbaN0_yJuSIS9CEAlNWmZ6MeovKjYc76YFPE0HiXP8SQSWYryPTkk3wIATsGjTAo9P7jk7Sd9gHZi2tGcJaVbg4W4GWD-PDdaUrmJVKvsTgTKL7v-Rv8MVa4Ey4SCCvm3NX-nd3u4eRLZ69yX2oJp-fLfhq6LPr9dakSQD7lETxJoHxmaJq1h2bGjML8IynrWzXuen_tFxn-7WKlII9kO6B-dxUjYyR56KIAzqKThnNuztWUGJ-J8dbEnzVtKpis0TpT4yqksP85RcUORYasHzobdsoVmUTnX4ATcedeg)
 
 ## TypeFirst Principles and Conventions

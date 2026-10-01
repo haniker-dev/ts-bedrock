@@ -40,12 +40,21 @@ breaks the template's purpose.
   `tsc` error that makes no sense, check `npm ls <pkg>` in both the package and
   the root before treating it as a code bug.
 - **npm 11 blocks postinstall scripts.** `npm ci` can silently skip native
-  builds (e.g. `esbuild`), which surfaces later as phantom eslint
-  `import/no-unresolved` errors or a broken vite. Fix with `npm rebuild <pkg>`.
+  builds (e.g. `esbuild`), which surfaces later as a broken vite. Fix with
+  `npm rebuild <pkg>`.
   Do **not** run `npm approve-scripts` — it writes an `allowScripts` block into
   `package.json`, which should never be committed.
-- Gates: `npm run tsc` and `npm run lint` (`--max-warnings=0`). Tests are
-  `npm test`, which needs `npm run external:start` first.
+- Gates: `npm run tsc` and `npm run lint` (`--deny-warnings`). Tests are
+  `npm test`, which needs `npm run external:start` first. `npm run
+  lint:strict` adds oxlint's type-aware rules (oxlint-tsgolint); it is not a
+  gate and its findings are untriaged.
+- **TypeScript 7 ships only the native `tsc`**, no compiler API: code that
+  imports `typescript` needs its own nested package pinning TypeScript 5.
+- **Lint is oxlint** (`.oxlintrc.json`). The TypeFirst bans oxlint has no
+  native rule for — package boundaries, `is`, `as const`, `React.useX` — are
+  the `typefirst/*` rules in `devops/lint/typefirst-plugin.mjs`, loaded as a
+  JS plugin; `oxlint --print-config` does not list them. oxlint has no watch
+  mode, so `npm start` lints once.
 - Branch off `main`; this repo has no `development` branch.
 
 ## Coding style
@@ -81,7 +90,7 @@ explicit loop at the top, not recursion threaded through callbacks.
 **Imperative islands.** Perf-critical imperative code (eg. raw video/canvas
 rendering) is a module-level function driven from a ref — an explicit
 escape hatch, never hooks (the hooks ban is architectural: see the Web
-Runtime section of `README.md`; eslint enforces it).
+Runtime section of `README.md`; oxlint enforces it).
 
 ## Planning convention
 

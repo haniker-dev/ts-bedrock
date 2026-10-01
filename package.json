@@ -7,7 +7,8 @@
   "scripts": {
     "start": "bash ./devops/dev/start.sh",
     "tsc": "tsc --noEmit",
-    "lint": "esw ./ --ext .ts --ext .tsx --max-warnings=0",
+    "lint": "oxlint --deny-warnings",
+    "lint:strict": "oxlint --deny-warnings --type-aware",
     "external:start": "bash ./devops/external/start.sh",
     "db:migrate": "bash ./devops/external/db-migrate.sh",
     "db:seed": "bash ./devops/external/db-seed.sh",
@@ -28,20 +29,13 @@
   "devDependencies": {
     "@types/node": "^24.1.0",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.38.0",
-    "@typescript-eslint/parser": "^8.38.0",
     "concurrently": "^9.2.0",
-    "eslint": "^8.57.1",
-    "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-boundaries": "^5.0.1",
-    "eslint-plugin-import": "^2.32.0",
-    "eslint-plugin-jam3": "^0.2.3",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-watch": "^8.0.0",
     "kysely": "^0.28.3",
+    "oxlint": "^1.86.0",
+    "oxlint-tsgolint": "^7.0.2003",
     "prettier": "^3.6.2",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
+    "typescript": "^7.0.2",
     "vitest": "^3.2.4"
   },
   "contributes": {

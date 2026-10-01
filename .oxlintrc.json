@@ -1,0 +1,121 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "typescript", "import", "react"],
+  "jsPlugins": ["./devops/lint/typefirst-plugin.mjs"],
+  "rules": {
+    "typefirst/import-boundaries": [
+      "error",
+      {
+        "elements": ["Core", "Api", "Web", "devops", "spec"],
+        "rules": [
+          {
+            "from": "Core",
+            "disallow": ["Api", "Web", "devops", "spec"],
+            "message": "Core cannot import outside of core."
+          },
+          {
+            "from": "Api",
+            "disallow": ["Web", "devops", "spec"],
+            "message": "Api cannot import outside of itself."
+          },
+          {
+            "from": "Web",
+            "disallow": ["Api", "devops", "spec"],
+            "message": "Web cannot import outside of itself."
+          }
+        ]
+      }
+    ],
+    "typefirst/no-type-predicate": "error",
+    "typefirst/no-const-assertion": "error",
+    "typefirst/no-react-hook-member": "error",
+    "typescript/consistent-type-assertions": [
+      "error",
+      {
+        "assertionStyle": "never"
+      }
+    ],
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-explicit-any": "error",
+    "typescript/prefer-as-const": "off",
+    "import/no-cycle": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["react"],
+            "importNamePattern": "^use",
+            "message": "React hooks are forbidden in TypeFirst. Use Action to perform effects."
+          }
+        ]
+      }
+    ],
+    "react/no-danger": "error",
+    "no-console": [
+      "warn",
+      {
+        "allow": ["info", "warn", "error"]
+      }
+    ],
+    "typescript/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "typescript/no-floating-promises": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "typescript/restrict-template-expressions": "error",
+    "typescript/ban-ts-comment": "error",
+    "typescript/no-empty-object-type": "error",
+    "typescript/no-namespace": "error",
+    "typescript/no-require-imports": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/no-wrapper-object-types": "error",
+    "typescript/no-this-alias": "error",
+    "typescript/no-misused-new": "error",
+    "typescript/no-duplicate-enum-values": "error",
+    "typescript/no-extra-non-null-assertion": "error",
+    "typescript/no-non-null-asserted-optional-chain": "error",
+    "typescript/no-unnecessary-type-constraint": "error",
+    "typescript/no-unsafe-declaration-merging": "error",
+    "typescript/no-unused-expressions": "error",
+    "typescript/no-array-constructor": "error",
+    "typescript/triple-slash-reference": "error",
+    "typescript/prefer-namespace-keyword": "error",
+    "import/no-duplicates": "warn",
+    "import/no-named-as-default": "warn",
+    "import/no-named-as-default-member": "warn",
+    "import/default": "error",
+    "import/export": "error",
+    "import/namespace": "error",
+    "react/jsx-key": "error",
+    "react/no-children-prop": "error",
+    "react/no-unescaped-entities": "error",
+    "react/no-unknown-property": "error",
+    "react/no-string-refs": "error",
+    "react/no-render-return-value": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-is-mounted": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-undef": "error",
+    "react/jsx-no-target-blank": "error",
+    "react/jsx-no-comment-textnodes": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/require-render-return": "error",
+    "react/no-danger-with-children": "error",
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-rest-params": "error",
+    "prefer-spread": "error"
+  }
+}
