@@ -42,9 +42,10 @@ breaks the template's purpose.
   peer, and the binary `npm start` serves Web with) and Web's `vite` must
   resolve to the same version, because Web's config and plugins run under
   the root binary. The root `tsconfig.json` `paths` maps `vite` to the root
-  copy so the tsc program holds one vite: two copies each augment rollup's
-  plugin context, and fail with TS2320/TS2430 whenever TypeScript dedupes
-  their rollup.
+  copy so the tsc program holds one copy of vite's main types (`vite/client`
+  still loads from Web's copy): two copies each augment rollup's plugin
+  context, and fail with TS2320/TS2416 whenever TypeScript dedupes their
+  rollup.
 - **npm 11 blocks postinstall scripts.** `npm ci` can silently skip native
   builds (e.g. `esbuild`), which surfaces later as a broken vite. Fix with
   `npm rebuild <pkg>`.
