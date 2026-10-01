@@ -143,7 +143,7 @@ export const sdateStringDecoder: JD.Decoder<SDate> = JD.string.transform(
   (s) => {
     const [yyyymmdd] = s.split("T") // to allow ISO string eg. 1981-01-27T23:59:59Z
     const [yearM, monthM, dayM] = JD.string.verify(yyyymmdd).split("-")
-    const year = natDecoder.verify(parseInt(JD.string.verify(yearM)))
+    const year = JD.numeric.pipe(natDecoder).verify(yearM)
     const month = monthDecoder.verify(monthM)
     const day = dayDecoder.verify(dayM)
     return throwIfNull(createSDate(year, month, day), `Invalid SDate: ${s}`)

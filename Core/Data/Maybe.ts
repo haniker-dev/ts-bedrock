@@ -46,7 +46,7 @@ export function maybeOptionalDecoder<T>(
 export function stringMaybeDecoder<T>(
   valueDecoder: JD.Decoder<T>,
 ): JD.Decoder<Maybe<T>> {
-  return JD.string
-    .transform((s) => s.toLowerCase())
-    .transform((s) => (s === "null" ? null : valueDecoder.verify(s)))
+  return JD.string.transform((s) =>
+    s.toLowerCase() === "null" ? null : valueDecoder.verify(s),
+  )
 }

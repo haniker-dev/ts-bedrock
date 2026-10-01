@@ -114,7 +114,7 @@ export type TextNoLimit = Text<typeof keyNoLimit>
 export function createTextNoLimitE(
   s: string,
 ): Result<"EMPTY_TEXT", TextNoLimit> {
-  return s === ""
+  return s.trim() === ""
     ? err("EMPTY_TEXT")
     : ok(jsonValueCreate<string, typeof keyNoLimit>(keyNoLimit)(s))
 }
@@ -161,7 +161,7 @@ function _createE<T extends symbol>(
 }
 
 function _validate(textLength: number, s: string): Result<TextError, string> {
-  return s === ""
+  return s.trim() === ""
     ? err("EMPTY_TEXT")
     : textLength > 0 && s.length > textLength
       ? err("TEXT_TOO_LONG")

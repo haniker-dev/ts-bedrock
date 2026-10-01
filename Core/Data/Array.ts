@@ -5,10 +5,13 @@ import type { Maybe } from "./Maybe"
  * https://pursuit.purescript.org/packages/purescript-arrays/7.3.0/docs/Data.Array#v:unsnoc
  */
 export function unsnoc<T>(xs: T[]): Maybe<{ init: T[]; last: T }> {
-  const init = [...xs]
-  const last = init.pop() // Mutation!
+  const denseLast = Array.from(xs.slice(-1))
+  const [unsnocced] = denseLast.map((last) => ({
+    init: xs.slice(0, -1),
+    last,
+  }))
 
-  return last == null ? null : { init, last }
+  return unsnocced ?? null
 }
 
 /** Consider using a set if possible */

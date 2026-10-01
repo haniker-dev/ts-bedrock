@@ -13,6 +13,8 @@ const key: unique symbol = Symbol()
 export type Url = Opaque<string, typeof key>
 export type ErrorWebLink = "INVALID_URL"
 
+const webProtocols = ["http:", "https:"]
+
 export function createWebLink(s: string): Maybe<Url> {
   return toMaybe(createWebLinkE(s))
 }
@@ -27,8 +29,8 @@ export const webLinkDecoder: JD.Decoder<Url> = JD.string.transform((s) => {
 
 function _validate(s: string): Result<ErrorWebLink, string> {
   try {
-    new URL(s)
-    return ok(s)
+    const { protocol } = new URL(s)
+    return webProtocols.includes(protocol) ? ok(s) : err("INVALID_URL")
   } catch (_e) {
     return err("INVALID_URL")
   }

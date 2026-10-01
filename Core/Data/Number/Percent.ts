@@ -24,14 +24,14 @@ export function add(amount: Nat, percent: Percent): Percent {
 
 /** Clamps all values to between 0 to 100 */
 export function fromFraction(n: number): Percent {
-  return add(createAbsoluteNat(n * 100), Percent0)
+  return add(createAbsoluteNat(Math.max(0, n * 100)), Percent0)
 }
 
 export function isPercent100(p: Percent): boolean {
   return p[key] === 100
 }
 
-export const percentDecoder: JD.Decoder<Percent> = JD.number.transform((n) => {
+export const percentDecoder: JD.Decoder<Percent> = JD.integer.transform((n) => {
   return _createUnsafe(clamp(0, 100, n))
 })
 
