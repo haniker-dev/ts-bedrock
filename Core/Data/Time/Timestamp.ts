@@ -7,7 +7,7 @@ import type { Maybe } from "../Maybe"
 import { throwIfNull } from "../Maybe"
 import type { Nat } from "../Number/Nat"
 import type { Millisecond } from "./Millisecond"
-import { fromSecond } from "./Millisecond"
+import { createMillisecond, fromSecond } from "./Millisecond"
 import { secondDecoder } from "./Second"
 
 const key: unique symbol = Symbol()
@@ -23,12 +23,12 @@ export function fromDate(date: Date): Timestamp {
   return _create(date.getTime())
 }
 
-export function fromMillisecond(value: number): Maybe<Timestamp> {
-  return createTimestamp(value)
+export function fromMillisecond(value: Millisecond): Maybe<Timestamp> {
+  return createTimestamp(value.unwrap())
 }
 
-export function toMillisecond(timestamp: Timestamp): number {
-  return timestamp.unwrap()
+export function toMillisecond(timestamp: Timestamp): Maybe<Millisecond> {
+  return createMillisecond(timestamp.unwrap())
 }
 
 export function createTimestamp(value: number): Maybe<Timestamp> {

@@ -12,8 +12,8 @@ import {
   toDate,
 } from "../../../Core/Data/Time/Timestamp"
 import type { Millisecond } from "../../../Core/Data/Time/Millisecond"
-import { fromHour, fromSecond } from "../../../Core/Data/Time/Millisecond"
-import { Hour2160 } from "../../../Core/Data/Time/Hour"
+import { fromDay, fromSecond } from "../../../Core/Data/Time/Millisecond"
+import { Day90 } from "../../../Core/Data/Time/Day"
 import { Second1 } from "../../../Core/Data/Time/Second"
 import type { RefreshToken } from "../../../Core/Data/Security/RefreshToken"
 import {
@@ -25,7 +25,7 @@ import db from "../Database"
 const tableName = "refresh_token"
 
 /** RefreshToken has a 90 days expiry **/
-export const refreshTokenExpiry: Millisecond = fromHour(Hour2160)
+export const refreshTokenExpiry: Millisecond = fromDay(Day90)
 
 /**
  * There is a racing condition where a user is refreshing the token
