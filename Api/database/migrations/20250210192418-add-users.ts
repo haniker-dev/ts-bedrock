@@ -9,8 +9,8 @@ export async function up(db: Kysely<unknown>): Promise<void> {
     .addColumn("name", "varchar(100)", (col) => col.notNull())
     .addColumn("password", "varchar(100)", (col) => col.notNull())
     .addColumn("isDeleted", "boolean", (col) => col.notNull())
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
-    .addColumn("updatedAt", "timestamp", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
+    .addColumn("updatedAt", "timestamptz", (col) => col.notNull())
     .execute()
 
   await db.schema
@@ -20,8 +20,8 @@ export async function up(db: Kysely<unknown>): Promise<void> {
       col.references("user.id").notNull().onDelete("cascade"),
     )
     .addColumn("previousID", "varchar(256)", (col) => col.notNull())
-    .addColumn("previousCreatedAt", "timestamp", (col) => col.notNull())
-    .addColumn("createdAt", "timestamp", (col) => col.notNull())
+    .addColumn("previousCreatedAt", "timestamptz", (col) => col.notNull())
+    .addColumn("createdAt", "timestamptz", (col) => col.notNull())
     .execute()
 }
 
