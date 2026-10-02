@@ -1,34 +1,41 @@
 import * as JD from "decoders"
 import type { Opaque } from "../Opaque"
-import { jsonValueCreate } from "../Opaque"
 import type { Result } from "../Result"
-import { toMaybe, err, mapOk, ok } from "../Result"
+import { toMaybe, mapErr, mapOk } from "../Result"
 import type { Maybe } from "../Maybe"
 import { throwIfNull } from "../Maybe"
-import type { Nat } from "../Number/Nat"
+import type { ErrorNat } from "../Number/Nat"
 import type { Millisecond } from "./Millisecond"
-import { createMillisecond, fromSecond } from "./Millisecond"
+import { add, createMillisecondE, fromSecond, sinceEpoch } from "./Millisecond"
 import { secondDecoder } from "./Second"
 
 const key: unique symbol = Symbol()
 /** Timestamp is epoch milliseconds */
-export type Timestamp = Opaque<number, typeof key>
+export type Timestamp = Opaque<Millisecond, typeof key, number>
 export type ErrorTimestamp = "NOT_AN_INT" | "NOT_A_TIMESTAMP"
 
 export function createNow(): Timestamp {
-  return _create(_now())
+  return fromMillisecond(sinceEpoch())
 }
 
-export function fromDate(date: Date): Timestamp {
-  return _create(date.getTime())
+export function fromDate(date: Date): Maybe<Timestamp> {
+  return createTimestamp(date.getTime())
 }
 
-export function fromMillisecond(value: Millisecond): Maybe<Timestamp> {
-  return createTimestamp(value.unwrap())
+export function fromMillisecond(value: Millisecond): Timestamp {
+  return {
+    [key]: value,
+    unwrap: function () {
+      return this[key].unwrap()
+    },
+    toJSON: function () {
+      return this[key].unwrap()
+    },
+  }
 }
 
-export function toMillisecond(timestamp: Timestamp): Maybe<Millisecond> {
-  return createMillisecond(timestamp.unwrap())
+export function toMillisecond(timestamp: Timestamp): Millisecond {
+  return timestamp[key]
 }
 
 export function createTimestamp(value: number): Maybe<Timestamp> {
@@ -36,40 +43,31 @@ export function createTimestamp(value: number): Maybe<Timestamp> {
 }
 
 export function createTimestampE(n: number): Result<ErrorTimestamp, Timestamp> {
-  return mapOk(_validate(n), jsonValueCreate(key))
+  return mapOk(
+    mapErr(createMillisecondE(n), _toErrorTimestamp),
+    fromMillisecond,
+  )
 }
 
 export function afterNow(t: Timestamp): boolean {
-  return _now() - t.unwrap() < 0
+  return sinceEpoch().unwrap() - t.unwrap() < 0
 }
 
 export function beforeNow(t: Timestamp): boolean {
-  return t.unwrap() - _now() < 0
+  return t.unwrap() - sinceEpoch().unwrap() < 0
 }
 
 export function addMillisecond(
   t1: Timestamp,
   duration: Millisecond,
 ): Timestamp {
-  return _create(t1.unwrap() + duration.unwrap())
+  return fromMillisecond(add(toMillisecond(t1), duration))
 }
 
 export function isSameDay(a: Timestamp, b: Timestamp): boolean {
   const a_ = toDate(a).toDateString()
   const b_ = toDate(b).toDateString()
   return a_ === b_
-}
-
-export function yearAgo(n: Nat): Timestamp {
-  const d = new Date()
-  d.setFullYear(d.getFullYear() - n.unwrap())
-  return fromDate(d)
-}
-
-export function yearFromNow(n: Nat): Timestamp {
-  const d = new Date()
-  d.setFullYear(d.getFullYear() + n.unwrap())
-  return fromDate(d)
 }
 
 /**Past day is not include today*/
@@ -99,21 +97,14 @@ export const timestampSecondDecoder: JD.Decoder<Timestamp> =
   })
 
 export const timestampJSDateDecoder: JD.Decoder<Timestamp> = JD.date.transform(
-  (v) => fromDate(v),
+  (v) => throwIfNull(fromDate(v), `Invalid timestamp: ${String(v)}`),
 )
 
-function _validate(n: number): Result<ErrorTimestamp, number> {
-  return Number.isInteger(n) === false
-    ? err("NOT_AN_INT")
-    : n <= 0
-      ? err("NOT_A_TIMESTAMP")
-      : ok(n)
-}
-
-function _create(epochMillisecond: number): Timestamp {
-  return jsonValueCreate<number, typeof key>(key)(Math.floor(epochMillisecond))
-}
-
-function _now(): number {
-  return Date.now()
+function _toErrorTimestamp(e: ErrorNat): ErrorTimestamp {
+  switch (e) {
+    case "NOT_AN_INT":
+      return "NOT_AN_INT"
+    case "NOT_A_NAT":
+      return "NOT_A_TIMESTAMP"
+  }
 }

@@ -53,6 +53,14 @@ export function fromDay(d: Day): Millisecond {
   return _create(d.unwrap() * dayInMillisecond)
 }
 
+export function add(a: Millisecond, b: Millisecond): Millisecond {
+  return _create(a.unwrap() + b.unwrap())
+}
+
+export function sinceEpoch(): Millisecond {
+  return _create(Date.now())
+}
+
 export const millisecondDecoder: JD.Decoder<Millisecond> = JD.number.transform(
   (n) => {
     return throwIfNull(createMillisecond(n), `Invalid millisecond: ${n}`)

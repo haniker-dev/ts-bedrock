@@ -8,7 +8,7 @@ import {
   beforeNow,
   createNow,
   createTimestampE,
-  fromDate,
+  timestampJSDateDecoder,
   toDate,
 } from "../../../Core/Data/Time/Timestamp"
 import type { Millisecond } from "../../../Core/Data/Time/Millisecond"
@@ -205,7 +205,7 @@ export async function _createExpired(userID: UserID): Promise<RefreshToken> {
 export const rowDecoder: JD.Decoder<RefreshTokenRow> = JD.object({
   id: refreshTokenDecoder,
   previousID: refreshTokenDecoder,
-  previousCreatedAt: JD.date.transform(fromDate),
+  previousCreatedAt: timestampJSDateDecoder,
   userID: userIDDecoder,
-  createdAt: JD.date.transform(fromDate),
+  createdAt: timestampJSDateDecoder,
 })

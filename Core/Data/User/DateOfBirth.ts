@@ -5,8 +5,7 @@ import { err, mapOk, ok, toMaybe } from "../Result"
 import type { Maybe } from "../Maybe"
 import { throwIfNull } from "../Maybe"
 import type { SDate } from "../Time/SDate"
-import { sdateStringDecoder, toString, toTimestamp } from "../Time/SDate"
-import { afterNow } from "../Time/Timestamp"
+import { afterToday, sdateStringDecoder, toString } from "../Time/SDate"
 
 const key: unique symbol = Symbol()
 export type DateOfBirth = Opaque<SDate, typeof key>
@@ -31,7 +30,7 @@ export const dateOfBirthStringDecoder: JD.Decoder<DateOfBirth> =
   })
 
 function _validate(d: SDate): Result<ErrorDateOfBirth, SDate> {
-  return afterNow(toTimestamp(d)) ? err("FUTURE_DATE_OF_BIRTH") : ok(d)
+  return afterToday(d) ? err("FUTURE_DATE_OF_BIRTH") : ok(d)
 }
 
 function _create(d: SDate): DateOfBirth {

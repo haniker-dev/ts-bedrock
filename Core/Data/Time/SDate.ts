@@ -75,8 +75,17 @@ export function toJsDateLocal(d: SDate): Date {
   return date
 }
 
-export function toTimestamp(d: SDate): Timestamp {
+export function toTimestamp(d: SDate): Maybe<Timestamp> {
   return fromDate(toJsDateLocal(d))
+}
+
+export function afterToday(d: SDate): boolean {
+  const { year, month, day } = d.unwrap()
+  const today = new Date()
+  return (
+    _dayNumber(year.unwrap(), month, day) >
+    _dayNumber(today.getFullYear(), today.getMonth() + 1, today.getDate())
+  )
 }
 
 export function createSDate(
@@ -118,6 +127,10 @@ export function toString(d: SDate): string {
 
 function _toString(year: number, month: number, day: number): string {
   return `${String(year).padStart(4, "0")}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`
+}
+
+function _dayNumber(year: number, month: number, day: number): number {
+  return year * 10000 + month * 100 + day
 }
 
 function _validate(internal: Internal): Result<ErrorCode, Internal> {
