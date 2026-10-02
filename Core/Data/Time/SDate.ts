@@ -19,10 +19,10 @@ export type SDate = Opaque<Internal, typeof key>
 type Internal = {
   year: Nat
   month: Month
-  day: Day
+  day: DayOfMonth
 }
 export type Month = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
-export type Day =
+export type DayOfMonth =
   | 1
   | 2
   | 3
@@ -79,14 +79,18 @@ export function toTimestamp(d: SDate): Timestamp {
   return fromDate(toJsDateLocal(d))
 }
 
-export function createSDate(year: Nat, month: Month, day: Day): Maybe<SDate> {
+export function createSDate(
+  year: Nat,
+  month: Month,
+  day: DayOfMonth,
+): Maybe<SDate> {
   return toMaybe(createSDateE(year, month, day))
 }
 
 export function createSDateE(
   year: Nat,
   month: Month,
-  day: Day,
+  day: DayOfMonth,
 ): Result<ErrorCode, SDate> {
   const internal = { year, month, day }
   const jsDateE = _validate(internal)
@@ -145,7 +149,7 @@ export const sdateStringDecoder: JD.Decoder<SDate> = JD.string.transform(
     const [yearM, monthM, dayM] = JD.string.verify(yyyymmdd).split("-")
     const year = JD.numeric.pipe(natDecoder).verify(yearM)
     const month = monthDecoder.verify(monthM)
-    const day = dayDecoder.verify(dayM)
+    const day = dayOfMonthDecoder.verify(dayM)
     return throwIfNull(createSDate(year, month, day), `Invalid SDate: ${s}`)
   },
 )
@@ -181,71 +185,73 @@ export const monthDecoder: JD.Decoder<Month> = JD.string.transform((s) => {
   throw new Error(`Invalid month: ${s}`)
 })
 
-export const dayDecoder: JD.Decoder<Day> = JD.string.transform((s) => {
-  switch (s) {
-    case "01":
-      return 1
-    case "02":
-      return 2
-    case "03":
-      return 3
-    case "04":
-      return 4
-    case "05":
-      return 5
-    case "06":
-      return 6
-    case "07":
-      return 7
-    case "08":
-      return 8
-    case "09":
-      return 9
-    case "10":
-      return 10
-    case "11":
-      return 11
-    case "12":
-      return 12
-    case "13":
-      return 13
-    case "14":
-      return 14
-    case "15":
-      return 15
-    case "16":
-      return 16
-    case "17":
-      return 17
-    case "18":
-      return 18
-    case "19":
-      return 19
-    case "20":
-      return 20
-    case "21":
-      return 21
-    case "22":
-      return 22
-    case "23":
-      return 23
-    case "24":
-      return 24
-    case "25":
-      return 25
-    case "26":
-      return 26
-    case "27":
-      return 27
-    case "28":
-      return 28
-    case "29":
-      return 29
-    case "30":
-      return 30
-    case "31":
-      return 31
-  }
+export const dayOfMonthDecoder: JD.Decoder<DayOfMonth> = JD.string.transform(
+  (s) => {
+    switch (s) {
+      case "01":
+        return 1
+      case "02":
+        return 2
+      case "03":
+        return 3
+      case "04":
+        return 4
+      case "05":
+        return 5
+      case "06":
+        return 6
+      case "07":
+        return 7
+      case "08":
+        return 8
+      case "09":
+        return 9
+      case "10":
+        return 10
+      case "11":
+        return 11
+      case "12":
+        return 12
+      case "13":
+        return 13
+      case "14":
+        return 14
+      case "15":
+        return 15
+      case "16":
+        return 16
+      case "17":
+        return 17
+      case "18":
+        return 18
+      case "19":
+        return 19
+      case "20":
+        return 20
+      case "21":
+        return 21
+      case "22":
+        return 22
+      case "23":
+        return 23
+      case "24":
+        return 24
+      case "25":
+        return 25
+      case "26":
+        return 26
+      case "27":
+        return 27
+      case "28":
+        return 28
+      case "29":
+        return 29
+      case "30":
+        return 30
+      case "31":
+        return 31
+    }
 
-  throw new Error(`Invalid day: ${s}`)
-})
+    throw new Error(`Invalid day of month: ${s}`)
+  },
+)
